@@ -9,24 +9,19 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: 'Inter', sans-serif;
-        }
-        .tab-active {
-            border-color: #f59e0b; /* amber-500 */
-            color: #f59e0b;
-            background-color: rgba(245, 158, 11, 0.1);
-        }
-        .modal {
-            transition: opacity 0.2s ease-in-out;
-        }
-        .winner {
-            color: #facc15; /* yellow-400 */
-            font-weight: 700;
-        }
+        body { font-family: 'Inter', sans-serif; }
+        .tab-active { border-color: #f59e0b; color: #f59e0b; background-color: rgba(245, 158, 11, 0.1); }
+        .modal { transition: opacity 0.2s ease-in-out; }
+        .winner { color: #facc15; font-weight: 700; }
+        .loader { border-top-color: #f59e0b; }
     </style>
 </head>
 <body class="bg-slate-900 text-slate-200 antialiased">
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="fixed inset-0 bg-slate-900 bg-opacity-80 flex items-center justify-center z-50">
+        <div class="loader ease-linear rounded-full border-8 border-t-8 border-gray-200 h-32 w-32"></div>
+    </div>
 
     <!-- Header Gambar Full-Width -->
     <header>
@@ -41,9 +36,9 @@
 
         <!-- Tombol Menu -->
         <div class="flex flex-wrap justify-center border-b border-slate-700 mb-8">
-            <button id="jadwalBtn" class="py-3 px-6 text-lg font-semibold border-b-2 transition-colors duration-300 tab-active">Jadwal</button>
-            <button id="klasemenBtn" class="py-3 px-6 text-lg font-semibold border-b-2 border-transparent text-slate-400 hover:text-white transition-colors duration-300">Klasemen</button>
-            <button id="gugurBtn" class="py-3 px-6 text-lg font-semibold border-b-2 border-transparent text-slate-400 hover:text-white transition-colors duration-300">Sistem Gugur</button>
+            <button id="jadwalBtn" class="py-3 px-4 text-base sm:text-lg font-semibold border-b-2 transition-colors duration-300 tab-active">Jadwal</button>
+            <button id="klasemenBtn" class="py-3 px-4 text-base sm:text-lg font-semibold border-b-2 border-transparent text-slate-400 hover:text-white transition-colors duration-300">Klasemen</button>
+            <button id="gugurBtn" class="py-3 px-4 text-base sm:text-lg font-semibold border-b-2 border-transparent text-slate-400 hover:text-white transition-colors duration-300">Sistem Gugur</button>
         </div>
 
         <main>
@@ -57,6 +52,7 @@
                                 <th scope="col" class="px-2 sm:px-4 py-3">Waktu</th>
                                 <th scope="col" class="px-2 sm:px-4 py-3">Grup</th>
                                 <th scope="col" class="px-2 sm:px-4 py-3 text-center">Pertandingan</th>
+                                <th scope="col" class="px-2 sm:px-4 py-3 text-center">Skor</th>
                             </tr>
                         </thead>
                         <tbody></tbody>
@@ -122,33 +118,43 @@
             <!-- Konten Sistem Gugur -->
             <div id="gugurContent" class="hidden">
                 <h2 class="text-2xl font-bold mb-10 text-center text-amber-400">Bagan Sistem Gugur</h2>
-                <div class="max-w-5xl mx-auto space-y-12">
-                    <!-- Babak Semi-Final -->
-                    <div>
+                 <div class="max-w-5xl mx-auto space-y-12">
+                     <div>
                         <h3 class="text-xl font-semibold mb-6 text-center text-amber-400 tracking-wider uppercase">Semi-Final</h3>
                         <div class="grid md:grid-cols-2 gap-8">
                             <div class="bg-slate-800 p-5 rounded-xl border border-slate-700 text-center cursor-pointer hover:bg-slate-700/50" data-match-key="sf1">
                                 <div class="text-sm text-slate-400 mb-2">Sabtu, 4 Oktober 2025 - 20.00 WIB</div>
                                 <div id="sf1-tim1" class="font-semibold text-lg">Juara Grup A</div>
-                                <div class="text-slate-400 my-3 text-lg font-mono tracking-wider" id="sf1-score"><span id="sf1-score1"></span> : <span id="sf1-score2"></span></div>
+                                <div class="my-3 flex justify-center items-center gap-2">
+                                    <span id="sf1-score1" class="bg-slate-700 px-3 py-1 rounded-md w-12 text-center font-bold text-lg">-</span>
+                                    <span class="text-slate-500 text-lg">:</span>
+                                    <span id="sf1-score2" class="bg-slate-700 px-3 py-1 rounded-md w-12 text-center font-bold text-lg">-</span>
+                                </div>
                                 <div id="sf1-tim2" class="font-semibold text-lg">Runner-up Grup B</div>
                             </div>
                             <div class="bg-slate-800 p-5 rounded-xl border border-slate-700 text-center cursor-pointer hover:bg-slate-700/50" data-match-key="sf2">
                                 <div class="text-sm text-slate-400 mb-2">Sabtu, 4 Oktober 2025 - 21.00 WIB</div>
                                 <div id="sf2-tim1" class="font-semibold text-lg">Juara Grup B</div>
-                                <div class="text-slate-400 my-3 text-lg font-mono tracking-wider" id="sf2-score"><span id="sf2-score1"></span> : <span id="sf2-score2"></span></div>
+                                <div class="my-3 flex justify-center items-center gap-2">
+                                    <span id="sf2-score1" class="bg-slate-700 px-3 py-1 rounded-md w-12 text-center font-bold text-lg">-</span>
+                                    <span class="text-slate-500 text-lg">:</span>
+                                    <span id="sf2-score2" class="bg-slate-700 px-3 py-1 rounded-md w-12 text-center font-bold text-lg">-</span>
+                                </div>
                                 <div id="sf2-tim2" class="font-semibold text-lg">Runner-up Grup A</div>
                             </div>
                         </div>
                     </div>
-                    
                     <div class="grid md:grid-cols-2 gap-8 items-start">
                         <div>
                             <h3 class="text-xl font-semibold mb-6 text-center text-amber-500 tracking-wider uppercase">Perebutan Juara 3</h3>
                             <div class="max-w-md mx-auto bg-slate-800 p-5 rounded-xl border border-amber-600/50 text-center cursor-pointer hover:bg-slate-700/50" data-match-key="thirdPlace">
                                <div class="text-sm text-slate-400 mb-2">Sabtu, 11 Oktober 2025 - 20.00 WIB</div>
                                <div id="p3-tim1" class="font-semibold text-lg">Kalah SF 1</div>
-                               <div class="text-slate-400 my-3 text-lg font-mono tracking-wider" id="p3-score"><span id="p3-score1"></span> : <span id="p3-score2"></span></div>
+                               <div class="my-3 flex justify-center items-center gap-2">
+                                   <span id="p3-score1" class="bg-slate-700 px-3 py-1 rounded-md w-12 text-center font-bold text-lg">-</span>
+                                   <span class="text-slate-500 text-lg">:</span>
+                                   <span id="p3-score2" class="bg-slate-700 px-3 py-1 rounded-md w-12 text-center font-bold text-lg">-</span>
+                               </div>
                                <div id="p3-tim2" class="font-semibold text-lg">Kalah SF 2</div>
                            </div>
                        </div>
@@ -157,13 +163,16 @@
                              <div class="max-w-md mx-auto bg-slate-800 p-5 rounded-xl border-2 border-amber-500 text-center shadow-2xl shadow-amber-500/10 cursor-pointer hover:bg-slate-700/50" data-match-key="final">
                                 <div class="text-sm text-slate-400 mb-2">Sabtu, 11 Oktober 2025 - 21.00 WIB</div>
                                 <div id="final-tim1" class="font-bold text-lg">Pemenang SF 1</div>
-                                <div class="text-amber-400 my-3 text-lg font-mono tracking-wider" id="final-score"><span id="final-score1"></span> : <span id="final-score2"></span></div>
+                                <div class="my-3 flex justify-center items-center gap-2">
+                                    <span id="final-score1" class="bg-slate-700 px-3 py-1 rounded-md w-12 text-center font-bold text-lg">-</span>
+                                    <span class="text-amber-400 text-lg font-bold">:</span>
+                                    <span id="final-score2" class="bg-slate-700 px-3 py-1 rounded-md w-12 text-center font-bold text-lg">-</span>
+                                </div>
                                 <div id="final-tim2" class="font-bold text-lg">Pemenang SF 2</div>
                             </div>
                         </div>
                     </div>
-
-                    <div id="hasilAkhir" class="hidden pt-8">
+                     <div id="hasilAkhir" class="hidden pt-8">
                         <h3 class="text-3xl font-bold mb-8 text-center text-amber-300 tracking-wider uppercase">Pemenang Turnamen</h3>
                         <div class="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto text-center items-end">
                             <div class="bg-slate-800 p-6 rounded-xl border-2 border-slate-500 order-2 md:order-1">
@@ -188,19 +197,19 @@
         </main>
         
         <footer class="mt-16 pt-8 border-t border-slate-700 text-center text-slate-400">
-            <h3 class="text-xl font-semibold mb-4 text-amber-400 uppercase tracking-wider">Apresiasi Tertinggi</h3>
+             <h3 class="text-xl font-semibold mb-4 text-amber-400 uppercase tracking-wider">Apresiasi Tertinggi</h3>
             <p class="max-w-3xl mx-auto leading-relaxed italic mb-4">"Kesuksesan sebuah acara tidak datang dari satu orang, melainkan dari kerja keras dan dukungan banyak pihak. Sportivitas adalah kunci, kebersamaan adalah juara sejati."</p>
             <p class="max-w-3xl mx-auto leading-relaxed">Terima kasih kami ucapkan kepada: <br><span class="font-semibold text-slate-300">Bapak Andre Jangkar, RW05, RW06, RT01, RT02, RT03, RT04, RT05,</span> dan seluruh <span class="font-semibold text-slate-300">Panitia Penyelenggara Dusun Banjaranyar Desa Gempolan.</span></p>
-            <div id="authContainer" class="mt-6">
+            <div id="authContainer" class="mt-6 flex justify-center items-center gap-4">
                 <button id="loginBtn" class="text-slate-400 hover:text-amber-500 underline">Admin Login</button>
             </div>
         </footer>
     </div>
 
-    <!-- Modal Detail & Edit Skor -->
+    <!-- Modals -->
     <div id="scoreModal" class="modal fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4 hidden z-40">
         <div class="bg-slate-800 rounded-xl shadow-lg w-full max-w-md border border-slate-700">
-            <div class="p-4 border-b border-slate-700 flex justify-between items-center">
+             <div class="p-4 border-b border-slate-700 flex justify-between items-center">
                 <h3 id="modalTitle" class="text-xl font-bold text-amber-400">Detail Pertandingan</h3>
                 <button id="closeScoreModalBtn" class="text-slate-400 hover:text-white text-3xl leading-none">&times;</button>
             </div>
@@ -214,6 +223,7 @@
                     <div id="modalSetScores" class="space-y-2"></div>
                 </div>
                 <div id="scoreEdit" class="hidden">
+                    <div id="editMatchTeams" class="text-center mb-4"></div>
                     <p class="text-sm text-slate-400 mb-4 text-center">Masukkan skor per set. Skor akhir akan dihitung otomatis. Biarkan kosong jika set tidak dimainkan.</p>
                     <div class="space-y-3">
                         <div id="editSetInputs"></div>
@@ -224,8 +234,6 @@
             <div id="modalFooter" class="p-4 border-t border-slate-700 text-right"></div>
         </div>
     </div>
-
-    <!-- Modal Login -->
     <div id="loginModal" class="modal fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4 hidden z-50">
         <div class="bg-slate-800 rounded-xl shadow-lg w-full max-w-sm border border-slate-700">
             <div class="p-4 border-b border-slate-700 flex justify-between items-center">
@@ -234,8 +242,8 @@
             </div>
             <form id="loginForm" class="p-6">
                 <div class="mb-4">
-                    <label for="username" class="block text-slate-400 mb-2">Username</label>
-                    <input type="text" id="username" class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-amber-500" required>
+                    <label for="email" class="block text-slate-400 mb-2">Email</label>
+                    <input type="email" id="email" class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-amber-500" required>
                 </div>
                 <div class="mb-6">
                     <label for="password" class="block text-slate-400 mb-2">Password</label>
@@ -246,15 +254,50 @@
             </form>
         </div>
     </div>
+    <div id="confirmModal" class="modal fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4 hidden z-50">
+        <div class="bg-slate-800 rounded-xl shadow-lg w-full max-w-sm border border-slate-700">
+            <div class="p-6 text-center">
+                <h3 class="text-xl font-bold text-amber-400 mb-4">Konfirmasi</h3>
+                <p class="text-slate-300 mb-6">Apakah Anda yakin ingin mereset semua skor? Tindakan ini tidak dapat diurungkan.</p>
+                <div class="flex justify-center gap-4">
+                     <button id="confirmCancelBtn" class="bg-slate-600 hover:bg-slate-700 text-white font-bold py-2 px-6 rounded-lg transition-colors">Batal</button>
+                     <button id="confirmOkBtn" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-6 rounded-lg transition-colors">Reset</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    <!-- Firebase SDK -->
+    <script type="module">
+        // Import functions from the Firebase SDKs
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-auth.js";
+        import { getFirestore, doc, setDoc, onSnapshot, getDoc } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore.js";
+
+        // Your web app's Firebase configuration from your Firebase project
+        const firebaseConfig = {
+            apiKey: "AIzaSyBEqlI_QBWBWKGmtEtGvdrDcF1lX9wV_5s",
+            authDomain: "turnamen-voli-jangkar-laut.firebaseapp.com",
+            projectId: "turnamen-voli-jangkar-laut",
+            storageBucket: "turnamen-voli-jangkar-laut.appspot.com",
+            messagingSenderId: "621934258244",
+            appId: "1:621934258244:web:1da5d205926d18d2727411",
+            measurementId: "G-58G5CR0047"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
         let IS_ADMIN = false;
-        let TEAMS, MATCHES, KNOCKOUT_MATCHES;
+        let data = {}; // This will hold all our live data from Firebase
+        let calculatedKnockoutData = {}; // This will hold the calculated knockout matches
 
-        // Data Default
+        const loadingOverlay = document.getElementById('loadingOverlay');
+        
         const defaultData = {
-             teams: {
+            teams: {
                 'RCH 1': { name: 'RCH 1', group: 'B' }, 'RT 04 KELABANG GENI': { name: 'RT 04 KELABANG GENI', group: 'B' },
                 'RT 02/03 KHONG GUAN': { name: 'RT 02/03 KHONG GUAN', group: 'B' }, 'RCH 2': { name: 'RCH 2', group: 'A' },
                 'RT 01 TELETUBBIES': { name: 'RT 01 TELETUBBIES', group: 'A' }, 'RT 05 SINGO YUDHA': { name: 'RT 05 SINGO YUDHA', group: 'A' },
@@ -273,50 +316,74 @@
             }
         };
 
-        function loadData() {
-            const storedData = localStorage.getItem('turnamenVoliData');
-            if (storedData) {
-                const parsedData = JSON.parse(storedData);
-                TEAMS = parsedData.teams;
-                MATCHES = parsedData.matches;
-                KNOCKOUT_MATCHES = parsedData.knockoutMatches;
-            } else {
-                TEAMS = defaultData.teams;
-                MATCHES = defaultData.matches;
-                KNOCKOUT_MATCHES = defaultData.knockoutMatches;
-            }
-        }
-
-        function saveData() {
-            const dataToStore = { teams: TEAMS, matches: MATCHES, knockoutMatches: KNOCKOUT_MATCHES };
-            localStorage.setItem('turnamenVoliData', JSON.stringify(dataToStore));
-        }
+        // Main data listener from Firestore
+        const dataDocRef = doc(db, "turnamen", "dataVoli");
         
-        function updateAll() {
-            calculateKlasemen();
-            updateKlasemenDOM();
-            updateGugurDOM();
-            renderJadwal();
+        async function initializeData() {
+            const docSnap = await getDoc(dataDocRef);
+            if (!docSnap.exists()) {
+                console.log("Document does not exist. Creating with default data...");
+                try {
+                    await setDoc(dataDocRef, defaultData);
+                    console.log("Default data successfully written to Firestore.");
+                } catch (error) {
+                    console.error("Error writing default data: ", error);
+                }
+            }
+            // Attach the real-time listener after ensuring data exists
+            onSnapshot(dataDocRef, (snapshot) => {
+                if (snapshot.exists()) {
+                    data = snapshot.data();
+                    console.log("Data received from Firebase:", data);
+                    updateAllUI(data);
+                }
+                loadingOverlay.classList.add('hidden');
+            }, (error) => {
+                 console.error("Error fetching data from Firestore: ", error);
+                 loadingOverlay.classList.add('hidden');
+            });
         }
 
-        function calculateKlasemen() {
-            Object.values(TEAMS).forEach(t => { t.m=0; t.w=0; t.l=0; t.sm=0; t.sk=0; t.poin=0; });
-            MATCHES.forEach(match => {
+
+        function updateAllUI(currentData) {
+            if (!currentData || !currentData.teams) {
+                console.warn("Data is empty or invalid. Skipping UI update.");
+                return;
+            }
+            const calculatedData = calculateKlasemen(currentData);
+            updateKlasemenDOM(calculatedData);
+            updateGugurDOM(calculatedData);
+            renderJadwal(currentData.matches);
+        }
+
+        // Calculation functions (pure functions, no side effects)
+        function calculateKlasemen(currentData) {
+            let processedData = JSON.parse(JSON.stringify(currentData)); // Deep copy
+            Object.values(processedData.teams).forEach(t => { t.m=0; t.w=0; t.l=0; t.sm=0; t.sk=0; t.poin=0; });
+            processedData.matches.forEach(match => {
                 if (match.finalScore) {
                     const s1 = match.finalScore.s1; const s2 = match.finalScore.s2;
-                    const team1 = TEAMS[match.team1]; const team2 = TEAMS[match.team2];
+                    const team1 = processedData.teams[match.team1]; const team2 = processedData.teams[match.team2];
                     if (!team1 || !team2) return;
-                    team1.m++; team2.m++; 
-                    match.setScores.forEach(set => { team1.sm += set.s1; team2.sm += set.s2; team1.sk += set.s2; team2.sk += set.s1; });
+                    team1.m++; 
+                    team2.m++; 
+                    
+                    team1.sm += s1;
+                    team2.sm += s2;
+                    team1.sk += s2;
+                    team2.sk += s1;
+
                     if (s1 > s2) { team1.w++; team2.l++; if (s1 === 3 && (s2 < 2)) team1.poin += 3; else if (s1 === 3 && s2 === 2) { team1.poin += 2; team2.poin += 1; } } 
                     else { team2.w++; team1.l++; if (s2 === 3 && (s1 < 2)) team2.poin += 3; else if (s2 === 3 && s1 === 2) { team2.poin += 2; team1.poin += 1; } }
                 }
             });
+            return processedData;
         }
 
-        function updateKlasemenDOM() {
-            const groupA = Object.values(TEAMS).filter(t => t.group === 'A');
-            const groupB = Object.values(TEAMS).filter(t => t.group === 'B');
+        // UI Update functions
+        function updateKlasemenDOM({ teams }) {
+            const groupA = Object.values(teams).filter(t => t.group === 'A');
+            const groupB = Object.values(teams).filter(t => t.group === 'B');
             const sortRule = (a, b) => {
                 if (b.poin !== a.poin) return b.poin - a.poin; if (b.w !== a.w) return b.w - a.w;
                 const ratioB = b.sk === 0 ? (b.sm > 0 ? Infinity : 0) : b.sm / b.sk; const ratioA = a.sk === 0 ? (a.sm > 0 ? Infinity : 0) : a.sm / a.sk;
@@ -328,38 +395,155 @@
             document.getElementById('klasemen-grup-b').innerHTML = groupB.map(renderRow).join('');
         }
 
-        function updateGugurDOM() {
-            const allGroupMatchesPlayed = MATCHES.every(m => m.finalScore !== null);
-            if (!allGroupMatchesPlayed) return;
-            const groupA = Object.values(TEAMS).filter(t => t.group === 'A'); const groupB = Object.values(TEAMS).filter(t => t.group === 'B');
-            const sortRule = (a, b) => { if (b.poin !== a.poin) return b.poin - a.poin; if (b.w !== a.w) return b.w - a.w; const rB = b.sk === 0 ? (b.sm > 0 ? Infinity : 0) : b.sm / b.sk; const rA = a.sk === 0 ? (a.sm > 0 ? Infinity : 0) : a.sm / a.sk; if(rB !== rA) return rB - rA; return b.sm - a.sm; };
-            groupA.sort(sortRule); groupB.sort(sortRule);
-            if (groupA.length < 2 || groupB.length < 2) return;
-            const juaraA = groupA[0].name, runnerUpA = groupA[1].name, juaraB = groupB[0].name, runnerUpB = groupB[1].name;
-            KNOCKOUT_MATCHES.sf1.team1 = juaraA; KNOCKOUT_MATCHES.sf1.team2 = runnerUpB; KNOCKOUT_MATCHES.sf2.team1 = juaraB; KNOCKOUT_MATCHES.sf2.team2 = runnerUpA;
+        function updateGugurDOM({ teams, matches, knockoutMatches }) {
+            const allGroupMatchesPlayed = matches.every(m => m.finalScore !== null);
+            let liveKnockoutMatches = JSON.parse(JSON.stringify(knockoutMatches));
+
+            if (allGroupMatchesPlayed) {
+                const groupA = Object.values(teams).filter(t => t.group === 'A');
+                const groupB = Object.values(teams).filter(t => t.group === 'B');
+                const sortRule = (a, b) => { if (b.poin !== a.poin) return b.poin - a.poin; if (b.w !== a.w) return b.w - a.w; const rB = b.sk === 0 ? (b.sm > 0 ? Infinity : 0) : b.sm / b.sk; const rA = a.sk === 0 ? (a.sm > 0 ? Infinity : 0) : a.sm / a.sk; if(rB !== rA) return rB - rA; return b.sm - a.sm; };
+                groupA.sort(sortRule);
+                groupB.sort(sortRule);
+                if (groupA.length >= 2 && groupB.length >= 2) {
+                    const juaraA = groupA[0].name, runnerUpA = groupA[1].name, juaraB = groupB[0].name, runnerUpB = groupB[1].name;
+                    liveKnockoutMatches.sf1.team1 = juaraA;
+                    liveKnockoutMatches.sf1.team2 = runnerUpB;
+                    liveKnockoutMatches.sf2.team1 = juaraB;
+                    liveKnockoutMatches.sf2.team2 = runnerUpA;
+                }
+            }
+            
             const getWinnerLoser = (match) => { if (!match || !match.finalScore) return { winner: null, loser: null }; return match.finalScore.s1 > match.finalScore.s2 ? { winner: match.team1, loser: match.team2 } : { winner: match.team2, loser: match.team1 }; };
-            const sf1Result = getWinnerLoser(KNOCKOUT_MATCHES.sf1); const sf2Result = getWinnerLoser(KNOCKOUT_MATCHES.sf2);
-            KNOCKOUT_MATCHES.final.team1 = sf1Result.winner; KNOCKOUT_MATCHES.final.team2 = sf2Result.winner; KNOCKOUT_MATCHES.thirdPlace.team1 = sf1Result.loser; KNOCKOUT_MATCHES.thirdPlace.team2 = sf2Result.loser;
-            const updateUI = (key, t1El, s1El, t2El, s2El) => { const match = KNOCKOUT_MATCHES[key]; t1El.textContent = match.team1 || '-'; t2El.textContent = match.team2 || '-'; if (match.finalScore) { s1El.textContent = match.finalScore.s1; s2El.textContent = match.finalScore.s2; const result = getWinnerLoser(match); t1El.classList.toggle('winner', result.winner === match.team1); t2El.classList.toggle('winner', result.winner === match.team2); } else { s1El.textContent = ''; s2El.textContent = ''; t1El.classList.remove('winner'); t2El.classList.remove('winner'); } };
-            updateUI('sf1', document.getElementById('sf1-tim1'), document.getElementById('sf1-score1'), document.getElementById('sf1-tim2'), document.getElementById('sf1-score2'));
-            updateUI('sf2', document.getElementById('sf2-tim1'), document.getElementById('sf2-score1'), document.getElementById('sf2-tim2'), document.getElementById('sf2-score2'));
-            updateUI('thirdPlace', document.getElementById('p3-tim1'), document.getElementById('p3-score1'), document.getElementById('p3-tim2'), document.getElementById('p3-score2'));
-            updateUI('final', document.getElementById('final-tim1'), document.getElementById('final-score1'), document.getElementById('final-tim2'), document.getElementById('final-score2'));
-            const finalResult = getWinnerLoser(KNOCKOUT_MATCHES.final); const thirdPlaceResult = getWinnerLoser(KNOCKOUT_MATCHES.thirdPlace);
-            if(finalResult.winner && thirdPlaceResult.winner){ document.getElementById('juara1-name').textContent = finalResult.winner; document.getElementById('juara2-name').textContent = finalResult.loser; document.getElementById('juara3-name').textContent = thirdPlaceResult.winner; document.getElementById('hasilAkhir').classList.remove('hidden'); } 
-            else { document.getElementById('hasilAkhir').classList.add('hidden'); }
+            const sf1Result = getWinnerLoser(liveKnockoutMatches.sf1);
+            const sf2Result = getWinnerLoser(liveKnockoutMatches.sf2);
+            liveKnockoutMatches.final.team1 = sf1Result.winner;
+            liveKnockoutMatches.final.team2 = sf2Result.winner;
+            liveKnockoutMatches.thirdPlace.team1 = sf1Result.loser;
+            liveKnockoutMatches.thirdPlace.team2 = sf2Result.loser;
+
+            calculatedKnockoutData = liveKnockoutMatches;
+
+            const updateUI = (key, t1El, s1El, t2El, s2El, t1Placeholder, t2Placeholder) => {
+                const match = liveKnockoutMatches[key];
+                t1El.textContent = match.team1 || t1Placeholder;
+                t2El.textContent = match.team2 || t2Placeholder;
+                if (match.finalScore) {
+                    s1El.textContent = match.finalScore.s1;
+                    s2El.textContent = match.finalScore.s2;
+                    const result = getWinnerLoser(match);
+                    t1El.classList.toggle('winner', result.winner === match.team1);
+                    t2El.classList.toggle('winner', result.winner === match.team2);
+                } else {
+                    s1El.textContent = '-';
+                    s2El.textContent = '-';
+                    t1El.classList.remove('winner');
+                    t2El.classList.remove('winner');
+                }
+            };
+
+            updateUI('sf1', document.getElementById('sf1-tim1'), document.getElementById('sf1-score1'), document.getElementById('sf1-tim2'), document.getElementById('sf1-score2'), 'Juara Grup A', 'Runner-up Grup B');
+            updateUI('sf2', document.getElementById('sf2-tim1'), document.getElementById('sf2-score1'), document.getElementById('sf2-tim2'), document.getElementById('sf2-score2'), 'Juara Grup B', 'Runner-up Grup A');
+            updateUI('thirdPlace', document.getElementById('p3-tim1'), document.getElementById('p3-score1'), document.getElementById('p3-tim2'), document.getElementById('p3-score2'), 'Kalah SF 1', 'Kalah SF 2');
+            updateUI('final', document.getElementById('final-tim1'), document.getElementById('final-score1'), document.getElementById('final-tim2'), document.getElementById('final-score2'), 'Pemenang SF 1', 'Pemenang SF 2');
+
+            const finalResult = getWinnerLoser(liveKnockoutMatches.final);
+            const thirdPlaceResult = getWinnerLoser(liveKnockoutMatches.thirdPlace);
+
+            if (finalResult.winner && thirdPlaceResult.winner) {
+                document.getElementById('juara1-name').textContent = finalResult.winner;
+                document.getElementById('juara2-name').textContent = finalResult.loser;
+                document.getElementById('juara3-name').textContent = thirdPlaceResult.winner;
+                document.getElementById('hasilAkhir').classList.remove('hidden');
+            } else {
+                document.getElementById('hasilAkhir').classList.add('hidden');
+            }
         }
 
-        function renderJadwal() {
-            const jadwalBody = document.querySelector('#jadwal-table tbody'); let currentDay = '';
-            jadwalBody.innerHTML = MATCHES.map((match) => {
-                let dayRow = ''; if (match.date !== currentDay) { currentDay = match.date; dayRow = `<tr class="bg-slate-900/40 pointer-events-none"><td colspan="3" class="px-2 sm:px-4 py-2 text-sm font-semibold text-slate-400 tracking-wider">${match.date}</td></tr>`; }
+        function renderJadwal(matchesData) {
+            const jadwalBody = document.querySelector('#jadwal-table tbody');
+            let currentDay = '';
+            jadwalBody.innerHTML = matchesData.map((match) => {
+                let dayRow = '';
+                if (match.date !== currentDay) {
+                    currentDay = match.date;
+                    dayRow = `<tr class="bg-slate-900/40 pointer-events-none"><td colspan="4" class="px-2 sm:px-4 py-2 text-sm font-semibold text-slate-400 tracking-wider">${match.date}</td></tr>`;
+                }
                 const grupClass = match.group === 'A' ? 'bg-amber-800 text-amber-200' : 'bg-blue-800 text-blue-200';
-                return dayRow + `<tr class="border-b border-slate-700 hover:bg-slate-700/50 cursor-pointer" data-match-id="${match.id}" data-match-type="group"><td class="px-2 sm:px-4 py-4 text-sm">${match.time}</td><td class="px-2 sm:px-4 py-4"><span class="${grupClass} text-xs font-medium px-2 py-1 rounded-full">Grup ${match.group}</span></td><td class="px-2 sm:px-4 py-4 font-medium text-center text-sm sm:text-base"><div class="flex flex-col sm:flex-row sm:items-center sm:justify-center sm:space-x-2 md:space-x-4"><span class="sm:flex-1 sm:text-right">${match.team1}</span><span class="text-slate-500 text-xs py-1 sm:py-0">vs</span><span class="sm:flex-1 sm:text-left">${match.team2}</span></div></td></tr>`;
+                
+                const scoreHtml = match.finalScore 
+                    ? `<span class="font-bold ${match.finalScore.s1 > match.finalScore.s2 ? 'text-amber-400' : ''}">${match.finalScore.s1}</span> : <span class="font-bold ${match.finalScore.s2 > match.finalScore.s1 ? 'text-amber-400' : ''}">${match.finalScore.s2}</span>`
+                    : `- : -`;
+
+                return dayRow + `<tr class="border-b border-slate-700 hover:bg-slate-700/50 cursor-pointer" data-match-id="${match.id}" data-match-type="group">
+                    <td class="px-2 sm:px-4 py-4 text-sm">${match.time}</td>
+                    <td class="px-2 sm:px-4 py-4"><span class="${grupClass} text-xs font-medium px-2 py-1 rounded-full">Grup ${match.group}</span></td>
+                    <td class="px-2 sm:px-4 py-4 font-medium text-center text-sm sm:text-base">
+                        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-center sm:space-x-2 md:space-x-4">
+                            <span class="sm:flex-1 sm:text-right">${match.team1}</span>
+                            <span class="text-slate-500 text-xs py-1 sm:py-0">vs</span>
+                            <span class="sm:flex-1 sm:text-left">${match.team2}</span>
+                        </div>
+                    </td>
+                    <td class="px-2 sm:px-4 py-4 text-center font-mono text-lg tracking-wider">${scoreHtml}</td>
+                </tr>`;
             }).join('');
         }
 
-        // --- Logika Modal ---
+        // --- Auth Logic ---
+        const loginModal = document.getElementById('loginModal');
+        const authContainer = document.getElementById('authContainer');
+        const confirmModal = document.getElementById('confirmModal');
+        const confirmOkBtn = document.getElementById('confirmOkBtn');
+        const confirmCancelBtn = document.getElementById('confirmCancelBtn');
+
+        onAuthStateChanged(auth, user => {
+            if (user) {
+                IS_ADMIN = true;
+                authContainer.innerHTML = `
+                    <button id="resetScoresBtn" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg text-sm">Reset Semua Skor</button>
+                    <button id="logoutBtn" class="text-slate-400 hover:text-amber-500 underline">Logout</button>
+                `;
+                document.getElementById('logoutBtn').addEventListener('click', () => signOut(auth));
+                document.getElementById('resetScoresBtn').addEventListener('click', () => {
+                    confirmModal.classList.remove('hidden');
+                });
+            } else {
+                IS_ADMIN = false;
+                authContainer.innerHTML = `<button id="loginBtn" class="text-slate-400 hover:text-amber-500 underline">Admin Login</button>`;
+                document.getElementById('loginBtn').addEventListener('click', () => loginModal.classList.remove('hidden'));
+            }
+        });
+
+        confirmCancelBtn.addEventListener('click', () => {
+            confirmModal.classList.add('hidden');
+        });
+
+        confirmOkBtn.addEventListener('click', async () => {
+            confirmModal.classList.add('hidden');
+            loadingOverlay.classList.remove('hidden');
+            try {
+                await setDoc(dataDocRef, defaultData);
+                console.log("All scores have been reset.");
+            } catch (error) {
+                console.error("Error resetting scores: ", error);
+            }
+            // Loading overlay will be hidden by the onSnapshot listener
+        });
+
+        document.getElementById('loginForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const loginError = document.getElementById('loginError');
+            
+            signInWithEmailAndPassword(auth, email, password)
+                .then(() => { loginModal.classList.add('hidden'); loginError.textContent = ''; })
+                .catch(error => { loginError.textContent = 'Email atau password salah.'; });
+        });
+        document.getElementById('closeLoginModalBtn').addEventListener('click', () => loginModal.classList.add('hidden'));
+
+        // --- Modal Logic ---
         const scoreModal = document.getElementById('scoreModal');
         function openScoreModal(matchData, matchKey, matchType) {
             if (!matchData || (!matchData.team1 && matchType !== 'knockout')) return;
@@ -381,10 +565,18 @@
             }
             scoreModal.classList.remove('hidden');
         }
-
+        
         function showEditView(matchData, matchKey, matchType) {
             document.getElementById('modalTitle').textContent = 'Edit Skor';
             document.getElementById('scoreView').classList.add('hidden');
+            
+            const editMatchTeamsContainer = document.getElementById('editMatchTeams');
+            editMatchTeamsContainer.innerHTML = `
+                <p class="text-lg font-semibold text-slate-300">${matchData.team1}</p>
+                <p class="text-sm text-slate-500 my-1">vs</p>
+                <p class="text-lg font-semibold text-slate-300">${matchData.team2}</p>
+            `;
+
             const editContainer = document.getElementById('scoreEdit');
             const inputsContainer = document.getElementById('editSetInputs');
             inputsContainer.innerHTML = '';
@@ -395,65 +587,126 @@
             editContainer.classList.remove('hidden');
             const footer = document.getElementById('modalFooter'); footer.innerHTML = '';
             const saveBtn = document.createElement('button'); saveBtn.textContent = 'Simpan'; saveBtn.className = 'bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-lg';
-            saveBtn.onclick = () => saveScores(matchData, matchKey, matchType); footer.appendChild(saveBtn);
+            saveBtn.onclick = () => saveScores(matchKey, matchType); footer.appendChild(saveBtn);
             const cancelBtn = document.createElement('button'); cancelBtn.textContent = 'Batal'; cancelBtn.className = 'mr-2 text-slate-400 hover:text-white';
             cancelBtn.onclick = () => openScoreModal(matchData, matchKey, matchType); footer.prepend(cancelBtn);
         }
 
-        function saveScores(matchData, matchKey, matchType) {
+        async function saveScores(matchKey, matchType) {
+            let updatedData = JSON.parse(JSON.stringify(data)); // Deep copy live data
+            let matchData;
+            if (matchType === 'group') {
+                matchData = updatedData.matches.find(m => m.id === matchKey);
+            } else {
+                matchData = updatedData.knockoutMatches[matchKey];
+            }
+
             const setInputs = document.querySelectorAll('#editSetInputs .set-score');
-            let newSetScores = []; let finalScore = { s1: 0, s2: 0 };
+            let newSetScores = []; 
+            let finalScore = { s1: 0, s2: 0 };
+            const errorEl = document.getElementById('editError');
+            errorEl.textContent = ''; // Clear previous errors
+            
             for(let i = 0; i < 5; i++) {
-                const s1Input = setInputs[i*2]; const s2Input = setInputs[i*2+1];
-                const s1 = s1Input.value.trim(); const s2 = s2Input.value.trim();
+                const s1Input = setInputs[i*2]; 
+                const s2Input = setInputs[i*2+1];
+                const s1 = s1Input.value.trim(); 
+                const s2 = s2Input.value.trim();
+
+                if (finalScore.s1 === 3 || finalScore.s2 === 3) {
+                    if (s1 !== '' || s2 !== '') {
+                         errorEl.textContent = `Hanya isi skor hingga Set ${newSetScores.length}.`; 
+                         return;
+                    }
+                    continue;
+                }
+                
                 if (s1 !== '' && s2 !== '') {
-                    newSetScores.push({ s1: parseInt(s1), s2: parseInt(s2) });
-                    if (parseInt(s1) > parseInt(s2)) finalScore.s1++; else finalScore.s2++;
+                    const score1 = parseInt(s1);
+                    const score2 = parseInt(s2);
+
+                    // Volleyball point validation
+                    const isFifthSet = i === 4;
+                    const winningScore = isFifthSet ? 15 : 25;
+                    
+                    if (score1 === score2) {
+                        errorEl.textContent = `Skor Set ${i+1} tidak bisa seri.`;
+                        return;
+                    }
+
+                    const winnerScore = Math.max(score1, score2);
+                    const loserScore = Math.min(score1, score2);
+
+                    if (winnerScore < winningScore) {
+                         errorEl.textContent = `Skor pemenang Set ${i+1} minimal ${winningScore}.`;
+                         return;
+                    }
+
+                    if (winnerScore > winningScore && (winnerScore - loserScore !== 2)) {
+                        errorEl.textContent = `Skor deuce di Set ${i+1} harus selisih 2.`;
+                        return;
+                    }
+                    
+                    if (winnerScore === winningScore && (winnerScore - loserScore < 2)) {
+                         errorEl.textContent = `Skor pemenang Set ${i+1} harus selisih 2.`;
+                         return;
+                    }
+
+                    newSetScores.push({ s1: score1, s2: score2 });
+                    if (score1 > score2) {
+                        finalScore.s1++;
+                    } else {
+                        finalScore.s2++;
+                    }
+                } else if (s1 !== '' || s2 !== '') {
+                    errorEl.textContent = `Lengkapi skor untuk Set ${i+1}.`;
+                    return;
                 }
             }
-            if ((finalScore.s1 > 3 || finalScore.s2 > 3) || (finalScore.s1 + finalScore.s2 > 5)) { 
-                 document.getElementById('editError').textContent = 'Skor akhir tidak valid.'; return;
-            } else if (newSetScores.length === 0) {
-                matchData.finalScore = null; matchData.setScores = [];
-            } else {
-                matchData.finalScore = finalScore; matchData.setScores = newSetScores;
+
+            // Final validation
+            if (newSetScores.length > 0 && finalScore.s1 !== 3 && finalScore.s2 !== 3) {
+                errorEl.textContent = 'Pemenang harus mencapai 3 set.';
+                return;
             }
-            saveData(); updateAll(); closeScoreModal();
+
+            if (newSetScores.length === 0) {
+                matchData.finalScore = null;
+                matchData.setScores = [];
+            } else {
+                matchData.finalScore = finalScore;
+                matchData.setScores = newSetScores;
+            }
+
+            // Save the entire updated data object back to Firebase
+            try {
+                await setDoc(dataDocRef, updatedData);
+                console.log("Data successfully saved to Firebase!");
+                closeScoreModal();
+            } catch (error) {
+                console.error("Error writing document: ", error);
+                errorEl.textContent = 'Gagal menyimpan data.';
+            }
         }
 
         function closeScoreModal() { scoreModal.classList.add('hidden'); }
-        document.querySelector('#jadwal-table tbody').addEventListener('click', (e) => { const row = e.target.closest('tr[data-match-id]'); if (row) { const matchId = parseInt(row.dataset.matchId, 10); const match = MATCHES.find(m => m.id === matchId); openScoreModal(match, matchId, 'group'); } });
-        document.getElementById('gugurContent').addEventListener('click', (e) => { const box = e.target.closest('[data-match-key]'); if(box){ const key = box.dataset.matchKey; openScoreModal(KNOCKOUT_MATCHES[key], key, 'knockout'); } });
-        document.getElementById('closeScoreModalBtn').addEventListener('click', closeScoreModal);
-
-        // --- Logika Login ---
-        const loginModal = document.getElementById('loginModal');
-        function checkAdminStatus() {
-            if (sessionStorage.getItem('isAdmin') === 'true') {
-                IS_ADMIN = true;
-                document.getElementById('authContainer').innerHTML = '<button id="logoutBtn" class="text-slate-400 hover:text-amber-500 underline">Logout</button>';
-                document.getElementById('logoutBtn').addEventListener('click', () => { sessionStorage.removeItem('isAdmin'); window.location.reload(); });
-            } else {
-                document.getElementById('loginBtn').addEventListener('click', () => loginModal.classList.remove('hidden'));
-            }
-        }
-        document.getElementById('closeLoginModalBtn').addEventListener('click', () => loginModal.classList.add('hidden'));
-        document.getElementById('loginForm').addEventListener('submit', (e) => {
-            e.preventDefault();
-            const user = document.getElementById('username').value; const pass = document.getElementById('password').value;
-            if (user === 'admin' && pass === 'password') { sessionStorage.setItem('isAdmin', 'true'); window.location.reload(); } 
-            else { document.getElementById('loginError').textContent = 'Username atau password salah.'; }
+        document.querySelector('#jadwal-table tbody').addEventListener('click', (e) => { const row = e.target.closest('tr[data-match-id]'); if (row && data.matches) { const matchId = parseInt(row.dataset.matchId, 10); const match = data.matches.find(m => m.id === matchId); openScoreModal(match, matchId, 'group'); } });
+        document.getElementById('gugurContent').addEventListener('click', (e) => { 
+            const box = e.target.closest('[data-match-key]'); 
+            if(box && calculatedKnockoutData){ 
+                const key = box.dataset.matchKey; 
+                openScoreModal(calculatedKnockoutData[key], key, 'knockout'); 
+            } 
         });
+        document.getElementById('closeScoreModalBtn').addEventListener('click', closeScoreModal);
 
         // --- Navigasi Tab ---
         const tabs = [{ btn: document.getElementById('jadwalBtn'), content: document.getElementById('jadwalContent') }, { btn: document.getElementById('klasemenBtn'), content: document.getElementById('klasemenContent') }, { btn: document.getElementById('gugurBtn'), content: document.getElementById('gugurContent') }];
         tabs.forEach(tab => { tab.btn?.addEventListener('click', () => { tabs.forEach(t => { t.content?.classList.add('hidden'); t.btn?.classList.remove('tab-active'); t.btn?.classList.add('text-slate-400','border-transparent') }); tab.content?.classList.remove('hidden'); tab.btn?.classList.add('tab-active'); }); });
 
-        // --- PANGGILAN AWAL ---
-        loadData();
-        updateAll();
-        checkAdminStatus();
-    });
+        // Initialize App
+        initializeData();
+
     </script>
 </body>
 </html>
