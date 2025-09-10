@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jadwal & Klasemen Turnamen Voli</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .tab-active {
+            border-color: #f59e0b; /* amber-500 */
+            color: #f59e0b;
+            background-color: rgba(245, 158, 11, 0.1);
+        }
+        .modal {
+            transition: opacity 0.2s ease-in-out;
+        }
+        .winner {
+            color: #facc15; /* yellow-400 */
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-200 antialiased">
+
+    <!-- Header Gambar Full-Width -->
+    <header>
+        <img src="https://i.ibb.co/C5965GTL/Whats-App-Image-2025-09-10-at-14-36-52.jpg" alt="Logo Turnamen Voli" class="w-full">
+    </header>
+
+    <div class="container mx-auto p-4 sm:p-6 lg:p-8">
+        <!-- Judul Halaman -->
+        <div class="text-center mb-10">
+            <p class="text-slate-400 text-lg">Jadwal Pertandingan & Klasemen Sementara</p>
+        </div>
+
+        <!-- Tombol Menu -->
+        <div class="flex flex-wrap justify-center border-b border-slate-700 mb-8">
+            <button id="jadwalBtn" class="py-3 px-6 text-lg font-semibold border-b-2 transition-colors duration-300 tab-active">Jadwal</button>
+            <button id="klasemenBtn" class="py-3 px-6 text-lg font-semibold border-b-2 border-transparent text-slate-400 hover:text-white transition-colors duration-300">Klasemen</button>
+            <button id="gugurBtn" class="py-3 px-6 text-lg font-semibold border-b-2 border-transparent text-slate-400 hover:text-white transition-colors duration-300">Sistem Gugur</button>
+        </div>
+
+        <main>
+            <!-- Konten Jadwal -->
+            <div id="jadwalContent">
+                <h2 class="text-2xl font-bold mb-6 text-center text-amber-400">Jadwal Pertandingan</h2>
+                <div class="bg-slate-800 rounded-xl shadow-lg overflow-hidden border border-slate-700 max-w-4xl mx-auto">
+                    <table id="jadwal-table" class="w-full text-sm text-left text-slate-300">
+                        <thead class="text-xs text-amber-300 uppercase bg-slate-700/50">
+                            <tr>
+                                <th scope="col" class="px-2 sm:px-4 py-3">Waktu</th>
+                                <th scope="col" class="px-2 sm:px-4 py-3">Grup</th>
+                                <th scope="col" class="px-2 sm:px-4 py-3 text-center">Pertandingan</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+                 <p class="text-center text-slate-400 mt-4 text-sm">Klik pada baris pertandingan untuk melihat detail skor.</p>
+            </div>
+
+            <!-- Konten Klasemen -->
+            <div id="klasemenContent" class="hidden">
+                 <h2 class="text-2xl font-bold mb-6 text-center text-amber-400">Klasemen Sementara</h2>
+                <div class="space-y-8 max-w-4xl mx-auto">
+                    <!-- Klasemen Grup A -->
+                    <div>
+                        <h3 class="text-xl font-semibold mb-4 text-amber-400">Grup A</h3>
+                        <div class="bg-slate-800 rounded-xl shadow-lg border border-slate-700">
+                           <div class="overflow-x-auto">
+                                <table class="w-full text-sm text-left text-slate-300 whitespace-nowrap">
+                                    <thead class="text-xs text-amber-300 uppercase bg-slate-700/50">
+                                        <tr>
+                                            <th scope="col" class="px-4 py-3">Pos</th>
+                                            <th scope="col" class="px-4 py-3">Tim</th>
+                                            <th scope="col" class="px-2 py-3 text-center" title="Main">M</th>
+                                            <th scope="col" class="px-2 py-3 text-center" title="Menang">W</th>
+                                            <th scope="col" class="px-2 py-3 text-center" title="Kalah">L</th>
+                                            <th scope="col" class="px-2 py-3 text-center" title="Set Menang">SM</th>
+                                            <th scope="col" class="px-2 py-3 text-center" title="Set Kalah">SK</th>
+                                            <th scope="col" class="px-4 py-3 text-center" title="Poin">Poin</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="klasemen-grup-a"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Klasemen Grup B -->
+                    <div>
+                        <h3 class="text-xl font-semibold mb-4 text-amber-400">Grup B</h3>
+                        <div class="bg-slate-800 rounded-xl shadow-lg border border-slate-700">
+                           <div class="overflow-x-auto">
+                                <table class="w-full text-sm text-left text-slate-300 whitespace-nowrap">
+                                    <thead class="text-xs text-amber-300 uppercase bg-slate-700/50">
+                                        <tr>
+                                            <th scope="col" class="px-4 py-3">Pos</th>
+                                            <th scope="col" class="px-4 py-3">Tim</th>
+                                            <th scope="col" class="px-2 py-3 text-center" title="Main">M</th>
+                                            <th scope="col" class="px-2 py-3 text-center" title="Menang">W</th>
+                                            <th scope="col" class="px-2 py-3 text-center" title="Kalah">L</th>
+                                            <th scope="col" class="px-2 py-3 text-center" title="Set Menang">SM</th>
+                                            <th scope="col" class="px-2 py-3 text-center" title="Set Kalah">SK</th>
+                                            <th scope="col" class="px-4 py-3 text-center" title="Poin">Poin</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="klasemen-grup-b"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Konten Sistem Gugur -->
+            <div id="gugurContent" class="hidden">
+                <h2 class="text-2xl font-bold mb-10 text-center text-amber-400">Bagan Sistem Gugur</h2>
+                <div class="max-w-5xl mx-auto space-y-12">
+                    <!-- Babak Semi-Final -->
+                    <div>
+                        <h3 class="text-xl font-semibold mb-6 text-center text-amber-400 tracking-wider uppercase">Semi-Final</h3>
+                        <div class="grid md:grid-cols-2 gap-8">
+                            <div class="bg-slate-800 p-5 rounded-xl border border-slate-700 text-center cursor-pointer hover:bg-slate-700/50" data-match-key="sf1">
+                                <div class="text-sm text-slate-400 mb-2">Sabtu, 4 Oktober 2025 - 20.00 WIB</div>
+                                <div id="sf1-tim1" class="font-semibold text-lg">Juara Grup A</div>
+                                <div class="text-slate-400 my-3 text-lg font-mono tracking-wider" id="sf1-score"><span id="sf1-score1"></span> : <span id="sf1-score2"></span></div>
+                                <div id="sf1-tim2" class="font-semibold text-lg">Runner-up Grup B</div>
+                            </div>
+                            <div class="bg-slate-800 p-5 rounded-xl border border-slate-700 text-center cursor-pointer hover:bg-slate-700/50" data-match-key="sf2">
+                                <div class="text-sm text-slate-400 mb-2">Sabtu, 4 Oktober 2025 - 21.00 WIB</div>
+                                <div id="sf2-tim1" class="font-semibold text-lg">Juara Grup B</div>
+                                <div class="text-slate-400 my-3 text-lg font-mono tracking-wider" id="sf2-score"><span id="sf2-score1"></span> : <span id="sf2-score2"></span></div>
+                                <div id="sf2-tim2" class="font-semibold text-lg">Runner-up Grup A</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="grid md:grid-cols-2 gap-8 items-start">
+                        <div>
+                            <h3 class="text-xl font-semibold mb-6 text-center text-amber-500 tracking-wider uppercase">Perebutan Juara 3</h3>
+                            <div class="max-w-md mx-auto bg-slate-800 p-5 rounded-xl border border-amber-600/50 text-center cursor-pointer hover:bg-slate-700/50" data-match-key="thirdPlace">
+                               <div class="text-sm text-slate-400 mb-2">Sabtu, 11 Oktober 2025 - 20.00 WIB</div>
+                               <div id="p3-tim1" class="font-semibold text-lg">Kalah SF 1</div>
+                               <div class="text-slate-400 my-3 text-lg font-mono tracking-wider" id="p3-score"><span id="p3-score1"></span> : <span id="p3-score2"></span></div>
+                               <div id="p3-tim2" class="font-semibold text-lg">Kalah SF 2</div>
+                           </div>
+                       </div>
+                        <div>
+                             <h3 class="text-xl font-semibold mb-6 text-center text-amber-400 tracking-wider uppercase">Final</h3>
+                             <div class="max-w-md mx-auto bg-slate-800 p-5 rounded-xl border-2 border-amber-500 text-center shadow-2xl shadow-amber-500/10 cursor-pointer hover:bg-slate-700/50" data-match-key="final">
+                                <div class="text-sm text-slate-400 mb-2">Sabtu, 11 Oktober 2025 - 21.00 WIB</div>
+                                <div id="final-tim1" class="font-bold text-lg">Pemenang SF 1</div>
+                                <div class="text-amber-400 my-3 text-lg font-mono tracking-wider" id="final-score"><span id="final-score1"></span> : <span id="final-score2"></span></div>
+                                <div id="final-tim2" class="font-bold text-lg">Pemenang SF 2</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="hasilAkhir" class="hidden pt-8">
+                        <h3 class="text-3xl font-bold mb-8 text-center text-amber-300 tracking-wider uppercase">Pemenang Turnamen</h3>
+                        <div class="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto text-center items-end">
+                            <div class="bg-slate-800 p-6 rounded-xl border-2 border-slate-500 order-2 md:order-1">
+                                <div class="text-5xl mb-2">🥈</div>
+                                <div class="text-xl font-bold text-slate-300" id="juara2-name"></div>
+                                <div class="text-lg text-slate-400">Juara 2</div>
+                            </div>
+                            <div class="bg-slate-800 p-8 rounded-xl border-2 border-amber-400 transform md:scale-110 shadow-2xl shadow-amber-500/20 order-1 md:order-2">
+                                <div class="text-6xl mb-2">🏆</div>
+                                <div class="text-2xl font-bold text-amber-300" id="juara1-name"></div>
+                                <div class="text-xl text-amber-400">Juara 1</div>
+                            </div>
+                            <div class="bg-slate-800 p-6 rounded-xl border-2 border-orange-600 order-3 md:order-3">
+                                <div class="text-5xl mb-2">🥉</div>
+                                <div class="text-xl font-bold text-orange-300" id="juara3-name"></div>
+                                <div class="text-lg text-orange-400">Juara 3</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        
+        <footer class="mt-16 pt-8 border-t border-slate-700 text-center text-slate-400">
+            <h3 class="text-xl font-semibold mb-4 text-amber-400 uppercase tracking-wider">Apresiasi Tertinggi</h3>
+            <p class="max-w-3xl mx-auto leading-relaxed italic mb-4">"Kesuksesan sebuah acara tidak datang dari satu orang, melainkan dari kerja keras dan dukungan banyak pihak. Sportivitas adalah kunci, kebersamaan adalah juara sejati."</p>
+            <p class="max-w-3xl mx-auto leading-relaxed">Terima kasih kami ucapkan kepada: <br><span class="font-semibold text-slate-300">Bapak Andre Jangkar, RW05, RW06, RT01, RT02, RT03, RT04, RT05,</span> dan seluruh <span class="font-semibold text-slate-300">Panitia Penyelenggara Dusun Banjaranyar Desa Gempolan.</span></p>
+            <div id="authContainer" class="mt-6">
+                <button id="loginBtn" class="text-slate-400 hover:text-amber-500 underline">Admin Login</button>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Modal Detail & Edit Skor -->
+    <div id="scoreModal" class="modal fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4 hidden z-40">
+        <div class="bg-slate-800 rounded-xl shadow-lg w-full max-w-md border border-slate-700">
+            <div class="p-4 border-b border-slate-700 flex justify-between items-center">
+                <h3 id="modalTitle" class="text-xl font-bold text-amber-400">Detail Pertandingan</h3>
+                <button id="closeScoreModalBtn" class="text-slate-400 hover:text-white text-3xl leading-none">&times;</button>
+            </div>
+            <div class="p-6">
+                <div id="scoreView">
+                    <div class="text-center mb-6">
+                        <div id="modalTeam1" class="font-semibold text-lg"></div>
+                        <div class="my-3 flex justify-center items-center gap-4"><span id="modalFinalScore1" class="text-4xl font-bold text-white"></span><span class="text-2xl text-slate-500">VS</span><span id="modalFinalScore2" class="text-4xl font-bold text-white"></span></div>
+                        <div id="modalTeam2" class="font-semibold text-lg"></div>
+                    </div>
+                    <div id="modalSetScores" class="space-y-2"></div>
+                </div>
+                <div id="scoreEdit" class="hidden">
+                    <p class="text-sm text-slate-400 mb-4 text-center">Masukkan skor per set. Skor akhir akan dihitung otomatis. Biarkan kosong jika set tidak dimainkan.</p>
+                    <div class="space-y-3">
+                        <div id="editSetInputs"></div>
+                        <p id="editError" class="text-red-500 text-sm text-center h-4"></p>
+                    </div>
+                </div>
+            </div>
+            <div id="modalFooter" class="p-4 border-t border-slate-700 text-right"></div>
+        </div>
+    </div>
+
+    <!-- Modal Login -->
+    <div id="loginModal" class="modal fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4 hidden z-50">
+        <div class="bg-slate-800 rounded-xl shadow-lg w-full max-w-sm border border-slate-700">
+            <div class="p-4 border-b border-slate-700 flex justify-between items-center">
+                <h3 class="text-xl font-bold text-amber-400">Admin Login</h3>
+                <button id="closeLoginModalBtn" class="text-slate-400 hover:text-white text-3xl leading-none">&times;</button>
+            </div>
+            <form id="loginForm" class="p-6">
+                <div class="mb-4">
+                    <label for="username" class="block text-slate-400 mb-2">Username</label>
+                    <input type="text" id="username" class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-amber-500" required>
+                </div>
+                <div class="mb-6">
+                    <label for="password" class="block text-slate-400 mb-2">Password</label>
+                    <input type="password" id="password" class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-amber-500" required>
+                </div>
+                <button type="submit" class="w-full bg-amber-500 hover:bg-amber-600 text-slate-900 font-bold py-3 rounded-lg transition-colors duration-300">Login</button>
+                <p id="loginError" class="text-red-500 text-sm text-center mt-4 h-4"></p>
+            </form>
+        </div>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        let IS_ADMIN = false;
+        let TEAMS, MATCHES, KNOCKOUT_MATCHES;
+
+        // Data Default
+        const defaultData = {
+             teams: {
+                'RCH 1': { name: 'RCH 1', group: 'B' }, 'RT 04 KELABANG GENI': { name: 'RT 04 KELABANG GENI', group: 'B' },
+                'RT 02/03 KHONG GUAN': { name: 'RT 02/03 KHONG GUAN', group: 'B' }, 'RCH 2': { name: 'RCH 2', group: 'A' },
+                'RT 01 TELETUBBIES': { name: 'RT 01 TELETUBBIES', group: 'A' }, 'RT 05 SINGO YUDHA': { name: 'RT 05 SINGO YUDHA', group: 'A' },
+            },
+            matches: [
+                { id: 0, date: 'Sabtu, 13 September 2025', time: '20.00 WIB', group: 'B', team1: 'RCH 1', team2: 'RT 04 KELABANG GENI', finalScore: null, setScores: [] },
+                { id: 1, date: 'Sabtu, 13 September 2025', time: '21.00 WIB', group: 'A', team1: 'RCH 2', team2: 'RT 01 TELETUBBIES', finalScore: null, setScores: [] },
+                { id: 2, date: 'Sabtu, 20 September 2025', time: '20.00 WIB', group: 'A', team1: 'RCH 2', team2: 'RT 05 SINGO YUDHA', finalScore: null, setScores: [] },
+                { id: 3, date: 'Sabtu, 20 September 2025', time: '21.00 WIB', group: 'B', team1: 'RT 02/03 KHONG GUAN', team2: 'RCH 1', finalScore: null, setScores: []},
+                { id: 4, date: 'Sabtu, 27 September 2025', time: '20.00 WIB', group: 'A', team1: 'RT 05 SINGO YUDHA', team2: 'RT 01 TELETUBBIES', finalScore: null, setScores: [] },
+                { id: 5, date: 'Sabtu, 27 September 2025', time: '21.00 WIB', group: 'B', team1: 'RT 04 KELABANG GENI', team2: 'RT 02/03 KHONG GUAN', finalScore: null, setScores: [] },
+            ],
+            knockoutMatches: {
+                sf1: { team1: null, team2: null, finalScore: null, setScores: [] }, sf2: { team1: null, team2: null, finalScore: null, setScores: [] },
+                thirdPlace: { team1: null, team2: null, finalScore: null, setScores: [] }, final: { team1: null, team2: null, finalScore: null, setScores: [] }
+            }
+        };
+
+        function loadData() {
+            const storedData = localStorage.getItem('turnamenVoliData');
+            if (storedData) {
+                const parsedData = JSON.parse(storedData);
+                TEAMS = parsedData.teams;
+                MATCHES = parsedData.matches;
+                KNOCKOUT_MATCHES = parsedData.knockoutMatches;
+            } else {
+                TEAMS = defaultData.teams;
+                MATCHES = defaultData.matches;
+                KNOCKOUT_MATCHES = defaultData.knockoutMatches;
+            }
+        }
+
+        function saveData() {
+            const dataToStore = { teams: TEAMS, matches: MATCHES, knockoutMatches: KNOCKOUT_MATCHES };
+            localStorage.setItem('turnamenVoliData', JSON.stringify(dataToStore));
+        }
+        
+        function updateAll() {
+            calculateKlasemen();
+            updateKlasemenDOM();
+            updateGugurDOM();
+            renderJadwal();
+        }
+
+        function calculateKlasemen() {
+            Object.values(TEAMS).forEach(t => { t.m=0; t.w=0; t.l=0; t.sm=0; t.sk=0; t.poin=0; });
+            MATCHES.forEach(match => {
+                if (match.finalScore) {
+                    const s1 = match.finalScore.s1; const s2 = match.finalScore.s2;
+                    const team1 = TEAMS[match.team1]; const team2 = TEAMS[match.team2];
+                    if (!team1 || !team2) return;
+                    team1.m++; team2.m++; 
+                    match.setScores.forEach(set => { team1.sm += set.s1; team2.sm += set.s2; team1.sk += set.s2; team2.sk += set.s1; });
+                    if (s1 > s2) { team1.w++; team2.l++; if (s1 === 3 && (s2 < 2)) team1.poin += 3; else if (s1 === 3 && s2 === 2) { team1.poin += 2; team2.poin += 1; } } 
+                    else { team2.w++; team1.l++; if (s2 === 3 && (s1 < 2)) team2.poin += 3; else if (s2 === 3 && s1 === 2) { team2.poin += 2; team1.poin += 1; } }
+                }
+            });
+        }
+
+        function updateKlasemenDOM() {
+            const groupA = Object.values(TEAMS).filter(t => t.group === 'A');
+            const groupB = Object.values(TEAMS).filter(t => t.group === 'B');
+            const sortRule = (a, b) => {
+                if (b.poin !== a.poin) return b.poin - a.poin; if (b.w !== a.w) return b.w - a.w;
+                const ratioB = b.sk === 0 ? (b.sm > 0 ? Infinity : 0) : b.sm / b.sk; const ratioA = a.sk === 0 ? (a.sm > 0 ? Infinity : 0) : a.sm / a.sk;
+                if(ratioB !== ratioA) return ratioB - ratioA; return b.sm - a.sm;
+            };
+            groupA.sort(sortRule); groupB.sort(sortRule);
+            const renderRow = (t, i) => `<tr class="border-b border-slate-700 hover:bg-slate-700/50"><td class="px-4 py-3 text-center font-medium">${i + 1}</td><td class="px-4 py-3 font-semibold">${t.name}</td><td class="px-2 py-3 text-center">${t.m}</td><td class="px-2 py-3 text-center">${t.w}</td><td class="px-2 py-3 text-center">${t.l}</td><td class="px-2 py-3 text-center">${t.sm}</td><td class="px-2 py-3 text-center">${t.sk}</td><td class="px-4 py-3 font-bold text-center text-white">${t.poin}</td></tr>`;
+            document.getElementById('klasemen-grup-a').innerHTML = groupA.map(renderRow).join('');
+            document.getElementById('klasemen-grup-b').innerHTML = groupB.map(renderRow).join('');
+        }
+
+        function updateGugurDOM() {
+            const allGroupMatchesPlayed = MATCHES.every(m => m.finalScore !== null);
+            if (!allGroupMatchesPlayed) return;
+            const groupA = Object.values(TEAMS).filter(t => t.group === 'A'); const groupB = Object.values(TEAMS).filter(t => t.group === 'B');
+            const sortRule = (a, b) => { if (b.poin !== a.poin) return b.poin - a.poin; if (b.w !== a.w) return b.w - a.w; const rB = b.sk === 0 ? (b.sm > 0 ? Infinity : 0) : b.sm / b.sk; const rA = a.sk === 0 ? (a.sm > 0 ? Infinity : 0) : a.sm / a.sk; if(rB !== rA) return rB - rA; return b.sm - a.sm; };
+            groupA.sort(sortRule); groupB.sort(sortRule);
+            if (groupA.length < 2 || groupB.length < 2) return;
+            const juaraA = groupA[0].name, runnerUpA = groupA[1].name, juaraB = groupB[0].name, runnerUpB = groupB[1].name;
+            KNOCKOUT_MATCHES.sf1.team1 = juaraA; KNOCKOUT_MATCHES.sf1.team2 = runnerUpB; KNOCKOUT_MATCHES.sf2.team1 = juaraB; KNOCKOUT_MATCHES.sf2.team2 = runnerUpA;
+            const getWinnerLoser = (match) => { if (!match || !match.finalScore) return { winner: null, loser: null }; return match.finalScore.s1 > match.finalScore.s2 ? { winner: match.team1, loser: match.team2 } : { winner: match.team2, loser: match.team1 }; };
+            const sf1Result = getWinnerLoser(KNOCKOUT_MATCHES.sf1); const sf2Result = getWinnerLoser(KNOCKOUT_MATCHES.sf2);
+            KNOCKOUT_MATCHES.final.team1 = sf1Result.winner; KNOCKOUT_MATCHES.final.team2 = sf2Result.winner; KNOCKOUT_MATCHES.thirdPlace.team1 = sf1Result.loser; KNOCKOUT_MATCHES.thirdPlace.team2 = sf2Result.loser;
+            const updateUI = (key, t1El, s1El, t2El, s2El) => { const match = KNOCKOUT_MATCHES[key]; t1El.textContent = match.team1 || '-'; t2El.textContent = match.team2 || '-'; if (match.finalScore) { s1El.textContent = match.finalScore.s1; s2El.textContent = match.finalScore.s2; const result = getWinnerLoser(match); t1El.classList.toggle('winner', result.winner === match.team1); t2El.classList.toggle('winner', result.winner === match.team2); } else { s1El.textContent = ''; s2El.textContent = ''; t1El.classList.remove('winner'); t2El.classList.remove('winner'); } };
+            updateUI('sf1', document.getElementById('sf1-tim1'), document.getElementById('sf1-score1'), document.getElementById('sf1-tim2'), document.getElementById('sf1-score2'));
+            updateUI('sf2', document.getElementById('sf2-tim1'), document.getElementById('sf2-score1'), document.getElementById('sf2-tim2'), document.getElementById('sf2-score2'));
+            updateUI('thirdPlace', document.getElementById('p3-tim1'), document.getElementById('p3-score1'), document.getElementById('p3-tim2'), document.getElementById('p3-score2'));
+            updateUI('final', document.getElementById('final-tim1'), document.getElementById('final-score1'), document.getElementById('final-tim2'), document.getElementById('final-score2'));
+            const finalResult = getWinnerLoser(KNOCKOUT_MATCHES.final); const thirdPlaceResult = getWinnerLoser(KNOCKOUT_MATCHES.thirdPlace);
+            if(finalResult.winner && thirdPlaceResult.winner){ document.getElementById('juara1-name').textContent = finalResult.winner; document.getElementById('juara2-name').textContent = finalResult.loser; document.getElementById('juara3-name').textContent = thirdPlaceResult.winner; document.getElementById('hasilAkhir').classList.remove('hidden'); } 
+            else { document.getElementById('hasilAkhir').classList.add('hidden'); }
+        }
+
+        function renderJadwal() {
+            const jadwalBody = document.querySelector('#jadwal-table tbody'); let currentDay = '';
+            jadwalBody.innerHTML = MATCHES.map((match) => {
+                let dayRow = ''; if (match.date !== currentDay) { currentDay = match.date; dayRow = `<tr class="bg-slate-900/40 pointer-events-none"><td colspan="3" class="px-2 sm:px-4 py-2 text-sm font-semibold text-slate-400 tracking-wider">${match.date}</td></tr>`; }
+                const grupClass = match.group === 'A' ? 'bg-amber-800 text-amber-200' : 'bg-blue-800 text-blue-200';
+                return dayRow + `<tr class="border-b border-slate-700 hover:bg-slate-700/50 cursor-pointer" data-match-id="${match.id}" data-match-type="group"><td class="px-2 sm:px-4 py-4 text-sm">${match.time}</td><td class="px-2 sm:px-4 py-4"><span class="${grupClass} text-xs font-medium px-2 py-1 rounded-full">Grup ${match.group}</span></td><td class="px-2 sm:px-4 py-4 font-medium text-center text-sm sm:text-base"><div class="flex flex-col sm:flex-row sm:items-center sm:justify-center sm:space-x-2 md:space-x-4"><span class="sm:flex-1 sm:text-right">${match.team1}</span><span class="text-slate-500 text-xs py-1 sm:py-0">vs</span><span class="sm:flex-1 sm:text-left">${match.team2}</span></div></td></tr>`;
+            }).join('');
+        }
+
+        // --- Logika Modal ---
+        const scoreModal = document.getElementById('scoreModal');
+        function openScoreModal(matchData, matchKey, matchType) {
+            if (!matchData || (!matchData.team1 && matchType !== 'knockout')) return;
+            document.getElementById('modalTitle').textContent = 'Detail Pertandingan';
+            document.getElementById('modalTeam1').textContent = matchData.team1 || 'TBD'; document.getElementById('modalTeam2').textContent = matchData.team2 || 'TBD';
+            const setScoresContainer = document.getElementById('modalSetScores'); setScoresContainer.innerHTML = '';
+            if (matchData.finalScore && matchData.setScores.length > 0) {
+                document.getElementById('modalFinalScore1').textContent = matchData.finalScore.s1; document.getElementById('modalFinalScore2').textContent = matchData.finalScore.s2;
+                matchData.setScores.forEach((set, i) => { setScoresContainer.innerHTML += `<div class="flex justify-between items-center bg-slate-700/50 p-2 rounded-md text-sm"><span class="text-slate-400">Set ${i + 1}</span><span class="font-mono tracking-wider">${set.s1} - ${set.s2}</span></div>`; });
+            } else {
+                document.getElementById('modalFinalScore1').textContent = '-'; document.getElementById('modalFinalScore2').textContent = '-';
+                setScoresContainer.innerHTML = '<p class="text-center text-slate-400 py-4">Skor pertandingan belum tersedia.</p>';
+            }
+            document.getElementById('scoreView').classList.remove('hidden'); document.getElementById('scoreEdit').classList.add('hidden');
+            const footer = document.getElementById('modalFooter'); footer.innerHTML = '';
+            if (IS_ADMIN && matchData.team1 && matchData.team2) {
+                const editBtn = document.createElement('button'); editBtn.textContent = 'Edit Skor'; editBtn.className = 'bg-amber-500 hover:bg-amber-600 text-slate-900 font-bold py-2 px-4 rounded-lg transition-colors';
+                editBtn.onclick = () => showEditView(matchData, matchKey, matchType); footer.appendChild(editBtn);
+            }
+            scoreModal.classList.remove('hidden');
+        }
+
+        function showEditView(matchData, matchKey, matchType) {
+            document.getElementById('modalTitle').textContent = 'Edit Skor';
+            document.getElementById('scoreView').classList.add('hidden');
+            const editContainer = document.getElementById('scoreEdit');
+            const inputsContainer = document.getElementById('editSetInputs');
+            inputsContainer.innerHTML = '';
+            for (let i = 0; i < 5; i++) {
+                const currentSet = matchData.setScores[i] || {s1: '', s2: ''};
+                inputsContainer.innerHTML += `<div class="flex items-center gap-3"><label class="w-1/4 text-slate-400">Set ${i+1}</label><input type="number" class="set-score w-1/4 bg-slate-700 border border-slate-600 rounded px-2 py-1" data-team="1" value="${currentSet.s1}" min="0"><span class="text-slate-500">-</span><input type="number" class="set-score w-1/4 bg-slate-700 border border-slate-600 rounded px-2 py-1" data-team="2" value="${currentSet.s2}" min="0"></div>`;
+            }
+            editContainer.classList.remove('hidden');
+            const footer = document.getElementById('modalFooter'); footer.innerHTML = '';
+            const saveBtn = document.createElement('button'); saveBtn.textContent = 'Simpan'; saveBtn.className = 'bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-lg';
+            saveBtn.onclick = () => saveScores(matchData, matchKey, matchType); footer.appendChild(saveBtn);
+            const cancelBtn = document.createElement('button'); cancelBtn.textContent = 'Batal'; cancelBtn.className = 'mr-2 text-slate-400 hover:text-white';
+            cancelBtn.onclick = () => openScoreModal(matchData, matchKey, matchType); footer.prepend(cancelBtn);
+        }
+
+        function saveScores(matchData, matchKey, matchType) {
+            const setInputs = document.querySelectorAll('#editSetInputs .set-score');
+            let newSetScores = []; let finalScore = { s1: 0, s2: 0 };
+            for(let i = 0; i < 5; i++) {
+                const s1Input = setInputs[i*2]; const s2Input = setInputs[i*2+1];
+                const s1 = s1Input.value.trim(); const s2 = s2Input.value.trim();
+                if (s1 !== '' && s2 !== '') {
+                    newSetScores.push({ s1: parseInt(s1), s2: parseInt(s2) });
+                    if (parseInt(s1) > parseInt(s2)) finalScore.s1++; else finalScore.s2++;
+                }
+            }
+            if ((finalScore.s1 > 3 || finalScore.s2 > 3) || (finalScore.s1 + finalScore.s2 > 5)) { 
+                 document.getElementById('editError').textContent = 'Skor akhir tidak valid.'; return;
+            } else if (newSetScores.length === 0) {
+                matchData.finalScore = null; matchData.setScores = [];
+            } else {
+                matchData.finalScore = finalScore; matchData.setScores = newSetScores;
+            }
+            saveData(); updateAll(); closeScoreModal();
+        }
+
+        function closeScoreModal() { scoreModal.classList.add('hidden'); }
+        document.querySelector('#jadwal-table tbody').addEventListener('click', (e) => { const row = e.target.closest('tr[data-match-id]'); if (row) { const matchId = parseInt(row.dataset.matchId, 10); const match = MATCHES.find(m => m.id === matchId); openScoreModal(match, matchId, 'group'); } });
+        document.getElementById('gugurContent').addEventListener('click', (e) => { const box = e.target.closest('[data-match-key]'); if(box){ const key = box.dataset.matchKey; openScoreModal(KNOCKOUT_MATCHES[key], key, 'knockout'); } });
+        document.getElementById('closeScoreModalBtn').addEventListener('click', closeScoreModal);
+
+        // --- Logika Login ---
+        const loginModal = document.getElementById('loginModal');
+        function checkAdminStatus() {
+            if (sessionStorage.getItem('isAdmin') === 'true') {
+                IS_ADMIN = true;
+                document.getElementById('authContainer').innerHTML = '<button id="logoutBtn" class="text-slate-400 hover:text-amber-500 underline">Logout</button>';
+                document.getElementById('logoutBtn').addEventListener('click', () => { sessionStorage.removeItem('isAdmin'); window.location.reload(); });
+            } else {
+                document.getElementById('loginBtn').addEventListener('click', () => loginModal.classList.remove('hidden'));
+            }
+        }
+        document.getElementById('closeLoginModalBtn').addEventListener('click', () => loginModal.classList.add('hidden'));
+        document.getElementById('loginForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const user = document.getElementById('username').value; const pass = document.getElementById('password').value;
+            if (user === 'admin' && pass === 'password') { sessionStorage.setItem('isAdmin', 'true'); window.location.reload(); } 
+            else { document.getElementById('loginError').textContent = 'Username atau password salah.'; }
+        });
+
+        // --- Navigasi Tab ---
+        const tabs = [{ btn: document.getElementById('jadwalBtn'), content: document.getElementById('jadwalContent') }, { btn: document.getElementById('klasemenBtn'), content: document.getElementById('klasemenContent') }, { btn: document.getElementById('gugurBtn'), content: document.getElementById('gugurContent') }];
+        tabs.forEach(tab => { tab.btn?.addEventListener('click', () => { tabs.forEach(t => { t.content?.classList.add('hidden'); t.btn?.classList.remove('tab-active'); t.btn?.classList.add('text-slate-400','border-transparent') }); tab.content?.classList.remove('hidden'); tab.btn?.classList.add('tab-active'); }); });
+
+        // --- PANGGILAN AWAL ---
+        loadData();
+        updateAll();
+        checkAdminStatus();
+    });
+    </script>
+</body>
+</html>
+
