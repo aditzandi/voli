@@ -16,14 +16,12 @@
         .loader { border-top-color: #f59e0b; }
         .next-match {
             background-color: rgba(245, 158, 11, 0.15) !important;
-            --tw-ring-color: #f59e0b;
-            --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
-            --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);
-            box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+            border: 1px solid #f59e0b;
+            box-shadow: 0 0 15px rgba(245, 158, 11, 0.4);
         }
     </style>
 </head>
-<body class="bg-slate-900 text-slate-200 antialiased">
+<body class="bg-gradient-to-b from-slate-900 to-slate-800 text-slate-200 antialiased">
 
     <!-- Loading Overlay -->
     <div id="loadingOverlay" class="fixed inset-0 bg-slate-900 bg-opacity-80 flex items-center justify-center z-50">
@@ -72,7 +70,7 @@
             <!-- Konten Klasemen -->
             <div id="klasemenContent" class="hidden">
                  <h2 class="text-2xl font-bold mb-6 text-center text-amber-400">Klasemen Sementara</h2>
-                <div class="space-y-8 max-w-5xl mx-auto">
+                <div class="space-y-8 max-w-6xl mx-auto">
                     <!-- Klasemen Grup A -->
                     <div>
                         <h3 class="text-xl font-semibold mb-4 text-amber-400">GRUP A</h3>
@@ -88,7 +86,6 @@
                                             <th scope="col" class="px-2 py-3 text-center" title="Kalah">L</th>
                                             <th scope="col" class="px-2 py-3 text-center" title="Set Menang">SM</th>
                                             <th scope="col" class="px-2 py-3 text-center" title="Set Kalah">SK</th>
-                                            <th scope="col" class="px-2 py-3 text-center" title="Rasio Set">Rasio</th>
                                             <th scope="col" class="px-4 py-3 text-center" title="Poin">Poin</th>
                                         </tr>
                                     </thead>
@@ -113,7 +110,6 @@
                                             <th scope="col" class="px-2 py-3 text-center" title="Kalah">L</th>
                                             <th scope="col" class="px-2 py-3 text-center" title="Set Menang">SM</th>
                                             <th scope="col" class="px-2 py-3 text-center" title="Set Kalah">SK</th>
-                                            <th scope="col" class="px-2 py-3 text-center" title="Rasio Set">Rasio</th>
                                             <th scope="col" class="px-4 py-3 text-center" title="Poin">Poin</th>
                                         </tr>
                                     </thead>
@@ -190,7 +186,7 @@
                                 <div class="text-xl font-bold text-slate-300" id="juara2-name"></div>
                                 <div class="text-lg text-slate-400">Juara 2</div>
                             </div>
-                            <div class="bg-slate-800 p-8 rounded-xl border-2 border-amber-400 transform md:scale-110 shadow-2xl shadow-amber-500/20 order-1 md:order-2">
+                            <div class="bg-slate-800 p-8 rounded-xl border-2 border-amber-400 transform md:scale-110 shadow-2xl shadow-amber-500/50 order-1 md:order-2">
                                 <div class="text-6xl mb-2">🏆</div>
                                 <div class="text-2xl font-bold text-amber-300" id="juara1-name"></div>
                                 <div class="text-xl text-amber-400">Juara 1</div>
@@ -260,6 +256,9 @@
                         <div id="editSetInputs"></div>
                         <p id="editError" class="text-red-500 text-sm text-center h-4"></p>
                     </div>
+                </div>
+                 <div id="teamSummaryView" class="hidden">
+                    <!-- Team summary content will be injected here -->
                 </div>
             </div>
             <div id="modalFooter" class="p-4 border-t border-slate-700 text-right"></div>
@@ -390,7 +389,7 @@
         // Calculation functions (pure functions, no side effects)
         function calculateKlasemen(currentData) {
             let processedData = JSON.parse(JSON.stringify(currentData)); 
-            Object.values(processedData.teams).forEach(t => { t.m=0; t.w=0; t.l=0; t.sm=0; t.sk=0; t.poin=0; t.rasio=0; });
+            Object.values(processedData.teams).forEach(t => { t.m=0; t.w=0; t.l=0; t.sm=0; t.sk=0; t.poin=0; t.sp=0; t.kp=0; t.rasioSet=0; t.rasioPoin=0; });
             processedData.matches.forEach(match => {
                 if (match.finalScore) {
                     const s1 = match.finalScore.s1; const s2 = match.finalScore.s2;
@@ -399,12 +398,17 @@
                     team1.m++; team2.m++; 
                     team1.sm += s1; team2.sm += s2;
                     team1.sk += s2; team2.sk += s1;
+                    match.setScores.forEach(set => {
+                        team1.sp += set.s1; team1.kp += set.s2;
+                        team2.sp += set.s2; team2.kp += set.s1;
+                    });
                     if (s1 > s2) { team1.w++; team2.l++; if (s1 === 3 && (s2 < 2)) team1.poin += 3; else if (s1 === 3 && s2 === 2) { team1.poin += 2; team2.poin += 1; } } 
                     else { team2.w++; team1.l++; if (s2 === 3 && (s1 < 2)) team2.poin += 3; else if (s2 === 3 && s1 === 2) { team2.poin += 2; team1.poin += 1; } }
                 }
             });
              Object.values(processedData.teams).forEach(t => {
-                t.rasio = t.sk === 0 ? (t.sm > 0 ? Infinity : 0) : t.sm / t.sk;
+                t.rasioSet = t.sk === 0 ? (t.sm > 0 ? Infinity : 0) : t.sm / t.sk;
+                t.rasioPoin = t.kp === 0 ? (t.sp > 0 ? Infinity : 0) : t.sp / t.kp;
             });
             return processedData;
         }
@@ -415,11 +419,12 @@
             const groupB = Object.values(teams).filter(t => t.group === 'B');
             const sortRule = (a, b) => {
                 if (b.poin !== a.poin) return b.poin - a.poin;
-                if (b.rasio !== a.rasio) return b.rasio - a.rasio;
+                if (b.rasioSet !== a.rasioSet) return b.rasioSet - a.rasioSet;
+                if (b.rasioPoin !== a.rasioPoin) return b.rasioPoin - a.rasioPoin;
                 return b.sm - a.sm;
             };
             groupA.sort(sortRule); groupB.sort(sortRule);
-            const renderRow = (t, i) => `<tr class="border-b border-slate-700 hover:bg-slate-700/50">
+            const renderRow = (t, i) => `<tr class="border-b border-slate-700 hover:bg-slate-700/50 cursor-pointer" data-team-name="${t.name}">
                 <td class="px-4 py-3 text-center font-medium">${i + 1}</td>
                 <td class="px-4 py-3 font-semibold">${t.name}</td>
                 <td class="px-2 py-3 text-center">${t.m}</td>
@@ -427,7 +432,6 @@
                 <td class="px-2 py-3 text-center">${t.l}</td>
                 <td class="px-2 py-3 text-center">${t.sm}</td>
                 <td class="px-2 py-3 text-center">${t.sk}</td>
-                <td class="px-2 py-3 text-center">${t.rasio === Infinity ? '∞' : t.rasio.toFixed(3)}</td>
                 <td class="px-4 py-3 font-bold text-center text-white">${t.poin}</td></tr>`;
             document.getElementById('klasemen-grup-a').innerHTML = groupA.map(renderRow).join('');
             document.getElementById('klasemen-grup-b').innerHTML = groupB.map(renderRow).join('');
@@ -441,7 +445,7 @@
                 const processedTeams = calculateKlasemen({teams, matches}).teams;
                 const groupA = Object.values(processedTeams).filter(t => t.group === 'A');
                 const groupB = Object.values(processedTeams).filter(t => t.group === 'B');
-                const sortRule = (a, b) => { if (b.poin !== a.poin) return b.poin - a.poin; if (b.rasio !== a.rasio) return b.rasio - a.rasio; return b.sm - a.sm; };
+                const sortRule = (a, b) => { if (b.poin !== a.poin) return b.poin - a.poin; if (b.rasioSet !== a.rasioSet) return b.rasioSet - a.rasioSet; if(b.rasioPoin !== a.rasioPoin) return b.rasioPoin - a.rasioPoin; return b.sm - a.sm; };
                 groupA.sort(sortRule);
                 groupB.sort(sortRule);
                 if (groupA.length >= 2 && groupB.length >= 2) {
@@ -599,6 +603,10 @@
         const scoreModal = document.getElementById('scoreModal');
         function openScoreModal(matchData, matchKey, matchType) {
             if (!matchData || (!matchData.team1 && matchType !== 'knockout')) return;
+            document.getElementById('scoreView').classList.remove('hidden');
+            document.getElementById('teamSummaryView').classList.add('hidden');
+            document.getElementById('scoreEdit').classList.add('hidden');
+
             document.getElementById('modalTitle').textContent = 'Detail Pertandingan';
             document.getElementById('modalTeam1').textContent = matchData.team1 || 'TBD'; document.getElementById('modalTeam2').textContent = matchData.team2 || 'TBD';
             const setScoresContainer = document.getElementById('modalSetScores'); setScoresContainer.innerHTML = '';
@@ -609,7 +617,7 @@
                 document.getElementById('modalFinalScore1').textContent = '-'; document.getElementById('modalFinalScore2').textContent = '-';
                 setScoresContainer.innerHTML = '<p class="text-center text-slate-400 py-4">Skor pertandingan belum tersedia.</p>';
             }
-            document.getElementById('scoreView').classList.remove('hidden'); document.getElementById('scoreEdit').classList.add('hidden');
+            
             const footer = document.getElementById('modalFooter'); footer.innerHTML = '';
             if (IS_ADMIN && matchData.team1 && matchData.team2) {
                 const editBtn = document.createElement('button'); editBtn.textContent = 'Edit Skor'; editBtn.className = 'bg-amber-500 hover:bg-amber-600 text-slate-900 font-bold py-2 px-4 rounded-lg transition-colors';
@@ -617,10 +625,50 @@
             }
             scoreModal.classList.remove('hidden');
         }
+
+        function openTeamSummaryModal(teamName) {
+            document.getElementById('scoreView').classList.add('hidden');
+            document.getElementById('scoreEdit').classList.add('hidden');
+            const summaryContainer = document.getElementById('teamSummaryView');
+            summaryContainer.classList.remove('hidden');
+            
+            document.getElementById('modalTitle').textContent = `Ringkasan Poin: ${teamName}`;
+            
+            const calculatedData = calculateKlasemen(data);
+            const teamData = calculatedData.teams[teamName];
+
+            if (!teamData) {
+                summaryContainer.innerHTML = '<p class="text-center text-slate-400">Data tim tidak ditemukan.</p>';
+                scoreModal.classList.remove('hidden');
+                return;
+            }
+
+            let summaryHtml = `
+                <div class="grid grid-cols-2 gap-x-4 gap-y-3 text-sm">
+                    <div class="text-slate-400">Main (M)</div><div class="font-semibold text-right">${teamData.m}</div>
+                    <div class="text-slate-400">Menang (W)</div><div class="font-semibold text-right">${teamData.w}</div>
+                    <div class="text-slate-400">Kalah (L)</div><div class="font-semibold text-right">${teamData.l}</div>
+                    <div class="text-slate-400">Poin Pertandingan</div><div class="font-bold text-amber-400 text-right">${teamData.poin}</div>
+                    <div class="col-span-2 border-t border-slate-700 my-2"></div>
+                    <div class="text-slate-400">Set Menang (SM)</div><div class="font-semibold text-right">${teamData.sm}</div>
+                    <div class="text-slate-400">Set Kalah (SK)</div><div class="font-semibold text-right">${teamData.sk}</div>
+                    <div class="text-slate-400">Rasio Set</div><div class="font-semibold text-right">${teamData.rasioSet === Infinity ? '∞' : teamData.rasioSet.toFixed(3)}</div>
+                    <div class="col-span-2 border-t border-slate-700 my-2"></div>
+                    <div class="text-slate-400">Poin Cetak (SP)</div><div class="font-semibold text-right">${teamData.sp}</div>
+                    <div class="text-slate-400">Poin Kemasukan (KP)</div><div class="font-semibold text-right">${teamData.kp}</div>
+                    <div class="text-slate-400">Rasio Poin Kecil</div><div class="font-semibold text-right">${teamData.rasioPoin === Infinity ? '∞' : teamData.rasioPoin.toFixed(3)}</div>
+                </div>
+            `;
+
+            summaryContainer.innerHTML = summaryHtml;
+            document.getElementById('modalFooter').innerHTML = ''; // No footer buttons needed
+            scoreModal.classList.remove('hidden');
+        }
         
         function showEditView(matchData, matchKey, matchType) {
             document.getElementById('modalTitle').textContent = 'Edit Skor';
             document.getElementById('scoreView').classList.add('hidden');
+            document.getElementById('teamSummaryView').classList.add('hidden');
             
             const editMatchTeamsContainer = document.getElementById('editMatchTeams');
             editMatchTeamsContainer.innerHTML = `
@@ -750,6 +798,9 @@
                 openScoreModal(calculatedKnockoutData[key], key, 'knockout'); 
             } 
         });
+        document.getElementById('klasemen-grup-a').addEventListener('click', (e) => { const row = e.target.closest('tr'); if(row && row.dataset.teamName) { openTeamSummaryModal(row.dataset.teamName); }});
+        document.getElementById('klasemen-grup-b').addEventListener('click', (e) => { const row = e.target.closest('tr'); if(row && row.dataset.teamName) { openTeamSummaryModal(row.dataset.teamName); }});
+
         document.getElementById('closeScoreModalBtn').addEventListener('click', closeScoreModal);
 
         // --- Navigasi Tab ---
