@@ -14,6 +14,13 @@
         .modal { transition: opacity 0.2s ease-in-out; }
         .winner { color: #facc15; font-weight: 700; }
         .loader { border-top-color: #f59e0b; }
+        .next-match {
+            background-color: rgba(245, 158, 11, 0.15) !important;
+            --tw-ring-color: #f59e0b;
+            --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+            --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+            box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+        }
     </style>
 </head>
 <body class="bg-slate-900 text-slate-200 antialiased">
@@ -39,6 +46,7 @@
             <button id="jadwalBtn" class="py-3 px-4 text-base sm:text-lg font-semibold border-b-2 transition-colors duration-300 tab-active">Jadwal</button>
             <button id="klasemenBtn" class="py-3 px-4 text-base sm:text-lg font-semibold border-b-2 border-transparent text-slate-400 hover:text-white transition-colors duration-300">Klasemen</button>
             <button id="gugurBtn" class="py-3 px-4 text-base sm:text-lg font-semibold border-b-2 border-transparent text-slate-400 hover:text-white transition-colors duration-300">Sistem Gugur</button>
+            <button id="peraturanBtn" class="py-3 px-4 text-base sm:text-lg font-semibold border-b-2 border-transparent text-slate-400 hover:text-white transition-colors duration-300">Peraturan</button>
         </div>
 
         <main>
@@ -64,10 +72,10 @@
             <!-- Konten Klasemen -->
             <div id="klasemenContent" class="hidden">
                  <h2 class="text-2xl font-bold mb-6 text-center text-amber-400">Klasemen Sementara</h2>
-                <div class="space-y-8 max-w-4xl mx-auto">
+                <div class="space-y-8 max-w-5xl mx-auto">
                     <!-- Klasemen Grup A -->
                     <div>
-                        <h3 class="text-xl font-semibold mb-4 text-amber-400">Grup A</h3>
+                        <h3 class="text-xl font-semibold mb-4 text-amber-400">GRUP A</h3>
                         <div class="bg-slate-800 rounded-xl shadow-lg border border-slate-700">
                            <div class="overflow-x-auto">
                                 <table class="w-full text-sm text-left text-slate-300 whitespace-nowrap">
@@ -80,6 +88,7 @@
                                             <th scope="col" class="px-2 py-3 text-center" title="Kalah">L</th>
                                             <th scope="col" class="px-2 py-3 text-center" title="Set Menang">SM</th>
                                             <th scope="col" class="px-2 py-3 text-center" title="Set Kalah">SK</th>
+                                            <th scope="col" class="px-2 py-3 text-center" title="Rasio Set">Rasio</th>
                                             <th scope="col" class="px-4 py-3 text-center" title="Poin">Poin</th>
                                         </tr>
                                     </thead>
@@ -91,7 +100,7 @@
 
                     <!-- Klasemen Grup B -->
                     <div>
-                        <h3 class="text-xl font-semibold mb-4 text-amber-400">Grup B</h3>
+                        <h3 class="text-xl font-semibold mb-4 text-amber-400">GRUP B</h3>
                         <div class="bg-slate-800 rounded-xl shadow-lg border border-slate-700">
                            <div class="overflow-x-auto">
                                 <table class="w-full text-sm text-left text-slate-300 whitespace-nowrap">
@@ -104,6 +113,7 @@
                                             <th scope="col" class="px-2 py-3 text-center" title="Kalah">L</th>
                                             <th scope="col" class="px-2 py-3 text-center" title="Set Menang">SM</th>
                                             <th scope="col" class="px-2 py-3 text-center" title="Set Kalah">SK</th>
+                                            <th scope="col" class="px-2 py-3 text-center" title="Rasio Set">Rasio</th>
                                             <th scope="col" class="px-4 py-3 text-center" title="Poin">Poin</th>
                                         </tr>
                                     </thead>
@@ -192,6 +202,27 @@
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+
+            <!-- Konten Peraturan -->
+            <div id="peraturanContent" class="hidden">
+                <h2 class="text-2xl font-bold mb-6 text-center text-amber-400">Peraturan Pertandingan</h2>
+                <div class="max-w-4xl mx-auto bg-slate-800 rounded-xl shadow-lg border border-slate-700 p-6 sm:p-8">
+                    <ol class="list-decimal list-inside space-y-4 text-slate-300 leading-relaxed">
+                        <li>Toleransi keterlambatan adalah 30 menit dari jadwal. Tim yang melanggar akan dikenakan sanksi kalah satu set (skor 0-25).</li>
+                        <li><i>Technical Time Out</i> (TTO) otomatis diberikan saat salah satu tim mencapai poin 8 dan 16 (kecuali pada set ke-5). Jatah <i>time out</i> reguler adalah 2 kali per tim dalam satu pertandingan.</li>
+                        <li>Setiap pemain wajib mengenakan seragam tim yang memiliki nomor punggung dan menggunakan sepatu olahraga.</li>
+                        <li>Sistem Poin Kemenangan:
+                            <ul class="list-disc list-inside ml-6 mt-2">
+                                <li>Menang dengan skor 3-0 atau 3-1: Tim menang mendapat 3 poin, tim kalah 0 poin.</li>
+                                <li>Menang dengan skor 3-2: Tim menang mendapat 2 poin, tim kalah mendapat 1 poin.</li>
+                                <li>Jika terjadi poin sama di klasemen akhir, penentuan peringkat akan dihitung berdasarkan rasio set.</li>
+                            </ul>
+                        </li>
+                        <li>Hakim garis untuk sebuah pertandingan akan ditugaskan dari tim yang tidak sedang bertanding pada hari yang sama.</li>
+                        <li>Setiap tim boleh didampingi oleh maksimal 2 (dua) orang ofisial di area teknis pertandingan.</li>
+                    </ol>
                 </div>
             </div>
         </main>
@@ -358,24 +389,22 @@
 
         // Calculation functions (pure functions, no side effects)
         function calculateKlasemen(currentData) {
-            let processedData = JSON.parse(JSON.stringify(currentData)); // Deep copy
-            Object.values(processedData.teams).forEach(t => { t.m=0; t.w=0; t.l=0; t.sm=0; t.sk=0; t.poin=0; });
+            let processedData = JSON.parse(JSON.stringify(currentData)); 
+            Object.values(processedData.teams).forEach(t => { t.m=0; t.w=0; t.l=0; t.sm=0; t.sk=0; t.poin=0; t.rasio=0; });
             processedData.matches.forEach(match => {
                 if (match.finalScore) {
                     const s1 = match.finalScore.s1; const s2 = match.finalScore.s2;
                     const team1 = processedData.teams[match.team1]; const team2 = processedData.teams[match.team2];
                     if (!team1 || !team2) return;
-                    team1.m++; 
-                    team2.m++; 
-                    
-                    team1.sm += s1;
-                    team2.sm += s2;
-                    team1.sk += s2;
-                    team2.sk += s1;
-
+                    team1.m++; team2.m++; 
+                    team1.sm += s1; team2.sm += s2;
+                    team1.sk += s2; team2.sk += s1;
                     if (s1 > s2) { team1.w++; team2.l++; if (s1 === 3 && (s2 < 2)) team1.poin += 3; else if (s1 === 3 && s2 === 2) { team1.poin += 2; team2.poin += 1; } } 
                     else { team2.w++; team1.l++; if (s2 === 3 && (s1 < 2)) team2.poin += 3; else if (s2 === 3 && s1 === 2) { team2.poin += 2; team1.poin += 1; } }
                 }
+            });
+             Object.values(processedData.teams).forEach(t => {
+                t.rasio = t.sk === 0 ? (t.sm > 0 ? Infinity : 0) : t.sm / t.sk;
             });
             return processedData;
         }
@@ -385,12 +414,21 @@
             const groupA = Object.values(teams).filter(t => t.group === 'A');
             const groupB = Object.values(teams).filter(t => t.group === 'B');
             const sortRule = (a, b) => {
-                if (b.poin !== a.poin) return b.poin - a.poin; if (b.w !== a.w) return b.w - a.w;
-                const ratioB = b.sk === 0 ? (b.sm > 0 ? Infinity : 0) : b.sm / b.sk; const ratioA = a.sk === 0 ? (a.sm > 0 ? Infinity : 0) : a.sm / a.sk;
-                if(ratioB !== ratioA) return ratioB - ratioA; return b.sm - a.sm;
+                if (b.poin !== a.poin) return b.poin - a.poin;
+                if (b.rasio !== a.rasio) return b.rasio - a.rasio;
+                return b.sm - a.sm;
             };
             groupA.sort(sortRule); groupB.sort(sortRule);
-            const renderRow = (t, i) => `<tr class="border-b border-slate-700 hover:bg-slate-700/50"><td class="px-4 py-3 text-center font-medium">${i + 1}</td><td class="px-4 py-3 font-semibold">${t.name}</td><td class="px-2 py-3 text-center">${t.m}</td><td class="px-2 py-3 text-center">${t.w}</td><td class="px-2 py-3 text-center">${t.l}</td><td class="px-2 py-3 text-center">${t.sm}</td><td class="px-2 py-3 text-center">${t.sk}</td><td class="px-4 py-3 font-bold text-center text-white">${t.poin}</td></tr>`;
+            const renderRow = (t, i) => `<tr class="border-b border-slate-700 hover:bg-slate-700/50">
+                <td class="px-4 py-3 text-center font-medium">${i + 1}</td>
+                <td class="px-4 py-3 font-semibold">${t.name}</td>
+                <td class="px-2 py-3 text-center">${t.m}</td>
+                <td class="px-2 py-3 text-center">${t.w}</td>
+                <td class="px-2 py-3 text-center">${t.l}</td>
+                <td class="px-2 py-3 text-center">${t.sm}</td>
+                <td class="px-2 py-3 text-center">${t.sk}</td>
+                <td class="px-2 py-3 text-center">${t.rasio === Infinity ? '∞' : t.rasio.toFixed(3)}</td>
+                <td class="px-4 py-3 font-bold text-center text-white">${t.poin}</td></tr>`;
             document.getElementById('klasemen-grup-a').innerHTML = groupA.map(renderRow).join('');
             document.getElementById('klasemen-grup-b').innerHTML = groupB.map(renderRow).join('');
         }
@@ -400,9 +438,10 @@
             let liveKnockoutMatches = JSON.parse(JSON.stringify(knockoutMatches));
 
             if (allGroupMatchesPlayed) {
-                const groupA = Object.values(teams).filter(t => t.group === 'A');
-                const groupB = Object.values(teams).filter(t => t.group === 'B');
-                const sortRule = (a, b) => { if (b.poin !== a.poin) return b.poin - a.poin; if (b.w !== a.w) return b.w - a.w; const rB = b.sk === 0 ? (b.sm > 0 ? Infinity : 0) : b.sm / b.sk; const rA = a.sk === 0 ? (a.sm > 0 ? Infinity : 0) : a.sm / a.sk; if(rB !== rA) return rB - rA; return b.sm - a.sm; };
+                const processedTeams = calculateKlasemen({teams, matches}).teams;
+                const groupA = Object.values(processedTeams).filter(t => t.group === 'A');
+                const groupB = Object.values(processedTeams).filter(t => t.group === 'B');
+                const sortRule = (a, b) => { if (b.poin !== a.poin) return b.poin - a.poin; if (b.rasio !== a.rasio) return b.rasio - a.rasio; return b.sm - a.sm; };
                 groupA.sort(sortRule);
                 groupB.sort(sortRule);
                 if (groupA.length >= 2 && groupB.length >= 2) {
@@ -463,21 +502,35 @@
         function renderJadwal(matchesData) {
             const jadwalBody = document.querySelector('#jadwal-table tbody');
             let currentDay = '';
+            let nextMatchHighlighted = false;
+            const now = new Date();
+            const monthMap = { "Januari":0, "Februari":1, "Maret":2, "April":3, "Mei":4, "Juni":5, "Juli":6, "Agustus":7, "September":8, "Oktober":9, "November":10, "Desember":11 };
+
             jadwalBody.innerHTML = matchesData.map((match) => {
                 let dayRow = '';
                 if (match.date !== currentDay) {
                     currentDay = match.date;
                     dayRow = `<tr class="bg-slate-900/40 pointer-events-none"><td colspan="4" class="px-2 sm:px-4 py-2 text-sm font-semibold text-slate-400 tracking-wider">${match.date}</td></tr>`;
                 }
-                const grupClass = match.group === 'A' ? 'bg-amber-800 text-amber-200' : 'bg-blue-800 text-blue-200';
+
+                const dateParts = match.date.replace(',', '').split(' ');
+                const timeParts = match.time.split(' ')[0].split('.');
+                const matchDate = new Date(dateParts[3], monthMap[dateParts[2]], dateParts[1], timeParts[0], timeParts[1]);
                 
+                let highlightClass = '';
+                if (!nextMatchHighlighted && matchDate > now && !match.finalScore) {
+                    highlightClass = 'next-match';
+                    nextMatchHighlighted = true;
+                }
+
+                const grupClass = match.group === 'A' ? 'bg-amber-800 text-amber-200' : 'bg-blue-800 text-blue-200';
                 const scoreHtml = match.finalScore 
                     ? `<span class="font-bold ${match.finalScore.s1 > match.finalScore.s2 ? 'text-amber-400' : ''}">${match.finalScore.s1}</span> : <span class="font-bold ${match.finalScore.s2 > match.finalScore.s1 ? 'text-amber-400' : ''}">${match.finalScore.s2}</span>`
                     : `- : -`;
 
-                return dayRow + `<tr class="border-b border-slate-700 hover:bg-slate-700/50 cursor-pointer" data-match-id="${match.id}" data-match-type="group">
+                return dayRow + `<tr class="border-b border-slate-700 hover:bg-slate-700/50 cursor-pointer ${highlightClass}" data-match-id="${match.id}" data-match-type="group">
                     <td class="px-2 sm:px-4 py-4 text-sm">${match.time}</td>
-                    <td class="px-2 sm:px-4 py-4"><span class="${grupClass} text-xs font-medium px-2 py-1 rounded-full">Grup ${match.group}</span></td>
+                    <td class="px-2 sm:px-4 py-4"><span class="${grupClass} text-xs font-medium w-6 h-6 flex items-center justify-center rounded-full">${match.group}</span></td>
                     <td class="px-2 sm:px-4 py-4 font-medium text-center text-sm sm:text-base">
                         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-center sm:space-x-2 md:space-x-4">
                             <span class="sm:flex-1 sm:text-right">${match.team1}</span>
@@ -528,7 +581,6 @@
             } catch (error) {
                 console.error("Error resetting scores: ", error);
             }
-            // Loading overlay will be hidden by the onSnapshot listener
         });
 
         document.getElementById('loginForm').addEventListener('submit', (e) => {
@@ -701,8 +753,23 @@
         document.getElementById('closeScoreModalBtn').addEventListener('click', closeScoreModal);
 
         // --- Navigasi Tab ---
-        const tabs = [{ btn: document.getElementById('jadwalBtn'), content: document.getElementById('jadwalContent') }, { btn: document.getElementById('klasemenBtn'), content: document.getElementById('klasemenContent') }, { btn: document.getElementById('gugurBtn'), content: document.getElementById('gugurContent') }];
-        tabs.forEach(tab => { tab.btn?.addEventListener('click', () => { tabs.forEach(t => { t.content?.classList.add('hidden'); t.btn?.classList.remove('tab-active'); t.btn?.classList.add('text-slate-400','border-transparent') }); tab.content?.classList.remove('hidden'); tab.btn?.classList.add('tab-active'); }); });
+        const tabs = [
+            { btn: document.getElementById('jadwalBtn'), content: document.getElementById('jadwalContent') }, 
+            { btn: document.getElementById('klasemenBtn'), content: document.getElementById('klasemenContent') }, 
+            { btn: document.getElementById('gugurBtn'), content: document.getElementById('gugurContent') },
+            { btn: document.getElementById('peraturanBtn'), content: document.getElementById('peraturanContent') }
+        ];
+        tabs.forEach(tab => { 
+            tab.btn?.addEventListener('click', () => { 
+                tabs.forEach(t => { 
+                    t.content?.classList.add('hidden'); 
+                    t.btn?.classList.remove('tab-active'); 
+                    t.btn?.classList.add('text-slate-400','border-transparent') 
+                }); 
+                tab.content?.classList.remove('hidden'); 
+                tab.btn?.classList.add('tab-active'); 
+            }); 
+        });
 
         // Initialize App
         initializeData();
