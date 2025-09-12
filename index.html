@@ -300,19 +300,20 @@
     <!-- Firebase SDK -->
     <script type="module">
         // Import functions from the Firebase SDKs
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-auth.js";
-        import { getFirestore, doc, setDoc, onSnapshot, getDoc } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore.js";
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut, signInWithCustomToken, signInAnonymously } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc, onSnapshot, getDoc } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 
-        // Your web app's Firebase configuration from your Firebase project
+        // Your web app's Firebase configuration
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
         const firebaseConfig = {
-            apiKey: "AIzaSyBEqlI_QBWBWKGmtEtGvdrDcF1lX9wV_5s",
-            authDomain: "turnamen-voli-jangkar-laut.firebaseapp.com",
-            projectId: "turnamen-voli-jangkar-laut",
-            storageBucket: "turnamen-voli-jangkar-laut.appspot.com",
-            messagingSenderId: "621934258244",
-            appId: "1:621934258244:web:1da5d205926d18d2727411",
-            measurementId: "G-58G5CR0047"
+            apiKey: "AIzaSyChtex2Xf4FusGQNNLnFZaEUCVotpltEGY",
+            authDomain: "turnamen-voli-jangkar-la-c3baa.firebaseapp.com",
+            projectId: "turnamen-voli-jangkar-la-c3baa",
+            storageBucket: "turnamen-voli-jangkar-la-c3baa.firebasestorage.app",
+            messagingSenderId: "634489197415",
+            appId: "1:634489197415:web:e4290c4d0625d735a5d5c2",
+            measurementId: "G-B21TW2WKL8"
         };
 
         // Initialize Firebase
@@ -373,7 +374,6 @@
                  loadingOverlay.classList.add('hidden');
             });
         }
-
 
         function updateAllUI(currentData) {
             if (!currentData || !currentData.teams) {
@@ -555,7 +555,8 @@
         const confirmCancelBtn = document.getElementById('confirmCancelBtn');
 
         onAuthStateChanged(auth, user => {
-            if (user) {
+            // Admin is a user that is logged in but not anonymous
+            if (user && !user.isAnonymous) {
                 IS_ADMIN = true;
                 authContainer.innerHTML = `
                     <button id="resetScoresBtn" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg text-sm">Reset Semua Skor</button>
@@ -577,6 +578,7 @@
         });
 
         confirmOkBtn.addEventListener('click', async () => {
+            if (!IS_ADMIN) return;
             confirmModal.classList.add('hidden');
             loadingOverlay.classList.remove('hidden');
             try {
@@ -592,6 +594,21 @@
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
             const loginError = document.getElementById('loginError');
+            const adminToken = 'Fy6zboTuMsdVtYRuack2fLJitct1';
+
+            // Allow login with a special admin token in the password field
+            if (password === adminToken) {
+                signInWithCustomToken(auth, adminToken)
+                    .then(() => {
+                        loginModal.classList.add('hidden');
+                        loginError.textContent = '';
+                    })
+                    .catch((error) => {
+                        console.error("Admin token login failed:", error);
+                        loginError.textContent = 'Token admin tidak valid.';
+                    });
+                return; // Stop further execution
+            }
             
             signInWithEmailAndPassword(auth, email, password)
                 .then(() => { loginModal.classList.add('hidden'); loginError.textContent = ''; })
@@ -693,6 +710,8 @@
         }
 
         async function saveScores(matchKey, matchType) {
+            if (!IS_ADMIN) return;
+
             let updatedData = JSON.parse(JSON.stringify(data)); // Deep copy live data
             let matchData;
             if (matchType === 'group') {
@@ -823,9 +842,26 @@
         });
 
         // Initialize App
-        initializeData();
+        async function initializeAppFlow() {
+            // Authenticate non-admin users automatically
+            if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                try {
+                    await signInWithCustomToken(auth, __initial_auth_token);
+                } catch (error) {
+                    console.error("Custom token sign-in failed, trying anonymous.", error);
+                    await signInAnonymously(auth);
+                }
+            } else {
+                 await signInAnonymously(auth);
+            }
+            // After auth is settled, initialize the data connection
+            await initializeData();
+        }
+
+        initializeAppFlow();
 
     </script>
 </body>
 </html>
+
 
