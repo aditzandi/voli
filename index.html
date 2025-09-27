@@ -23,23 +23,19 @@
 </head>
 <body class="bg-gradient-to-b from-slate-900 to-slate-800 text-slate-200 antialiased">
 
-    <!-- Loading Overlay -->
     <div id="loadingOverlay" class="fixed inset-0 bg-slate-900 bg-opacity-80 flex items-center justify-center z-50">
         <div class="loader ease-linear rounded-full border-8 border-t-8 border-gray-200 h-32 w-32"></div>
     </div>
 
-    <!-- Header Gambar Full-Width -->
     <header>
         <img src="https://i.ibb.co/C5965GTL/Whats-App-Image-2025-09-10-at-14-36-52.jpg" alt="Logo Turnamen Voli" class="w-full">
     </header>
 
     <div class="container mx-auto p-4 sm:p-6 lg:p-8">
-        <!-- Judul Halaman -->
         <div class="text-center mb-10">
             <p class="text-slate-400 text-lg">Jadwal Pertandingan & Klasemen Sementara</p>
         </div>
 
-        <!-- Tombol Menu -->
         <div class="flex flex-wrap justify-center border-b border-slate-700 mb-8">
             <button id="jadwalBtn" class="py-3 px-4 text-base sm:text-lg font-semibold border-b-2 transition-colors duration-300 tab-active">Jadwal</button>
             <button id="klasemenBtn" class="py-3 px-4 text-base sm:text-lg font-semibold border-b-2 border-transparent text-slate-400 hover:text-white transition-colors duration-300">Klasemen</button>
@@ -48,7 +44,6 @@
         </div>
 
         <main>
-            <!-- Konten Jadwal -->
             <div id="jadwalContent">
                 <h2 class="text-2xl font-bold mb-6 text-center text-amber-400">Jadwal Pertandingan</h2>
                 <div class="bg-slate-800 rounded-xl shadow-lg overflow-hidden border border-slate-700 max-w-4xl mx-auto">
@@ -67,11 +62,9 @@
                  <p class="text-center text-slate-400 mt-4 text-sm">Klik pada baris pertandingan untuk melihat detail skor.</p>
             </div>
 
-            <!-- Konten Klasemen -->
             <div id="klasemenContent" class="hidden">
                  <h2 class="text-2xl font-bold mb-6 text-center text-amber-400">Klasemen Sementara</h2>
                 <div class="space-y-8 max-w-6xl mx-auto">
-                    <!-- Klasemen Grup A -->
                     <div>
                         <h3 class="text-xl font-semibold mb-4 text-amber-400">GRUP A</h3>
                         <div class="bg-slate-800 rounded-xl shadow-lg border border-slate-700">
@@ -95,7 +88,6 @@
                         </div>
                     </div>
 
-                    <!-- Klasemen Grup B -->
                     <div>
                         <h3 class="text-xl font-semibold mb-4 text-amber-400">GRUP B</h3>
                         <div class="bg-slate-800 rounded-xl shadow-lg border border-slate-700">
@@ -121,7 +113,6 @@
                 </div>
             </div>
             
-            <!-- Konten Sistem Gugur -->
             <div id="gugurContent" class="hidden">
                 <h2 class="text-2xl font-bold mb-10 text-center text-amber-400">Bagan Sistem Gugur</h2>
                  <div class="max-w-5xl mx-auto space-y-12">
@@ -201,7 +192,6 @@
                 </div>
             </div>
 
-            <!-- Konten Peraturan -->
             <div id="peraturanContent" class="hidden">
                 <h2 class="text-2xl font-bold mb-6 text-center text-amber-400">Peraturan Pertandingan</h2>
                 <div class="max-w-4xl mx-auto bg-slate-800 rounded-xl shadow-lg border border-slate-700 p-6 sm:p-8">
@@ -213,7 +203,7 @@
                             <ul class="list-disc list-inside ml-6 mt-2">
                                 <li>Menang dengan skor 3-0 atau 3-1: Tim menang mendapat 3 poin, tim kalah 0 poin.</li>
                                 <li>Menang dengan skor 3-2: Tim menang mendapat 2 poin, tim kalah mendapat 1 poin.</li>
-                                <li>Jika terjadi poin sama di klasemen akhir, penentuan peringkat akan dihitung berdasarkan rasio set.</li>
+                                <li>Jika terjadi poin sama di klasemen akhir, penentuan peringkat akan dihitung berdasarkan hasil <strong>head-to-head</strong>, kemudian rasio set.</li>
                             </ul>
                         </li>
                         <li>Hakim garis untuk sebuah pertandingan akan ditugaskan dari tim yang tidak sedang bertanding pada hari yang sama.</li>
@@ -233,7 +223,6 @@
         </footer>
     </div>
 
-    <!-- Modals -->
     <div id="scoreModal" class="modal fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4 hidden z-40">
         <div class="bg-slate-800 rounded-xl shadow-lg w-full max-w-md border border-slate-700">
              <div class="p-4 border-b border-slate-700 flex justify-between items-center">
@@ -258,8 +247,7 @@
                     </div>
                 </div>
                  <div id="teamSummaryView" class="hidden">
-                    <!-- Team summary content will be injected here -->
-                </div>
+                    </div>
             </div>
             <div id="modalFooter" class="p-4 border-t border-slate-700 text-right"></div>
         </div>
@@ -297,7 +285,6 @@
         </div>
     </div>
 
-    <!-- Firebase SDK -->
     <script type="module">
         // Import functions from the Firebase SDKs
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
@@ -413,17 +400,55 @@
             return processedData;
         }
 
-        // UI Update functions
-        function updateKlasemenDOM({ teams }) {
-            const groupA = Object.values(teams).filter(t => t.group === 'A');
-            const groupB = Object.values(teams).filter(t => t.group === 'B');
-            const sortRule = (a, b) => {
-                if (b.poin !== a.poin) return b.poin - a.poin;
-                if (b.rasioSet !== a.rasioSet) return b.rasioSet - a.rasioSet;
-                if (b.rasioPoin !== a.rasioPoin) return b.rasioPoin - a.rasioPoin;
+        // --- REVISI UTAMA: ATURAN SORTING DENGAN HEAD-TO-HEAD ---
+        // Fungsi ini membuat aturan sorting yang akan kita gunakan untuk klasemen
+        function createSortRule(matches) {
+            return (a, b) => {
+                // 1. Prioritas utama adalah Poin
+                if (b.poin !== a.poin) {
+                    return b.poin - a.poin;
+                }
+
+                // 2. Jika poin sama, cek Head-to-Head
+                const headToHeadMatch = matches.find(m =>
+                    (m.team1 === a.name && m.team2 === b.name) ||
+                    (m.team1 === b.name && m.team2 === a.name)
+                );
+
+                if (headToHeadMatch && headToHeadMatch.finalScore) {
+                    const winner = headToHeadMatch.finalScore.s1 > headToHeadMatch.finalScore.s2 
+                        ? headToHeadMatch.team1 
+                        : headToHeadMatch.team2;
+                    
+                    if (winner === a.name) return -1; // 'a' menang, 'a' harus di atas 'b'
+                    if (winner === b.name) return 1;  // 'b' menang, 'b' harus di atas 'a'
+                }
+
+                // 3. Jika Head-to-Head tidak menentukan, gunakan Rasio Set
+                if (b.rasioSet !== a.rasioSet) {
+                    return b.rasioSet - a.rasioSet;
+                }
+
+                // 4. Jika Rasio Set sama, gunakan Rasio Poin Kecil
+                if (b.rasioPoin !== a.rasioPoin) {
+                    return b.rasioPoin - a.rasioPoin;
+                }
+
+                // 5. Kriteria terakhir adalah jumlah Set Menang
                 return b.sm - a.sm;
             };
-            groupA.sort(sortRule); groupB.sort(sortRule);
+        }
+
+        // UI Update functions
+        function updateKlasemenDOM({ teams, matches }) {
+            const groupA = Object.values(teams).filter(t => t.group === 'A');
+            const groupB = Object.values(teams).filter(t => t.group === 'B');
+
+            // Gunakan aturan sorting yang baru
+            const sortRule = createSortRule(matches);
+            groupA.sort(sortRule);
+            groupB.sort(sortRule);
+
             const renderRow = (t, i) => `<tr class="border-b border-slate-700 hover:bg-slate-700/50 cursor-pointer" data-team-name="${t.name}">
                 <td class="px-4 py-3 text-center font-medium">${i + 1}</td>
                 <td class="px-4 py-3 font-semibold">${t.name}</td>
@@ -445,9 +470,12 @@
                 const processedTeams = calculateKlasemen({teams, matches}).teams;
                 const groupA = Object.values(processedTeams).filter(t => t.group === 'A');
                 const groupB = Object.values(processedTeams).filter(t => t.group === 'B');
-                const sortRule = (a, b) => { if (b.poin !== a.poin) return b.poin - a.poin; if (b.rasioSet !== a.rasioSet) return b.rasioSet - a.rasioSet; if(b.rasioPoin !== a.rasioPoin) return b.rasioPoin - a.rasioPoin; return b.sm - a.sm; };
+                
+                // Gunakan aturan sorting yang baru juga di sini untuk konsistensi
+                const sortRule = createSortRule(matches);
                 groupA.sort(sortRule);
                 groupB.sort(sortRule);
+
                 if (groupA.length >= 2 && groupB.length >= 2) {
                     const juaraA = groupA[0].name, runnerUpA = groupA[1].name, juaraB = groupB[0].name, runnerUpB = groupB[1].name;
                     liveKnockoutMatches.sf1.team1 = juaraA;
@@ -863,5 +891,3 @@
     </script>
 </body>
 </html>
-
-
