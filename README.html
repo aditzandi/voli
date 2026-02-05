@@ -1,30 +1,100 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
-  <title>Dailymotion Autoplay</title>
-  <style>
-    .player-container {
-      position: relative;
-      padding-bottom: 56.25%;
-      height: 0;
-      overflow: hidden;
-      max-width: 100%;
-      background: #000;
-    }
-    .player-container iframe {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dailymotion Autoplay</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background: #f0f0f0;
+            font-family: Arial, sans-serif;
+        }
+        .video-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            padding-bottom: 56.25%;
+            height: 0;
+            background: #000;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        .play-btn {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255,255,255,0.9);
+            border: none;
+            border-radius: 50px;
+            padding: 15px 25px;
+            font-size: 18px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            z-index: 10;
+        }
+        .play-btn:hover {
+            background: #fff;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+    </style>
 </head>
 <body>
-  <div class="player-container">
-    <!-- INI YANG BENER untuk GitHub Pages -->
-    <iframe 
-      src="https://www.dailymotion.com/embed/video/x9z7us2?autoplay=1&mute=1" 
-      allowfullscreen 
-      allow="autoplay; fullscreen; web-share">
-    </iframe>
+    <h1>🎥 Video Autoplay</h1>
+    
+    <div class="video-container" id="videoContainer">
+        <!-- Dailymotion EMBED - WORK DI GITHUB PAGES -->
+        <iframe 
+            id="dm-player"
+            src="https://www.dailymotion.com/embed/video/x9z7us2"
+            allowfullscreen 
+            allow="autoplay; fullscreen; web-share">
+        </iframe>
+        
+        <!-- Tombol Play Otomatis -->
+        <button class="play-btn" onclick="playVideo()">
+            ▶️ PLAY NOW
+        </button>
+    </div>
+
+    <script>
+        function playVideo() {
+            const iframe = document.getElementById('dm-player');
+            const btn = document.querySelector('.play-btn');
+            
+            // Ganti src dengan autoplay
+            iframe.src = "https://www.dailymotion.com/embed/video/x9z7us2?autoplay=1&mute=1";
+            
+            // Sembunyikan button
+            btn.style.display = 'none';
+            
+            // Force play via postMessage (backup)
+            setTimeout(() => {
+                iframe.contentWindow.postMessage('{"command":"play"}', '*');
+            }, 1000);
+        }
+
+        // Auto play setelah page load (GitHub compatible)
+        window.addEventListener('load', function() {
+            setTimeout(() => {
+                playVideo();
+            }, 1500);
+        });
+    </script>
+</body>
+</html>
