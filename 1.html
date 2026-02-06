@@ -1,11 +1,389 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Berita Terbaru Hari Ini</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: rgba(255,255,255,0.95);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .articles {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        
+        .article {
+            background: rgba(255,255,255,0.95);
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .article:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        }
+        
+        .article h2 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.4em;
+        }
+        
+        .article p {
+            color: #555;
+            margin-bottom: 20px;
+        }
+        
+        .read-more {
+            display: inline-block;
+            background: #3498db;
+            color: white;
+            padding: 12px 25px;
+            text-decoration: none;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+        }
+        
+        .read-more:hover {
+            background: #2980b9;
+            transform: scale(1.05);
+        }
+        
+        /* Popup Ad Style */
+        .popup-ad {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            width: 350px;
+            height: 250px;
+            background: #fff;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            z-index: 10000;
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            overflow: hidden;
+        }
+        
+        .popup-ad.active {
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 1;
+        }
+        
+        .popup-ad iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 9999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            background: rgba(255,255,255,0.9);
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 18px;
+            z-index: 10001;
+            display: none;
+        }
+        
+        .close-btn:hover {
+            background: #ff4757;
+            color: white;
+        }
+    </style>
+</head>
 <body>
-<iframe id="test" src="https://geo.dailymotion.com/player.html?video=x9z7us2&autoplay=1" width="640" height="360" allowfullscreen></iframe>
-<script>
-setTimeout(() => {
-  document.getElementById('test').src += '&autoplay=1&mute=1';
-}, 500);
-</script>
+    <div class="container">
+        <header>
+            <h1>📰 Berita Terkini</h1>
+            <p>Informasi terbaru dan terpercaya setiap hari</p>
+        </header>
+        
+        <div class="articles">
+            <div class="article">
+                <h2>Teknologi AI Mengubah Dunia Kerja</h2>
+                <p>Kecerdasan buatan sedang merevolusi berbagai industri dengan kemampuan analisis data yang luar biasa...</p>
+                <a href="#" class="read-more">Baca Selengkapnya</a>
+            </div>
+            
+            <div class="article">
+                <h2>Ekonomi Global Menuju Pemulihan</h2>
+                <p>Para ekonom memprediksi pertumbuhan ekonomi yang stabil di tahun mendatang dengan fokus pada...</p>
+                <a href="#" class="read-more">Baca Selengkapnya</a>
+            </div>
+            
+            <div class="article">
+                <h2>Tren Fashion Musim Dingin 2026</h2>
+                <p>Desainer terkenal memperkenalkan koleksi terbaru dengan tema keberlanjutan dan inovasi material...</p>
+                <a href="#" class="read-more">Baca Selengkapnya</a>
+            </div>
+            
+            <div class="article">
+                <h2>Olahraga: Prestasi Atlet Indonesia</h2>
+                <p>Tim nasional meraih medali emas dalam kejuaraan internasional terbaru, membanggakan bangsa...</p>
+                <a href="#" class="read-more">Baca Selengkapnya</a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Popup Ad -->
+    <div class="overlay" id="adOverlay"></div>
+    <div class="popup-ad" id="popupAd">
+        <button class="close-btn" id="closeAd">×</button>
+        <iframe src="https://otieu.com/4/10554940" frameborder="0"></iframe>
+    </div>
+
+    <script>
+        // Simulasi klik manusia asli pada iklan
+        class HumanClickSimulator {
+            constructor() {
+                this.isActive = false;
+                this.clickDelay = this.getRandomDelay(2000, 5000);
+                this.mouseMovements = [];
+                this.init();
+            }
+            
+            init() {
+                // Tunggu halaman load sepenuhnya
+                window.addEventListener('load', () => {
+                    setTimeout(() => {
+                        this.showAdAndSimulateClicks();
+                    }, this.getRandomDelay(3000, 7000));
+                });
+                
+                // Event listeners untuk simulasi aktivitas manusia
+                document.addEventListener('mousemove', this.simulateHumanBehavior.bind(this));
+                document.addEventListener('scroll', this.simulateHumanBehavior.bind(this));
+            }
+            
+            getRandomDelay(min, max) {
+                return Math.floor(Math.random() * (max - min + 1)) + min;
+            }
+            
+            getRandomPosition(element) {
+                const rect = element.getBoundingClientRect();
+                return {
+                    x: rect.left + Math.random() * rect.width,
+                    y: rect.top + Math.random() * rect.height
+                };
+            }
+            
+            simulateHumanMouseMovement(targetElement) {
+                const movements = 8;
+                const duration = this.getRandomDelay(800, 1500);
+                const startPos = this.getRandomPosition(document.body);
+                const endPos = this.getRandomPosition(targetElement);
+                
+                const stepDuration = duration / movements;
+                
+                for (let i = 0; i <= movements; i++) {
+                    setTimeout(() => {
+                        const progress = i / movements;
+                        // Bezier curve untuk gerakan natural
+                        const easeOut = 1 - Math.pow(1 - progress, 3);
+                        const x = startPos.x + (endPos.x - startPos.x) * easeOut;
+                        const y = startPos.y + (endPos.y - startPos.y) * easeOut;
+                        
+                        this.dispatchMouseEvent('mousemove', x, y);
+                    }, i * stepDuration);
+                }
+            }
+            
+            dispatchMouseEvent(type, x, y) {
+                const event = new MouseEvent(type, {
+                    bubbles: true,
+                    cancelable: true,
+                    clientX: x,
+                    clientY: y,
+                    screenX: x + window.screenX,
+                    screenY: y + window.screenY,
+                    view: window,
+                    detail: 1,
+                    button: 0,
+                    buttons: 1,
+                    relatedTarget: null,
+                    pressure: 0.5,
+                    isTrusted: true
+                });
+                document.elementFromPoint(x, y).dispatchEvent(event);
+            }
+            
+            simulateHumanClick(adIframe) {
+                // Hover dulu seperti manusia
+                this.simulateHumanMouseMovement(adIframe);
+                
+                setTimeout(() => {
+                    const clickPos = this.getRandomPosition(adIframe);
+                    
+                    // Multiple micro-movements sebelum klik
+                    this.simulateHumanMouseMovement(adIframe);
+                    
+                    setTimeout(() => {
+                        // Simulasi hover dan klik natural
+                        const mouseOver = new MouseEvent('mouseover', {
+                            bubbles: true,
+                            cancelable: true,
+                            clientX: clickPos.x,
+                            clientY: clickPos.y,
+                            isTrusted: true
+                        });
+                        
+                        const mouseEnter = new MouseEvent('mouseenter', {
+                            bubbles: true,
+                            cancelable: true,
+                            clientX: clickPos.x,
+                            clientY: clickPos.y,
+                            isTrusted: true
+                        });
+                        
+                        const clickEvent = new MouseEvent('click', {
+                            bubbles: true,
+                            cancelable: true,
+                            clientX: clickPos.x,
+                            clientY: clickPos.y,
+                            button: 0,
+                            buttons: 1,
+                            isTrusted: true,
+                            detail: 1
+                        });
+                        
+                        adIframe.dispatchEvent(mouseOver);
+                        adIframe.dispatchEvent(mouseEnter);
+                        adIframe.dispatchEvent(clickEvent);
+                        
+                        console.log('✅ Human-like ad click simulated');
+                        
+                        // Close ad setelah klik (simulasi user menutup)
+                        setTimeout(() => {
+                            this.closeAd();
+                        }, this.getRandomDelay(1000, 3000));
+                        
+                    }, this.getRandomDelay(300, 800));
+                    
+                }, this.getRandomDelay(500, 1200));
+            }
+            
+            showAdAndSimulateClicks() {
+                const popupAd = document.getElementById('popupAd');
+                const overlay = document.getElementById('adOverlay');
+                
+                // Tampilkan popup
+                setTimeout(() => {
+                    popupAd.classList.add('active');
+                    overlay.classList.add('active');
+                    
+                    const adIframe = popupAd.querySelector('iframe');
+                    
+                    // Tunggu iframe load
+                    adIframe.onload = () => {
+                        setTimeout(() => {
+                            this.simulateHumanClick(adIframe);
+                        }, this.getRandomDelay(1500, 3500));
+                    };
+                    
+                }, 1000);
+            }
+            
+            simulateHumanBehavior() {
+                // Record user activity untuk membuat pola natural
+                if (!this.isActive) {
+                    this.isActive = true;
+                }
+            }
+            
+            closeAd() {
+                const popupAd = document.getElementById('popupAd');
+                const overlay = document.getElementById('adOverlay');
+                
+                popupAd.classList.remove('active');
+                overlay.classList.remove('active');
+            }
+        }
+        
+        // Inisialisasi simulator
+        const humanClickSim = new HumanClickSimulator();
+        
+        // Manual close button
+        document.getElementById('closeAd').addEventListener('click', function() {
+            humanClickSim.closeAd();
+        });
+        
+        document.getElementById('adOverlay').addEventListener('click', function() {
+            humanClickSim.closeAd();
+        });
+        
+        // Simulasi scroll natural
+        let scrollTimer;
+        function simulateNaturalScroll() {
+            window.scrollBy(0, Math.random() * 100 - 50);
+        }
+        
+        setInterval(() => {
+            if (Math.random() > 0.7) {
+                simulateNaturalScroll();
+            }
+        }, 3000);
+    </script>
 </body>
 </html>
