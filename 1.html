@@ -3,405 +3,247 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Berita Premium 2026 - Unlimited Stealth</title>
+    <title>📰 NewsHub Unlimited - FIXED</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6; color: #333;
+            font-family: Arial, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
+            color: #333; min-height: 100vh; padding: 20px;
         }
-        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
-        header { 
-            background: rgba(255,255,255,0.95); padding: 20px; 
-            border-radius: 15px; margin-bottom: 30px; 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        .container { max-width: 1200px; margin: 0 auto; }
+        .header { 
+            background: white; padding: 25px; border-radius: 15px; 
+            margin-bottom: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            text-align: center;
         }
-        h1 { color: #2c3e50; text-align: center; font-size: 2.5em; margin-bottom: 10px; }
-        .status-panel { 
-            background: rgba(46, 204, 113, 0.3); padding: 15px; 
-            border-radius: 10px; margin: 20px 0; font-size: 0.9em; 
-            text-align: center; display: block; border: 2px solid #2ecc71;
+        h1 { color: #2c3e50; font-size: 2.2em; margin-bottom: 10px; }
+        .status { 
+            background: #2ecc71; color: white; padding: 15px; 
+            border-radius: 10px; margin: 15px 0; font-weight: bold;
         }
-        .articles {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 25px; margin-bottom: 40px;
-        }
+        .articles { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
         .article {
-            background: rgba(255,255,255,0.95); padding: 25px;
-            border-radius: 15px; box-shadow: 0 8px 25px rgba(0,0,0,0.1);
-            transition: all 0.3s ease; cursor: pointer;
+            background: white; padding: 25px; border-radius: 12px; 
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1); cursor: pointer;
+            transition: all 0.3s ease;
         }
-        .article:hover { transform: translateY(-5px); box-shadow: 0 15px 40px rgba(0,0,0,0.15); }
-        .article h2 { color: #2c3e50; margin-bottom: 15px; font-size: 1.4em; }
-        .article p { color: #555; margin-bottom: 20px; }
+        .article:hover { transform: translateY(-8px); box-shadow: 0 20px 40px rgba(0,0,0,0.2); }
+        .article h2 { color: #2c3e50; margin-bottom: 12px; }
+        .article p { color: #666; }
         
-        /* Popups - FIXED POSITION */
+        /* POPUPS */
         .popup-ad, .captcha-popup {
-            position: fixed !important; top: 50% !important; left: 50% !important; 
-            transform: translate(-50%, -50%) scale(0); z-index: 999999 !important;
-            width: 380px !important; height: 320px !important; background: #fff !important;
-            border-radius: 15px !important; box-shadow: 0 25px 70px rgba(0,0,0,0.8) !important;
-            opacity: 0; visibility: hidden; transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0);
+            width: 400px; height: 350px; background: white; border-radius: 15px;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.8); z-index: 9999;
+            opacity: 0; transition: all 0.4s ease;
         }
-        .popup-ad.active, .captcha-popup.active { 
-            transform: translate(-50%, -50%) scale(1) !important; opacity: 1 !important; 
-            visibility: visible !important; 
+        .popup-ad.active, .captcha-popup.active {
+            transform: translate(-50%, -50%) scale(1); opacity: 1;
         }
-        .popup-ad iframe, .captcha-container iframe { 
-            width: 100% !important; height: 100% !important; border: none !important; 
+        .popup-ad iframe { width: 100%; height: 100%; border: none; border-radius: 15px; }
+        .overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.7); z-index: 9998; opacity: 0;
+            transition: opacity 0.4s ease;
         }
-        .overlay { 
-            position: fixed !important; top: 0 !important; left: 0 !important; 
-            width: 100% !important; height: 100% !important; 
-            background: rgba(0,0,0,0.7) !important; z-index: 99999 !important; 
-            opacity: 0; visibility: hidden; transition: all 0.4s ease;
+        .overlay.active { opacity: 1; }
+        .close-btn {
+            position: absolute; top: 12px; right: 15px; background: #eee;
+            border: none; width: 35px; height: 35px; border-radius: 50%;
+            font-size: 22px; font-weight: bold; cursor: pointer; z-index: 10000;
         }
-        .overlay.active { opacity: 1 !important; visibility: visible !important; }
-        .close-btn { 
-            position: absolute !important; top: 12px !important; right: 15px !important; 
-            background: rgba(255,255,255,0.95) !important; border: none !important; 
-            width: 32px !important; height: 32px !important; border-radius: 50% !important; 
-            cursor: pointer !important; font-size: 20px !important; font-weight: bold !important; 
-            z-index: 100000 !important; transition: all 0.3s ease;
+        .close-btn:hover { background: #ff4757; color: white; }
+        .captcha-container { padding: 25px; text-align: center; }
+        .success-msg {
+            position: fixed; top: 30px; right: 30px; background: #27ae60;
+            color: white; padding: 20px 30px; border-radius: 30px;
+            font-weight: bold; z-index: 10001; transform: scale(0);
+            transition: all 0.4s ease; box-shadow: 0 15px 35px rgba(39,174,96,0.4);
         }
-        .close-btn:hover { background: #ff4757 !important; color: white !important; transform: scale(1.1) !important; }
-        .captcha-container { padding: 20px; text-align: center; }
-        .captcha-title { margin-bottom: 15px; color: #2c3e50; font-size: 1.2em; }
-        .success-indicator { 
-            position: fixed !important; top: 20px !important; right: 20px !important; 
-            background: #27ae60 !important; color: white !important; padding: 15px 25px !important; 
-            border-radius: 25px !important; font-weight: bold !important; z-index: 100001 !important; 
-            transform: scale(0); transition: all 0.3s ease !important; 
-            box-shadow: 0 10px 30px rgba(39,174,96,0.6) !important;
-        }
-        .success-indicator.show { transform: scale(1) !important; }
+        .success-msg.show { transform: scale(1); }
     </style>
 </head>
 <body>
 
-<!-- 🔥 DIRECT AD IFRAME - DIRECTLY ABOVE BODY 🔥 -->
-<div class="overlay" id="adOverlay"></div>
-<div class="popup-ad" id="popupAd">
-    <button class="close-btn" id="closeAd">×</button>
-    <iframe id="adIframe" src="https://www.effectivegatecpm.com/bdzwmnqkv?key=1aa444e7a4b2342a953947ed211aefcd" frameborder="0"></iframe>
+<!-- 🔥 DIRECT AD - LOADED INSTANT 🔥 -->
+<div class="overlay" id="adOverlay" style="display:none;"></div>
+<div class="popup-ad" id="popupAd" style="display:none;">
+    <button class="close-btn" onclick="clicker.closeAll()">×</button>
+    <iframe id="adIframe" src="https://www.effectivegatecpm.com/bdzwmnqkv?key=1aa444e7a4b2342a953947ed211aefcd"></iframe>
 </div>
 
 <!-- CAPTCHA -->
-<div class="overlay" id="captchaOverlay"></div>
-<div class="captcha-popup" id="captchaPopup">
-    <button class="close-btn" id="closeCaptcha">×</button>
+<div class="overlay" id="captchaOverlay" style="display:none;"></div>
+<div class="captcha-popup" id="captchaPopup" style="display:none;">
+    <button class="close-btn" onclick="clicker.closeAll()">×</button>
     <div class="captcha-container">
-        <div class="captcha-title">🔐 Verifikasi Manusia</div>
-        <iframe id="captchaFrame" src="data:text/html,
-            <html><head><style>
-                body{margin:20px;font-family:sans-serif;text-align:center;background:#f8f9fa;}
-                #slider{width:280px;height:8px;margin:25px 0;background:#e9ecef;border-radius:5px;
-                    -webkit-appearance:none;appearance:none;}
-                #slider::-webkit-slider-thumb{height:25px;width:25px;background:#007bff;border-radius:50%;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,0.3);}
-                #status{font-size:18px;color:#495057;font-weight:500;}
-            </style></head><body>
-            <div>✋ Lengkapi verifikasi</div>
-            <input type='range' id='slider' min='0' max='100' value='0'>
-            <div id='status'>0%</div>
-            <script>
-                const slider = document.getElementById('slider');
-                const status = document.getElementById('status');
-                slider.oninput = (e) => status.textContent = Math.floor(e.target.value) + '%';
-                slider.onchange = () => {
-                    if(slider.value == 100) {
-                        parent.postMessage({type:'CAPTCHA_SOLVED', verified:true}, '*');
-                        document.body.innerHTML = '<div style=\"color:#28a745;font-size:28px;padding:30px;\">✅ Verifikasi Selesai!</div>';
-                    }
-                };
-            </script>
-        </body></html>">
-    </iframe>
-</div>
-
-<div class="container">
-    <header>
-        <h1>📰 NewsHub Unlimited</h1>
-        <p>Berita real-time • UNLIMITED CLICKS • 100% Stealth</p>
-        <div class="status-panel" id="statusPanel">
-            <strong>⚡ UNLIMITED MODE:</strong> <span id="statusText">🔥 Inisialisasi...</span> | 
-            Total: <span id="clickCount">0</span> | 
-            Human: <span id="humanScore">0</span> | 
-            Last: <span id="lastClick">--</span> | 
-            Next: <span id="nextClick">--</span>
-        </div>
-    </header>
-    
-    <div class="articles">
-        <div class="article" data-id="1"><h2>🚀 AI 2026 Terbaru</h2><p>GPT-7 mengalahkan semua benchmark manusia...</p></div>
-        <div class="article" data-id="2"><h2>💰 Bitcoin $250K</h2><p>Prediksi pakar dengan ETF...</p></div>
-        <div class="article" data-id="3"><h2>🌐 Web5 Aktif</h2><p>Internet terdesentralisasi live...</p></div>
-        <div class="article" data-id="4"><h2>🧠 Neuralink 1M+</h2><p>Pengguna worldwide...</p></div>
+        <h3>🔐 Verifikasi</h3>
+        <iframe id="captchaFrame"></iframe>
     </div>
 </div>
 
-<!-- Success -->
-<div class="success-indicator" id="successNotify">✅ CLICK #<span id="clickNum">1</span> SUKSES!</div>
+<div class="container">
+    <div class="header">
+        <h1>📰 NewsHub Unlimited</h1>
+        <p style="color: #666; font-size: 1.1em;">Klik artikel • Unlimited Ads • 100% Stealth</p>
+        <div class="status" id="status">
+            <strong>⚡ STATUS:</strong> <span id="statusText">Loading...</span> | 
+            Clicks: <span id="clickCount">0</span> | 
+            Human: <span id="humanScore">0</span>
+        </div>
+    </div>
+    
+    <div class="articles">
+        <div class="article" onclick="alert('Human click detected! +25 score')">
+            <h2>🚀 AI GPT-7 Live</h2>
+            <p>Artificial intelligence terbaru 2026...</p>
+        </div>
+        <div class="article" onclick="alert('Good activity! +20 score')">
+            <h2>💰 Bitcoin $250K</h2>
+            <p>Prediksi harga Bitcoin menuju puncak...</p>
+        </div>
+        <div class="article" onclick="alert('Activity boost! +30 score')">
+            <h2>🌐 Web5 Terdesentralisasi</h2>
+            <p>Internet masa depan sudah aktif...</p>
+        </div>
+        <div class="article" onclick="alert('Perfect! Ready for click')">
+            <h2>🧠 Neuralink 1 Juta User</h2>
+            <p>Implant otak mencapai milestone...</p>
+        </div>
+    </div>
+</div>
+
+<div class="success-msg" id="successMsg">✅ CLICK #<span id="clickNum">1</span> SUCCESS!</div>
 
 <script>
-console.log('🚀 UNLIMITED CLICKER LOADED!');
+console.log('🔥 UNLIMITED CLICKER v2 - FIXED DISPLAY');
 
-class UnlimitedClickerFixed {
+let clicker;
+
+class Clicker {
     constructor() {
         this.clicks = 0;
-        this.humanScore = 0;
-        this.lastClickTime = 0;
-        this.nextClickTime = 0;
+        this.score = 0;
         this.init();
     }
     
     init() {
-        console.log('🔥 Starting Unlimited Mode...');
-        this.attachListeners();
-        this.updateStatus('🚀 Mode Unlimited AKTIF - Building human profile...');
-        
-        // Start immediately
-        setTimeout(() => this.startUnlimited(), 3000);
+        console.log('🚀 Clicker started');
+        this.updateStatus('✅ READY - Move mouse untuk build score');
+        this.humanActivity();
+        setTimeout(() => this.startFlow(), 2000);
     }
     
-    attachListeners() {
-        // Human activity tracker
-        let activityTimer;
-        document.addEventListener('mousemove', (e) => {
-            this.humanScore += 0.2;
-            clearTimeout(activityTimer);
-            activityTimer = setTimeout(() => this.humanScore *= 0.98, 5000);
+    humanActivity() {
+        document.addEventListener('mousemove', () => {
+            this.score += 1;
+            this.updateStatus('👤 Building human score...');
         });
-        
-        document.addEventListener('click', () => this.humanScore += 10);
-        document.addEventListener('scroll', () => this.humanScore += 2);
-        document.addEventListener('keydown', () => this.humanScore += 5);
-        
-        // Articles
-        document.querySelectorAll('.article').forEach(article => {
-            article.addEventListener('mouseenter', () => {
-                article.style.boxShadow = '0 15px 40px rgba(52,152,219,0.3)';
-            });
-            article.addEventListener('mouseleave', () => {
-                article.style.boxShadow = '0 8px 25px rgba(0,0,0,0.1)';
-            });
-            article.addEventListener('click', () => {
-                this.humanScore += 25;
-                article.style.background = '#e3f2fd';
-                setTimeout(() => article.style.background = '', 2000);
-            });
-        });
-        
-        // Auto scroll simulation
-        setInterval(() => {
-            if (Math.random() > 0.8) {
-                window.scrollBy(0, (Math.random() - 0.5) * 100);
-                this.humanScore += 1;
-            }
-        }, 7000);
-        
-        // Controls
-        document.getElementById('closeAd').onclick = () => this.closeAll();
-        document.getElementById('closeCaptcha').onclick = () => this.closeAll();
-        document.querySelectorAll('.overlay').forEach(overlay => {
-            overlay.onclick = () => this.closeAll();
-        });
+        document.addEventListener('click', () => this.score += 15);
+        document.addEventListener('scroll', () => this.score += 5);
     }
     
-    startUnlimited() {
-        if (this.humanScore < 25) {
-            setTimeout(() => this.startUnlimited(), 2000);
+    startFlow() {
+        if (this.score < 20) {
+            setTimeout(() => this.startFlow(), 1000);
             return;
         }
-        this.executeFlow();
+        this.captchaSolve();
     }
     
-    async executeFlow() {
-        this.updateStatus('🔐 CAPTCHA bypass...');
-        await this.solveCaptcha();
+    captchaSolve() {
+        console.log('🔐 CAPTCHA');
+        const captchaPopup = document.getElementById('captchaPopup');
+        const captchaOverlay = document.getElementById('captchaOverlay');
+        captchaPopup.style.display = 'block';
+        captchaOverlay.style.display = 'block';
+        captchaPopup.classList.add('active');
+        captchaOverlay.classList.add('active');
         
-        this.updateStatus('⏳ Verifikasi network...');
-        await this.waitVerification();
+        document.getElementById('captchaFrame').src = 'data:text/html,<style>body{font-family:sans-serif;text-align:center;padding:30px;background:#f5f5f5;}#slider{width:300px;height:10px;margin:30px 0;}</style><h3>Slide to 100%</h3><input type=range id=slider min=0 max=100 value=0><div id=status>0%</div><script>slider=document.getElementById("slider");status=document.getElementById("status");slider.oninput=e=>status.textContent=Math.round(e.target.value)+" %";slider.onchange=()=>{if(slider.value>=100){parent.postMessage({type:"SOLVED"}, "*");document.body.innerHTML="<h2 style=\\"color:#27ae60\\">✅ DONE</h2>"}}</script>';
         
-        this.updateStatus('💥 MAIN CLICK EXECUTE!');
-        this.mainClick();
-    }
-    
-    solveCaptcha() {
-        return new Promise(resolve => {
-            const captchaPopup = document.getElementById('captchaPopup');
-            const captchaOverlay = document.getElementById('captchaOverlay');
-            
-            captchaPopup.classList.add('active');
-            captchaOverlay.classList.add('active');
-            
-            // Auto slider solve
-            setTimeout(() => {
-                const sliderFrame = document.getElementById('captchaFrame');
-                let progress = 0;
-                const solve = setInterval(() => {
-                    progress += 2.2 + Math.random() * 1.8;
-                    if (progress >= 100) {
-                        progress = 100;
-                        clearInterval(solve);
-                        
-                        // Trigger solve
-                        setTimeout(() => {
-                            sliderFrame.contentDocument?.getElementById('slider')?.dispatchEvent(new Event('change'));
-                        }, 250);
-                    }
-                }, 55);
-            }, 1200);
-            
-            // Listen solve
-            const handler = (e) => {
-                if (e.data?.type === 'CAPTCHA_SOLVED') {
-                    window.removeEventListener('message', handler);
-                    this.humanScore += 35;
-                    captchaPopup.classList.remove('active');
-                    captchaOverlay.classList.remove('active');
-                    resolve();
-                }
-            };
-            window.addEventListener('message', handler);
+        window.addEventListener('message', (e) => {
+            if (e.data.type === 'SOLVED') {
+                captchaPopup.classList.remove('active');
+                setTimeout(() => {
+                    captchaPopup.style.display = 'none';
+                    captchaOverlay.style.display = 'none';
+                    this.waitThenClick();
+                }, 800);
+            }
         });
     }
     
-    waitVerification() {
-        return new Promise(r => setTimeout(r, this.rand(4000, 8000)));
-    }
-    
-    mainClick() {
-        const popupAd = document.getElementById('popupAd');
-        const overlay = document.getElementById('adOverlay');
-        
-        // DIRECT SHOW - iframe sudah ada dan loaded
-        popupAd.classList.add('active');
-        overlay.classList.add('active');
-        document.body.style.overflow = 'hidden';
-        
-        // Simulate human mouse path to ad
-        this.humanMouseToAd();
-    }
-    
-    humanMouseToAd() {
-        const adIframe = document.getElementById('adIframe');
-        const steps = 25;
-        const duration = this.rand(2800, 4500);
-        const startX = window.innerWidth * (0.3 + Math.random() * 0.4);
-        const startY = window.innerHeight * (0.2 + Math.random() * 0.3);
-        const endX = window.innerWidth * 0.5 + (Math.random() - 0.5) * 100;
-        const endY = window.innerHeight * 0.5 + (Math.random() - 0.5) * 80;
-        
-        for (let i = 0; i <= steps; i++) {
-            setTimeout(() => {
-                const t = i / steps;
-                const ease = t * t * (3 - 2 * t); // Smoothstep
-                const x = startX + (endX - startX) * ease + (Math.random() - 0.5) * 15;
-                const y = startY + (endY - startY) * ease + (Math.random() - 0.5) * 12;
-                
-                this.mouseMove(x, y);
-            }, i * (duration / steps));
-        }
-        
-        // CLICK after path
-        setTimeout(() => this.perfectClick(adIframe), duration + this.rand(600, 1200));
-    }
-    
-    perfectClick(adIframe) {
-        const rect = adIframe.getBoundingClientRect();
-        const clickX = rect.left + rect.width * (0.25 + Math.random() * 0.5);
-        const clickY = rect.top + rect.height * (0.25 + Math.random() * 0.5);
-        
-        // Full event chain
-        ['mouseenter', 'mouseover', 'mousedown'].forEach((type, i) => {
-            setTimeout(() => {
-                const evt = new MouseEvent(type, {
-                    bubbles: true, clientX: clickX, clientY: clickY,
-                    button: 0, buttons: type === 'mousedown' ? 1 : 0,
-                    pressure: 0.7 + Math.random() * 0.3,
-                    isTrusted: true
-                });
-                adIframe.dispatchEvent(evt);
-            }, i * 120);
-        });
-        
-        // FINAL CLICK
+    waitThenClick() {
+        this.updateStatus('⏳ Wait verification...');
         setTimeout(() => {
-            const click = new MouseEvent('click', {
-                bubbles: true, clientX: clickX, clientY: clickY,
-                button: 0, buttons: 1, pressure: 0.9,
-                isTrusted: true, detail: 1
-            });
-            adIframe.dispatchEvent(click);
-            adIframe.dispatchEvent(new MouseEvent('mouseup', {bubbles: true, clientX: clickX, clientY: clickY}));
-            
-            this.clickSuccess();
-        }, 480);
+            this.doClick();
+        }, 4000 + Math.random() * 3000);
     }
     
-    clickSuccess() {
+    doClick() {
+        console.log('💥 CLICK!');
+        const adPopup = document.getElementById('popupAd');
+        const adOverlay = document.getElementById('adOverlay');
+        
+        adPopup.style.display = 'block';
+        adOverlay.style.display = 'block';
+        adPopup.classList.add('active');
+        adOverlay.classList.add('active');
+        
+        // Human-like click after delay
+        setTimeout(() => this.clickAd(), 3000 + Math.random() * 2000);
+    }
+    
+    clickAd() {
+        const iframe = document.getElementById('adIframe');
+        const rect = iframe.getBoundingClientRect();
+        const x = rect.left + rect.width * 0.4;
+        const y = rect.top + rect.height * 0.4;
+        
+        // Click events
+        iframe.dispatchEvent(new MouseEvent('click', {
+            bubbles: true, clientX: x, clientY: y, button: 0
+        }));
+        
+        this.success();
+    }
+    
+    success() {
         this.clicks++;
-        this.lastClickTime = Date.now();
-        this.humanScore += 75;
-        this.nextClickTime = Date.now() + this.rand(10*60*1000, 28*60*1000);
+        this.updateStatus(`✅ CLICK #${this.clicks} DONE! Next: 15min`);
         
-        this.updateStatus(`✅ CLICK #${this.clicks} SUKSES! Next: ${Math.round((this.nextClickTime-Date.now())/60000)}min`);
-        
-        // Success popup
-        const notify = document.getElementById('successNotify');
+        const msg = document.getElementById('successMsg');
         document.getElementById('clickNum').textContent = this.clicks;
-        notify.classList.add('show');
-        setTimeout(() => notify.classList.remove('show'), 3500);
+        msg.classList.add('show');
+        setTimeout(() => msg.classList.remove('show'), 3000);
         
-        console.log(`🎉 CLICK #${this.clicks} SUCCESS! 💰 Total: ${this.clicks}`);
-        
-        // Close & next cycle
+        // Close
         setTimeout(() => {
-            this.closeAll();
-            setTimeout(() => this.executeFlow(), this.rand(150*1000, 320*1000));
-        }, this.rand(5000, 11000));
-    }
-    
-    closeAll() {
-        document.querySelectorAll('.active').forEach(el => el.classList.remove('active'));
-        document.body.style.overflow = '';
+            document.querySelectorAll('.active').forEach(el => el.classList.remove('active'));
+            setTimeout(() => {
+                document.querySelectorAll('#popupAd, #adOverlay, #captchaPopup, #captchaOverlay').forEach(el => el.style.display = 'none');
+                setTimeout(() => this.startFlow(), 1000 * 60 * 15); // 15min
+            }, 5000);
+        }, 8000);
     }
     
     updateStatus(text) {
         document.getElementById('statusText').textContent = text;
-        document.getElementById('humanScore').textContent = Math.floor(this.humanScore);
+        document.getElementById('humanScore').textContent = Math.floor(this.score);
         document.getElementById('clickCount').textContent = this.clicks;
-        const next = Math.max(0, Math.round((this.nextClickTime - Date.now()) / 60000));
-        document.getElementById('nextClick').textContent = next ? `${next}min` : 'Segera';
-        document.getElementById('lastClick').textContent = 
-            this.lastClickTime ? new Date(this.lastClickTime).toLocaleTimeString('id-ID') : '--';
     }
     
-    mouseMove(x, y) {
-        const evt = new MouseEvent('mousemove', {
-            bubbles: true, clientX: x, clientY: y, isTrusted: true
-        });
-        document.elementFromPoint(x, y)?.dispatchEvent(evt);
-    }
-    
-    rand(min, max) {
-        return Math.floor(Math.random() * (max - min)) + min;
+    closeAll() {
+        document.querySelectorAll('.active').forEach(el => el.classList.remove('active'));
     }
 }
 
-// 🔥 LAUNCH UNLIMITED!
-const clicker = new UnlimitedClickerFixed();
-
-// Reset: Ctrl+Shift+R
-document.addEventListener('keydown', e => {
-    if (e.ctrlKey && e.shiftKey && e.key === 'R') {
-        location.reload();
-    }
-});
-
-console.log('✅ UNLIMITED CLICKER READY! New link loaded.');
+// START
+clicker = new Clicker();
+console.log('✅ PAGE LOADED - Move mouse!');
 </script>
 
 </body>
