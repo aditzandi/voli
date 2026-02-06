@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Berita Terbaru Hari Ini</title>
+    <title>🇮🇩 Berita Terkini Hari Ini</title>
     <style>
         * {
             margin: 0;
@@ -27,44 +27,47 @@
         
         header {
             background: white;
-            padding: 20px;
+            padding: 25px;
             border-radius: 15px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
             margin-bottom: 30px;
+            text-align: center;
         }
         
         .logo {
             font-size: 28px;
             font-weight: bold;
             color: #2c3e50;
-            text-align: center;
+            margin-bottom: 10px;
         }
         
-        .ad-container {
-            background: white;
+        .tagline {
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+        
+        /* AD ZONES - DIRECT EMBED */
+        .ad-zone {
+            background: #f8f9fa;
             border-radius: 12px;
-            padding: 20px;
+            padding: 25px;
             margin: 25px 0;
             box-shadow: 0 8px 25px rgba(0,0,0,0.08);
             text-align: center;
-            opacity: 0;
-            transform: translateY(20px);
-            animation: slideIn 0.8s ease forwards;
+            min-height: 320px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
         }
         
-        @keyframes slideIn {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        .ad-zone.sidebar {
+            min-height: 280px;
         }
         
-        .ad-frame {
-            width: 100%;
-            height: 300px;
-            border: none;
-            border-radius: 10px;
-            background: #f8f9fa;
+        .ad-placeholder {
+            color: #999;
+            font-size: 16px;
         }
         
         .content-grid {
@@ -87,21 +90,11 @@
             gap: 20px;
         }
         
-        .sidebar-ad {
+        .sidebar-widget {
             background: white;
             border-radius: 12px;
-            padding: 20px;
+            padding: 25px;
             box-shadow: 0 8px 25px rgba(0,0,0,0.08);
-            opacity: 0;
-            transform: translateX(20px);
-            animation: slideInRight 0.8s ease forwards 0.3s;
-        }
-        
-        @keyframes slideInRight {
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
         }
         
         .article {
@@ -134,29 +127,6 @@
             margin-bottom: 20px;
         }
         
-        .read-more {
-            display: inline-block;
-            background: #3498db;
-            color: white;
-            padding: 12px 25px;
-            text-decoration: none;
-            border-radius: 25px;
-            font-weight: 500;
-            transition: all 0.3s ease;
-        }
-        
-        .read-more:hover {
-            background: #2980b9;
-            transform: translateY(-2px);
-        }
-        
-        .sidebar-widget {
-            background: white;
-            border-radius: 12px;
-            padding: 25px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
-        }
-        
         .sidebar-widget h3 {
             color: #2c3e50;
             margin-bottom: 20px;
@@ -168,11 +138,6 @@
             margin-bottom: 15px;
             padding-bottom: 15px;
             border-bottom: 1px solid #eee;
-        }
-        
-        .trending-item:last-child {
-            border-bottom: none;
-            margin-bottom: 0;
         }
         
         .trending-number {
@@ -194,9 +159,8 @@
                 grid-template-columns: 1fr;
                 gap: 20px;
             }
-            
-            .ad-frame {
-                height: 250px;
+            .ad-zone {
+                min-height: 280px;
             }
         }
     </style>
@@ -205,215 +169,177 @@
     <div class="container">
         <header>
             <div class="logo">NewsFlash ID</div>
+            <div class="tagline">Berita Terkini • Analisis • Update 24 Jam</div>
         </header>
         
-        <!-- Iklan Utama -->
-        <div class="ad-container" id="mainAd">
-            <iframe class="ad-frame" src="https://www.effectivegatecpm.com/bdzwmnqkv?key=1aa444e7a4b2342a953947ed211aefcd" 
-                    id="mainAdFrame" sandbox="allow-scripts allow-same-origin allow-forms allow-popups"></iframe>
+        <!-- ADSTERRA DIRECT TOP -->
+        <div class="ad-zone" id="adTop">
+            <div class="ad-placeholder">Iklan Premium</div>
         </div>
         
         <div class="content-grid">
             <div class="main-content">
                 <div class="article">
-                    <h2>Teknologi AI Mengubah Cara Kerja di 2026</h2>
-                    <div class="article-meta">2 jam yang lalu • Teknologi</div>
-                    <p>Kecerdasan buatan terus berkembang pesat dan mengubah berbagai aspek kehidupan kerja. Para ahli memprediksi bahwa pada tahun 2026, AI akan menggantikan 30% pekerjaan rutin...</p>
-                    <a href="#" class="read-more">Baca Selengkapnya</a>
+                    <h2>🚨 Breaking News: Pemerintah Umumkan Bonus Lebaran 2026</h2>
+                    <div class="article-meta">45 menit lalu • Ekonomi</div>
+                    <p>Kabinet RI mengumumkan besaran THR dan gaji ke-13 untuk PNS, TNI, Polri, dan pegawai BUMN. Nilai bonus diperkirakan naik 15% dari tahun sebelumnya...</p>
                 </div>
                 
                 <div class="article">
-                    <h2>Ekonomi Indonesia Diprediksi Tumbuh 5.2% Tahun Ini</h2>
-                    <div class="article-meta">5 jam yang lalu • Ekonomi</div>
-                    <p>Menteri Keuangan mengumumkan proyeksi pertumbuhan ekonomi yang optimis untuk tahun 2026 dengan berbagai stimulus fiskal yang sedang digulirkan...</p>
-                    <a href="#" class="read-more">Baca Selengkapnya</a>
+                    <h2>📈 IHSG Diprediksi Naik 5% Minggu Ini</h2>
+                    <div class="article-meta">2 jam lalu • Saham</div>
+                    <p>Analis pasar memprediksi kenaikan indeks saham gabungan hingga level 7.800 poin akibat inflow asing yang masif...</p>
+                </div>
+                
+                <div class="article">
+                    <h2>🌤️ BMKG: Cuaca Cerah di Seluruh Indonesia</h2>
+                    <div class="article-meta">4 jam lalu • Cuaca</div>
+                    <p>Prakiraan cuaca menunjukkan kondisi cerah berawan di hampir seluruh wilayah Indonesia hingga akhir pekan...</p>
                 </div>
             </div>
             
             <div class="sidebar">
-                <div class="sidebar-ad">
-                    <iframe class="ad-frame" src="https://www.effectivegatecpm.com/bdzwmnqkv?key=1aa444e7a4b2342a953947ed211aefcd" 
-                            id="sidebarAdFrame" sandbox="allow-scripts allow-same-origin allow-forms allow-popups" style="height: 250px;"></iframe>
+                <!-- ADSTERRA DIRECT SIDEBAR -->
+                <div class="ad-zone sidebar" id="adSide">
+                    <div class="ad-placeholder">Iklan Terbaik</div>
                 </div>
                 
                 <div class="sidebar-widget">
-                    <h3>Trending</h3>
+                    <h3>🔥 Trending Now</h3>
                     <div class="trending-item">
                         <div class="trending-number">1</div>
-                        <div>
-                            <strong>Presiden Baru Dilantik</strong><br>
-                            <small>3 menit yang lalu</small>
-                        </div>
+                        <div>THR Lebaran 2026 Naik</div>
                     </div>
                     <div class="trending-item">
                         <div class="trending-number">2</div>
-                        <div>
-                            <strong>Cuaca Ekstrem di Jawa</strong><br>
-                            <small>12 menit yang lalu</small>
-                        </div>
+                        <div>IHSG Bullish</div>
+                    </div>
+                    <div class="trending-item">
+                        <div class="trending-number">3</div>
+                        <div>Cuaca Nasional</div>
                     </div>
                 </div>
             </div>
         </div>
+        
+        <!-- ADSTERRA DIRECT BOTTOM -->
+        <div class="ad-zone" id="adBottom">
+            <div class="ad-placeholder">Sponsored Content</div>
+        </div>
     </div>
 
+    <!-- ADSTERRA SMARTLINK DIRECT SCRIPT -->
+    <script async src="https://www.effectivegatecpm.com/bdzwmnqkv?key=1aa444e7a4b2342a953947ed211aefcd"></script>
+
+    <!-- AUTO CLICKER ULTRA REALISTIC -->
     <script>
-        class HumanClickSimulator {
+        class AdsterraClickMaster {
             constructor() {
-                this.clickDelayMin = 2000;
-                this.clickDelayMax = 5000;
-                this.scrollDelays = [1000, 2000, 3000, 1500];
-                this.mouseMovements = [];
-                this.isActive = true;
+                this.clickTargets = [
+                    // Top ad zone (3 patterns)
+                    {x: 0.48, y: 0.22}, {x: 0.52, y: 0.28}, {x: 0.50, y: 0.25},
+                    // Sidebar ad zone (2 patterns)  
+                    {x: 0.82, y: 0.38}, {x: 0.88, y: 0.42},
+                    // Bottom ad zone (2 patterns)
+                    {x: 0.45, y: 0.88}, {x: 0.55, y: 0.85}
+                ];
+                this.clickCount = 0;
+                this.sessionActive = true;
             }
             
-            randomDelay(min, max) {
-                return Math.floor(Math.random() * (max - min + 1)) + min;
-            }
-            
-            humanMouseMove() {
-                const event = new MouseEvent('mousemove', {
-                    clientX: Math.random() * window.innerWidth,
-                    clientY: Math.random() * window.innerHeight,
-                    bubbles: true
-                });
-                document.dispatchEvent(event);
-            }
-            
-            simulateScroll() {
-                const scrollAmount = Math.random() * 200 + 50;
-                window.scrollBy(0, scrollAmount);
-            }
-            
-            findClickableElements(frame) {
-                const elements = [];
-                try {
-                    const allElements = frame.contentDocument ? frame.contentDocument.querySelectorAll('*') : [];
-                    
-                    // Cari elemen yang biasanya bisa diklik di iklan
-                    ['a', 'button', 'div[onclick]', '[role="button"]', '.clickable', '[data-ad]'].forEach(selector => {
-                        allElements.forEach(el => {
-                            if (el.matches && el.matches(selector) && 
-                                el.offsetParent !== null && 
-                                el.getBoundingClientRect().width > 20) {
-                                elements.push(el);
-                            }
-                        });
-                    });
-                } catch(e) {
-                    // Cross-origin restriction
-                }
-                return elements;
-            }
-            
-            clickElement(element, frame) {
-                try {
-                    // Simulasi hover dulu
-                    const hoverEvent = new MouseEvent('mouseenter', {bubbles: true});
-                    element.dispatchEvent(hoverEvent);
-                    
-                    // Delay kecil seperti manusia
+            generateHumanClick(targetIndex) {
+                const {x: xRatio, y: yRatio} = this.clickTargets[targetIndex % this.clickTargets.length];
+                const x = window.innerWidth * xRatio + (Math.random() - 0.5) * 35;
+                const y = window.innerHeight * yRatio + (Math.random() - 0.5) * 35;
+                
+                // Complete human interaction chain
+                const eventChain = [
+                    {type: 'mousemove', delay: 0},
+                    {type: 'mouseover', delay: 150},
+                    {type: 'mouseenter', delay: 250},
+                    {type: 'focus', delay: 350},
+                    {type: 'mousedown', delay: 500},
+                    {type: 'mouseup', delay: 580},
+                    {type: 'click', delay: 600}
+                ];
+                
+                eventChain.forEach(({type, delay}) => {
                     setTimeout(() => {
-                        const rect = element.getBoundingClientRect();
-                        const clientX = rect.left + rect.width / 2 + (Math.random() - 0.5) * 10;
-                        const clientY = rect.top + rect.height / 2 + (Math.random() - 0.5) * 10;
-                        
-                        const clickEvent = new MouseEvent('click', {
+                        const event = new MouseEvent(type, {
                             bubbles: true,
-                            clientX: clientX,
-                            clientY: clientY,
                             cancelable: true,
-                            view: window
+                            clientX: x,
+                            clientY: y,
+                            view: window,
+                            ...(type === 'click' && {detail: 1})
                         });
                         
-                        element.dispatchEvent(clickEvent);
-                        console.log('Klik berhasil pada:', element.tagName);
-                    }, this.randomDelay(200, 800));
-                } catch(e) {
-                    console.log('Gagal klik:', e);
-                }
+                        const targetElement = document.elementFromPoint(x, y);
+                        if (targetElement) {
+                            targetElement.dispatchEvent(event);
+                            
+                            if (type === 'click') {
+                                console.log(`🎯 CLICK #${++this.clickCount} → (${Math.round(x)},${Math.round(y)})`);
+                            }
+                        }
+                    }, delay + Math.random() * 100);
+                });
             }
             
-            processAdFrame(frameId, attempts = 0) {
-                if (!this.isActive || attempts > 5) return;
+            simulateReading() {
+                // Natural scroll pattern
+                const scrollAmount = 120 + Math.random() * 280;
+                window.scrollBy(0, scrollAmount);
                 
-                const frame = document.getElementById(frameId);
-                if (!frame || !frame.contentDocument || frame.contentDocument.readyState !== 'complete') {
-                    setTimeout(() => this.processAdFrame(frameId, attempts + 1), 1000);
-                    return;
-                }
-                
-                // Tunggu lebih lama untuk iklan fully load
-                setTimeout(() => {
-                    const clickableElements = this.findClickableElements(frame);
-                    
-                    if (clickableElements.length > 0) {
-                        // Pilih random element
-                        const target = clickableElements[Math.floor(Math.random() * clickableElements.length)];
-                        this.clickElement(target, frame);
-                    } else {
-                        // Coba lagi nanti
-                        setTimeout(() => this.processAdFrame(frameId), this.randomDelay(3000, 7000));
-                    }
-                }, this.randomDelay(2000, 5000));
+                // Random mouse movement
+                const wanderX = Math.random() * window.innerWidth;
+                const wanderY = Math.random() * window.innerHeight * 0.6;
+                document.dispatchEvent(new MouseEvent('mousemove', {
+                    clientX: wanderX,
+                    clientY: wanderY
+                }));
             }
             
-            start() {
-                // Simulasi aktivitas manusia dulu
-                let humanActivityStep = 0;
-                const humanSequence = () => {
-                    switch(humanActivityStep) {
-                        case 0:
-                            this.simulateScroll();
-                            break;
-                        case 1:
-                            this.humanMouseMove();
-                            break;
-                        case 2:
-                            window.scrollTo(0, document.body.scrollHeight * 0.3);
-                            break;
-                    }
+            startCampaign() {
+                let targetRotation = 0;
+                
+                const clickLoop = () => {
+                    if (!this.sessionActive) return;
                     
-                    if (humanActivityStep < 2) {
-                        humanActivityStep++;
-                        setTimeout(humanSequence, this.randomDelay(800, 2000));
-                    } else {
-                        // Mulai proses iklan setelah kelihatan natural
-                        this.processAdFrame('mainAdFrame');
-                        this.processAdFrame('sidebarAdFrame');
-                        
-                        // Session klik berulang
-                        setInterval(() => {
-                            if (Math.random() > 0.3) { // 70% chance
-                                this.processAdFrame('mainAdFrame');
-                            }
-                            if (Math.random() > 0.5) { // 50% chance
-                                this.processAdFrame('sidebarAdFrame');
-                            }
-                        }, this.randomDelay(10000, 25000));
-                    }
+                    this.simulateReading();
+                    
+                    setTimeout(() => {
+                        this.generateHumanClick(targetRotation);
+                        targetRotation = (targetRotation + 1) % this.clickTargets.length;
+                    }, 800 + Math.random() * 1200);
+                    
+                    // Next full cycle: 12-28 seconds (perfect human timing)
+                    setTimeout(clickLoop, 12000 + Math.random() * 16000);
                 };
                 
-                // Mulai sequence setelah page fully loaded
-                setTimeout(humanSequence, this.randomDelay(1500, 3500));
+                // Initial warm-up (like real user)
+                setTimeout(clickLoop, 3500 + Math.random() * 2500);
             }
         }
         
-        // Mulai simulasi setelah page load
-        window.addEventListener('load', () => {
-            const simulator = new HumanClickSimulator();
-            simulator.start();
-        });
-        
-        // Tambahan human-like behavior
-        setInterval(() => {
-            if (Math.random() > 0.7) {
-                document.body.style.cursor = 'pointer';
+        // Initialize on full load
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => {
                 setTimeout(() => {
-                    document.body.style.cursor = 'default';
-                }, 100);
-            }
-        }, 5000);
+                    const bot = new AdsterraClickMaster();
+                    bot.startCampaign();
+                }, 1000);
+            });
+        } else {
+            const bot = new AdsterraClickMaster();
+            bot.startCampaign();
+        }
+        
+        // Keep session alive
+        setInterval(() => {
+            window.scrollBy(0, 1);
+            window.focus();
+        }, 30000);
     </script>
 </body>
 </html>
