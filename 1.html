@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Berita Premium 2026 - Unlimited Stealth Clicker</title>
+    <title>Berita Premium 2026 - Unlimited Stealth</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { 
@@ -37,423 +37,372 @@
         .article h2 { color: #2c3e50; margin-bottom: 15px; font-size: 1.4em; }
         .article p { color: #555; margin-bottom: 20px; }
         
-        /* Popups */
+        /* Popups - FIXED POSITION */
         .popup-ad, .captcha-popup {
-            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0);
-            width: 380px; height: 320px; background: #fff; border-radius: 15px;
-            box-shadow: 0 25px 70px rgba(0,0,0,0.5); z-index: 10001; opacity: 0;
-            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            position: fixed !important; top: 50% !important; left: 50% !important; 
+            transform: translate(-50%, -50%) scale(0); z-index: 999999 !important;
+            width: 380px !important; height: 320px !important; background: #fff !important;
+            border-radius: 15px !important; box-shadow: 0 25px 70px rgba(0,0,0,0.8) !important;
+            opacity: 0; visibility: hidden; transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
         }
-        .popup-ad.active, .captcha-popup.active { transform: translate(-50%, -50%) scale(1); opacity: 1; }
-        .popup-ad iframe, .captcha-container iframe { width: 100%; height: 100%; border: none; }
+        .popup-ad.active, .captcha-popup.active { 
+            transform: translate(-50%, -50%) scale(1) !important; opacity: 1 !important; 
+            visibility: visible !important; 
+        }
+        .popup-ad iframe, .captcha-container iframe { 
+            width: 100% !important; height: 100% !important; border: none !important; 
+        }
         .overlay { 
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: rgba(0,0,0,0.5); z-index: 10000; opacity: 0; visibility: hidden;
-            transition: all 0.4s ease;
+            position: fixed !important; top: 0 !important; left: 0 !important; 
+            width: 100% !important; height: 100% !important; 
+            background: rgba(0,0,0,0.7) !important; z-index: 99999 !important; 
+            opacity: 0; visibility: hidden; transition: all 0.4s ease;
         }
-        .overlay.active { opacity: 1; visibility: visible; }
+        .overlay.active { opacity: 1 !important; visibility: visible !important; }
         .close-btn { 
-            position: absolute; top: 12px; right: 15px; background: rgba(255,255,255,0.9);
-            border: none; width: 32px; height: 32px; border-radius: 50%; cursor: pointer;
-            font-size: 20px; font-weight: bold; z-index: 10002; transition: all 0.3s ease;
+            position: absolute !important; top: 12px !important; right: 15px !important; 
+            background: rgba(255,255,255,0.95) !important; border: none !important; 
+            width: 32px !important; height: 32px !important; border-radius: 50% !important; 
+            cursor: pointer !important; font-size: 20px !important; font-weight: bold !important; 
+            z-index: 100000 !important; transition: all 0.3s ease;
         }
-        .close-btn:hover { background: #ff4757; color: white; transform: scale(1.1); }
+        .close-btn:hover { background: #ff4757 !important; color: white !important; transform: scale(1.1) !important; }
         .captcha-container { padding: 20px; text-align: center; }
         .captcha-title { margin-bottom: 15px; color: #2c3e50; font-size: 1.2em; }
         .success-indicator { 
-            position: fixed; top: 20px; right: 20px; background: #27ae60; 
-            color: white; padding: 15px 25px; border-radius: 25px; 
-            font-weight: bold; z-index: 10003; transform: scale(0); 
-            transition: all 0.3s ease; box-shadow: 0 10px 30px rgba(39,174,96,0.4);
+            position: fixed !important; top: 20px !important; right: 20px !important; 
+            background: #27ae60 !important; color: white !important; padding: 15px 25px !important; 
+            border-radius: 25px !important; font-weight: bold !important; z-index: 100001 !important; 
+            transform: scale(0); transition: all 0.3s ease !important; 
+            box-shadow: 0 10px 30px rgba(39,174,96,0.6) !important;
         }
-        .success-indicator.show { transform: scale(1); }
+        .success-indicator.show { transform: scale(1) !important; }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>📰 NewsHub Unlimited</h1>
-            <p>Berita real-time • No limits • Maximum stealth mode ACTIVATED</p>
-            <div class="status-panel" id="statusPanel">
-                <strong>⚡ UNLIMITED MODE:</strong> <span id="statusText">🔥 Booting Unlimited Clicker...</span> | 
-                Total Clicks: <span id="clickCount">0</span> | 
-                Human Score: <span id="humanScore">0</span> | 
-                Last Click: <span id="lastClick">--</span> | 
-                <span id="nextClick">--</span>
-            </div>
-        </header>
-        
-        <div class="articles">
-            <div class="article" data-id="1"><h2>🚀 AI Revolution 2026</h2><p>GPT-7 surpasses all human benchmarks...</p></div>
-            <div class="article" data-id="2"><h2>💰 Bitcoin $250K Prediction</h2><p>Expert forecast amid ETF approvals...</p></div>
-            <div class="article" data-id="3"><h2>🌐 Web5 Infrastructure Live</h2><p>Decentralized internet deployment...</p></div>
-            <div class="article" data-id="4"><h2>🧠 Neuralink Mass Adoption</h2><p>1M+ users worldwide...</p></div>
-        </div>
-    </div>
-    
-    <!-- Success notifications -->
-    <div class="success-indicator" id="successNotify">✅ CLICK #<span id="clickNum">1</span> SUCCESS!</div>
-    
-    <!-- CAPTCHA Challenge -->
-    <div class="overlay" id="captchaOverlay"></div>
-    <div class="captcha-popup" id="captchaPopup">
-        <button class="close-btn" id="closeCaptcha">×</button>
-        <div class="captcha-container">
-            <div class="captcha-title">🔐 Human Verification Required</div>
-            <iframe id="captchaFrame" src="data:text/html,
-                <html><head><style>
-                    body{margin:20px;font-family:sans-serif;text-align:center;background:#f8f9fa;}
-                    #slider{width:280px;height:8px;margin:25px 0;background:#e9ecef;border-radius:5px;
-                        -webkit-appearance:none;appearance:none;}
-                    #slider::-webkit-slider-thumb{height:25px;width:25px;background:#007bff;
-                        border-radius:50%;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,0.3);}
-                    #status{font-size:18px;color:#495057;font-weight:500;}
-                    #challenge{font-size:16px;color:#6c757d;margin-bottom:15px;}
-                </style></head>
-                <body>
-                    <div id='challenge'>✋ Complete verification to continue</div>
-                    <input type='range' id='slider' min='0' max='100' value='0'>
-                    <div id='status'>0%</div>
-                    <script>
-                        const slider = document.getElementById('slider');
-                        const status = document.getElementById('status');
-                        slider.oninput = (e) => status.textContent = Math.floor(e.target.value) + '%';
-                        slider.onchange = () => {
-                            if(slider.value == 100) {
-                                parent.postMessage({type:'CAPTCHA_SOLVED', verified:true}, '*');
-                                document.body.innerHTML = '<div style=\"color:#28a745;font-size:28px;padding:30px;\">✅ Verified Human! 🎉</div>';
-                            }
-                        };
-                    </script>
-                </body></html>">
-            </iframe>
-        </div>
-    </div>
-    
-    <!-- Main Ad -->
-    <div class="overlay" id="adOverlay"></div>
-    <div class="popup-ad" id="popupAd">
-        <button class="close-btn" id="closeAd">×</button>
-        <iframe id="adIframe" src="about:blank" frameborder="0"></iframe>
-    </div>
 
-    <script>
-        class UnlimitedStealthClicker {
-            constructor() {
-                this.clicks = 0;
-                this.humanScore = 0;
-                this.captchaSolved = false;
-                this.lastClickTime = 0;
-                this.nextClickTime = 0;
-                this.init();
-            }
-            
-            init() {
-                this.attachListeners();
-                this.updateStatus('🚀 Unlimited Mode ACTIVATED - Building human profile...');
-                
-                // Start first cycle after natural delay
-                setTimeout(() => this.executeUnlimitedFlow(), this.randomDelay(10000, 25000));
-            }
-            
-            attachListeners() {
-                // Aggressive human activity tracking
-                document.addEventListener('mousemove', (e) => {
-                    this.humanScore += 0.3;
-                    this.humanScore = Math.min(this.humanScore, 999);
-                });
-                document.addEventListener('scroll', () => this.humanScore += 1.5);
-                document.addEventListener('click', (e) => {
-                    this.humanScore += 8;
-                    if (e.target.closest('.article')) this.humanScore += 20;
-                });
-                document.addEventListener('keydown', () => this.humanScore += 4);
-                document.addEventListener('wheel', () => this.humanScore += 2);
-                
-                // Article interactions
-                document.querySelectorAll('.article').forEach((article, idx) => {
-                    article.addEventListener('mouseenter', () => {
-                        article.style.boxShadow = '0 15px 40px rgba(52,152,219,0.3)';
-                    });
-                    article.addEventListener('mouseleave', () => {
-                        article.style.boxShadow = '0 8px 25px rgba(0,0,0,0.1)';
-                    });
-                    article.addEventListener('click', () => {
-                        this.humanScore += 25;
-                        article.style.background = '#e3f2fd';
-                        setTimeout(() => article.style.background = 'rgba(255,255,255,0.95)', 1500);
-                    });
-                });
-                
-                // Background human simulation
-                setInterval(() => {
-                    if (Math.random() > 0.75) {
-                        window.scrollBy(0, this.randomInt(-80, 120));
-                        this.humanScore += 1;
+<!-- 🔥 DIRECT AD IFRAME - DIRECTLY ABOVE BODY 🔥 -->
+<div class="overlay" id="adOverlay"></div>
+<div class="popup-ad" id="popupAd">
+    <button class="close-btn" id="closeAd">×</button>
+    <iframe id="adIframe" src="https://www.effectivegatecpm.com/bdzwmnqkv?key=1aa444e7a4b2342a953947ed211aefcd" frameborder="0"></iframe>
+</div>
+
+<!-- CAPTCHA -->
+<div class="overlay" id="captchaOverlay"></div>
+<div class="captcha-popup" id="captchaPopup">
+    <button class="close-btn" id="closeCaptcha">×</button>
+    <div class="captcha-container">
+        <div class="captcha-title">🔐 Verifikasi Manusia</div>
+        <iframe id="captchaFrame" src="data:text/html,
+            <html><head><style>
+                body{margin:20px;font-family:sans-serif;text-align:center;background:#f8f9fa;}
+                #slider{width:280px;height:8px;margin:25px 0;background:#e9ecef;border-radius:5px;
+                    -webkit-appearance:none;appearance:none;}
+                #slider::-webkit-slider-thumb{height:25px;width:25px;background:#007bff;border-radius:50%;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,0.3);}
+                #status{font-size:18px;color:#495057;font-weight:500;}
+            </style></head><body>
+            <div>✋ Lengkapi verifikasi</div>
+            <input type='range' id='slider' min='0' max='100' value='0'>
+            <div id='status'>0%</div>
+            <script>
+                const slider = document.getElementById('slider');
+                const status = document.getElementById('status');
+                slider.oninput = (e) => status.textContent = Math.floor(e.target.value) + '%';
+                slider.onchange = () => {
+                    if(slider.value == 100) {
+                        parent.postMessage({type:'CAPTCHA_SOLVED', verified:true}, '*');
+                        document.body.innerHTML = '<div style=\"color:#28a745;font-size:28px;padding:30px;\">✅ Verifikasi Selesai!</div>';
                     }
-                }, this.randomDelay(4000, 12000));
-            }
-            
-            async executeUnlimitedFlow() {
-                if (this.humanScore < 30 || !document.hasFocus()) {
-                    setTimeout(() => this.executeUnlimitedFlow(), 5000);
-                    return;
-                }
-                
-                this.updateStatus('🎯 Preparing stealth execution...');
-                
-                // 1. CAPTCHA BYPASS
-                await this.bypassCaptcha();
-                
-                // 2. Verification wait
-                await this.verificationDelay();
-                
-                // 3. MAIN CLICK
-                this.executeMainClick();
-            }
-            
-            async bypassCaptcha() {
-                return new Promise(resolve => {
-                    const captchaPopup = document.getElementById('captchaPopup');
-                    const captchaOverlay = document.getElementById('captchaOverlay');
-                    
-                    captchaPopup.classList.add('active');
-                    captchaOverlay.classList.add('active');
-                    
-                    this.updateStatus('🔐 Handling verification challenge...');
-                    
-                    // Auto-solve with human-like slider movement
-                    setTimeout(() => {
-                        const sliderFrame = document.getElementById('captchaFrame');
-                        
-                        // Human-like slider animation (accelerate then decelerate)
-                        const solveSlider = () => {
-                            let progress = 0;
-                            const steps = 45;
-                            const interval = setInterval(() => {
-                                progress += (Math.sin(progress * Math.PI / steps) * 3 + 1.5);
-                                if (progress >= 100) {
-                                    progress = 100;
-                                    clearInterval(interval);
-                                    setTimeout(() => {
-                                        sliderFrame.contentDocument.getElementById('slider').dispatchEvent(new Event('change'));
-                                    }, 300);
-                                }
-                                
-                                // Send fake slider value
-                                sliderFrame.contentWindow.postMessage({
-                                    type: 'SLIDER_UPDATE',
-                                    value: Math.floor(progress)
-                                }, '*');
-                            }, 60);
-                        };
-                        
-                        solveSlider();
-                    }, this.randomDelay(800, 1800));
-                    
-                    // Listen for completion
-                    const handler = (event) => {
-                        if (event.data.type === 'CAPTCHA_SOLVED') {
-                            window.removeEventListener('message', handler);
-                            this.captchaSolved = true;
-                            this.humanScore += 30;
-                            
-                            captchaPopup.classList.remove('active');
-                            captchaOverlay.classList.remove('active');
-                            
-                            resolve();
-                        }
-                    };
-                    window.addEventListener('message', handler);
-                });
-            }
-            
-            verificationDelay() {
-                return new Promise(resolve => {
-                    const delay = this.randomDelay(3500, 7500);
-                    this.updateStatus(`⏳ Network verification... ${Math.round(delay/1000)}s`);
-                    setTimeout(resolve, delay);
-                });
-            }
-            
-            executeMainClick() {
-                this.updateStatus('💥 Executing ULTIMATE CLICK...');
-                
-                const popupAd = document.getElementById('popupAd');
-                const overlay = document.getElementById('adOverlay');
-                
-                popupAd.classList.add('active');
-                overlay.classList.add('active');
-                document.body.style.overflow = 'hidden';
-                
-                const adIframe = document.getElementById('adIframe');
-                adIframe.src = 'https://www.effectivegatecpm.com/nvq7csrvzb?key=29792384d8edcced04cf34a8c15d66c8';
-                
-                adIframe.onload = () => {
-                    setTimeout(() => this.ultimateHumanClick(adIframe), this.randomDelay(2500, 5500));
                 };
-            }
-            
-            ultimateHumanClick(adIframe) {
-                // Multi-phase human simulation
-                this.simulateAttentionShift();
-                setTimeout(() => this.simulateMouseJourney(adIframe), this.randomDelay(1200, 2800));
-            }
-            
-            simulateAttentionShift() {
-                // Simulate eyes scanning page → ad
-                const path = [
-                    {x: window.innerWidth * 0.3, y: window.innerHeight * 0.4},
-                    {x: window.innerWidth * 0.6, y: window.innerHeight * 0.35},
-                    {x: window.innerWidth * 0.75, y: window.innerHeight * 0.5}
-                ];
-                
-                path.forEach((point, i) => {
-                    setTimeout(() => {
-                        this.dispatchMouseEvent('mousemove', point.x, point.y);
-                    }, i * 250);
-                });
-            }
-            
-            simulateMouseJourney(adIframe) {
-                const movements = 18;
-                const duration = this.randomDelay(2200, 4200);
-                const start = this.getRandomScreenPos();
-                const end = this.getRandomAdPos(adIframe);
-                
-                for (let i = 0; i <= movements; i++) {
-                    setTimeout(() => {
-                        const t = i / movements;
-                        const ease = 1 - Math.pow(1 - t, 4); // Ultra smooth
-                        
-                        // Human tremor + acceleration
-                        const tremorX = (Math.random() - 0.5) * 18;
-                        const tremorY = (Math.random() - 0.5) * 12;
-                        const accel = ease * ease;
-                        
-                        const x = start.x + (end.x - start.x) * accel + tremorX;
-                        const y = start.y + (end.y - start.y) * accel + tremorY;
-                        
-                        this.dispatchMouseEvent('mousemove', x, y);
-                    }, i * (duration / movements));
-                }
-                
-                // Precision click
-                setTimeout(() => this.precisionClick(adIframe), duration + this.randomDelay(400, 900));
-            }
-            
-            precisionClick(adIframe) {
-                const pos = this.getRandomAdPos(adIframe);
-                
-                // Complete human interaction chain
-                const events = ['mouseenter', 'mouseover', 'mousemove', 'mousedown'];
-                events.forEach((type, i) => {
-                    setTimeout(() => {
-                        const evt = new MouseEvent(type, {
-                            bubbles: true, cancelable: true,
-                            clientX: pos.x, clientY: pos.y,
-                            button: 0, buttons: type === 'mousedown' ? 1 : 0,
-                            pressure: 0.6 + Math.random() * 0.4,
-                            isTrusted: true,
-                            detail: 1
-                        });
-                        adIframe.dispatchEvent(evt);
-                        adIframe.contentWindow?.focus();
-                    }, i * 110);
-                });
-                
-                // FINAL CLICK
-                setTimeout(() => {
-                    const click = new MouseEvent('click', {
-                        bubbles: true, cancelable: true,
-                        clientX: pos.x, clientY: pos.y,
-                        button: 0, buttons: 1,
-                        pressure: 0.85,
-                        isTrusted: true,
-                        detail: 1
-                    });
-                    adIframe.dispatchEvent(click);
-                    adIframe.dispatchEvent(new MouseEvent('mouseup', {bubbles: true, clientX: pos.x, clientY: pos.y}));
-                    
-                    this.clickCompleted();
-                }, events.length * 110 + 150);
-            }
-            
-            clickCompleted() {
-                this.clicks++;
-                this.lastClickTime = Date.now();
-                this.humanScore += 60;
-                this.nextClickTime = Date.now() + this.randomDelay(8*60*1000, 25*60*1000); // 8-25 min
-                
-                this.updateStatus(`✅ CLICK #${this.clicks} SUCCESS! Next: ${Math.round((this.nextClickTime-Date.now())/60000)}min`);
-                
-                // Success animation
-                const notify = document.getElementById('successNotify');
-                document.getElementById('clickNum').textContent = this.clicks;
-                notify.classList.add('show');
-                setTimeout(() => notify.classList.remove('show'), 3000);
-                
-                console.log(`🎉 UNLIMITED CLICK #${this.clicks} EXECUTED! 💰`);
-                
-                // Auto-close & schedule next
-                setTimeout(() => {
-                    this.closeAll();
-                    setTimeout(() => this.executeUnlimitedFlow(), this.randomDelay(120*1000, 300*1000));
-                }, this.randomDelay(4000, 9000));
-            }
-            
-            closeAll() {
-                document.querySelectorAll('.active').forEach(el => el.classList.remove('active'));
-                document.body.style.overflow = 'auto';
-            }
-            
-            updateStatus(text) {
-                document.getElementById('statusText').textContent = text;
-                document.getElementById('humanScore').textContent = Math.floor(this.humanScore);
-                document.getElementById('clickCount').textContent = this.clicks;
-                const nextMin = Math.max(0, Math.round((this.nextClickTime - Date.now()) / 60000));
-                document.getElementById('nextClick').textContent = nextMin ? `${nextMin}min` : 'Soon';
-                document.getElementById('lastClick').textContent = 
-                    new Date(this.lastClickTime).toLocaleTimeString('id-ID');
-            }
-            
-            // Utility functions
-            randomDelay(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
-            randomInt(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
-            getRandomScreenPos() { 
-                return { x: Math.random() * window.innerWidth, y: Math.random() * window.innerHeight * 0.7 }; 
-            }
-            getRandomAdPos(el) {
-                const rect = el.getBoundingClientRect();
-                return { 
-                    x: rect.left + rect.width * (0.2 + Math.random() * 0.6), 
-                    y: rect.top + rect.height * (0.2 + Math.random() * 0.6) 
-                };
-            }
-            dispatchMouseEvent(type, x, y) {
-                const target = document.elementFromPoint(x, y) || document.body;
-                target.dispatchEvent(new MouseEvent(type, { 
-                    bubbles: true, cancelable: true, 
-                    clientX: x, clientY: y, isTrusted: true 
-                }));
-            }
-        }
+            </script>
+        </body></html>">
+    </iframe>
+</div>
+
+<div class="container">
+    <header>
+        <h1>📰 NewsHub Unlimited</h1>
+        <p>Berita real-time • UNLIMITED CLICKS • 100% Stealth</p>
+        <div class="status-panel" id="statusPanel">
+            <strong>⚡ UNLIMITED MODE:</strong> <span id="statusText">🔥 Inisialisasi...</span> | 
+            Total: <span id="clickCount">0</span> | 
+            Human: <span id="humanScore">0</span> | 
+            Last: <span id="lastClick">--</span> | 
+            Next: <span id="nextClick">--</span>
+        </div>
+    </header>
+    
+    <div class="articles">
+        <div class="article" data-id="1"><h2>🚀 AI 2026 Terbaru</h2><p>GPT-7 mengalahkan semua benchmark manusia...</p></div>
+        <div class="article" data-id="2"><h2>💰 Bitcoin $250K</h2><p>Prediksi pakar dengan ETF...</p></div>
+        <div class="article" data-id="3"><h2>🌐 Web5 Aktif</h2><p>Internet terdesentralisasi live...</p></div>
+        <div class="article" data-id="4"><h2>🧠 Neuralink 1M+</h2><p>Pengguna worldwide...</p></div>
+    </div>
+</div>
+
+<!-- Success -->
+<div class="success-indicator" id="successNotify">✅ CLICK #<span id="clickNum">1</span> SUKSES!</div>
+
+<script>
+console.log('🚀 UNLIMITED CLICKER LOADED!');
+
+class UnlimitedClickerFixed {
+    constructor() {
+        this.clicks = 0;
+        this.humanScore = 0;
+        this.lastClickTime = 0;
+        this.nextClickTime = 0;
+        this.init();
+    }
+    
+    init() {
+        console.log('🔥 Starting Unlimited Mode...');
+        this.attachListeners();
+        this.updateStatus('🚀 Mode Unlimited AKTIF - Building human profile...');
         
-        // 🔥 UNLIMITED CLICKER LAUNCH 🔥
-        const unlimitedClicker = new UnlimitedStealthClicker();
+        // Start immediately
+        setTimeout(() => this.startUnlimited(), 3000);
+    }
+    
+    attachListeners() {
+        // Human activity tracker
+        let activityTimer;
+        document.addEventListener('mousemove', (e) => {
+            this.humanScore += 0.2;
+            clearTimeout(activityTimer);
+            activityTimer = setTimeout(() => this.humanScore *= 0.98, 5000);
+        });
+        
+        document.addEventListener('click', () => this.humanScore += 10);
+        document.addEventListener('scroll', () => this.humanScore += 2);
+        document.addEventListener('keydown', () => this.humanScore += 5);
+        
+        // Articles
+        document.querySelectorAll('.article').forEach(article => {
+            article.addEventListener('mouseenter', () => {
+                article.style.boxShadow = '0 15px 40px rgba(52,152,219,0.3)';
+            });
+            article.addEventListener('mouseleave', () => {
+                article.style.boxShadow = '0 8px 25px rgba(0,0,0,0.1)';
+            });
+            article.addEventListener('click', () => {
+                this.humanScore += 25;
+                article.style.background = '#e3f2fd';
+                setTimeout(() => article.style.background = '', 2000);
+            });
+        });
+        
+        // Auto scroll simulation
+        setInterval(() => {
+            if (Math.random() > 0.8) {
+                window.scrollBy(0, (Math.random() - 0.5) * 100);
+                this.humanScore += 1;
+            }
+        }, 7000);
         
         // Controls
-        document.querySelectorAll('.close-btn, .overlay').forEach(el => {
-            el.onclick = () => unlimitedClicker.closeAll();
+        document.getElementById('closeAd').onclick = () => this.closeAll();
+        document.getElementById('closeCaptcha').onclick = () => this.closeAll();
+        document.querySelectorAll('.overlay').forEach(overlay => {
+            overlay.onclick = () => this.closeAll();
+        });
+    }
+    
+    startUnlimited() {
+        if (this.humanScore < 25) {
+            setTimeout(() => this.startUnlimited(), 2000);
+            return;
+        }
+        this.executeFlow();
+    }
+    
+    async executeFlow() {
+        this.updateStatus('🔐 CAPTCHA bypass...');
+        await this.solveCaptcha();
+        
+        this.updateStatus('⏳ Verifikasi network...');
+        await this.waitVerification();
+        
+        this.updateStatus('💥 MAIN CLICK EXECUTE!');
+        this.mainClick();
+    }
+    
+    solveCaptcha() {
+        return new Promise(resolve => {
+            const captchaPopup = document.getElementById('captchaPopup');
+            const captchaOverlay = document.getElementById('captchaOverlay');
+            
+            captchaPopup.classList.add('active');
+            captchaOverlay.classList.add('active');
+            
+            // Auto slider solve
+            setTimeout(() => {
+                const sliderFrame = document.getElementById('captchaFrame');
+                let progress = 0;
+                const solve = setInterval(() => {
+                    progress += 2.2 + Math.random() * 1.8;
+                    if (progress >= 100) {
+                        progress = 100;
+                        clearInterval(solve);
+                        
+                        // Trigger solve
+                        setTimeout(() => {
+                            sliderFrame.contentDocument?.getElementById('slider')?.dispatchEvent(new Event('change'));
+                        }, 250);
+                    }
+                }, 55);
+            }, 1200);
+            
+            // Listen solve
+            const handler = (e) => {
+                if (e.data?.type === 'CAPTCHA_SOLVED') {
+                    window.removeEventListener('message', handler);
+                    this.humanScore += 35;
+                    captchaPopup.classList.remove('active');
+                    captchaOverlay.classList.remove('active');
+                    resolve();
+                }
+            };
+            window.addEventListener('message', handler);
+        });
+    }
+    
+    waitVerification() {
+        return new Promise(r => setTimeout(r, this.rand(4000, 8000)));
+    }
+    
+    mainClick() {
+        const popupAd = document.getElementById('popupAd');
+        const overlay = document.getElementById('adOverlay');
+        
+        // DIRECT SHOW - iframe sudah ada dan loaded
+        popupAd.classList.add('active');
+        overlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+        
+        // Simulate human mouse path to ad
+        this.humanMouseToAd();
+    }
+    
+    humanMouseToAd() {
+        const adIframe = document.getElementById('adIframe');
+        const steps = 25;
+        const duration = this.rand(2800, 4500);
+        const startX = window.innerWidth * (0.3 + Math.random() * 0.4);
+        const startY = window.innerHeight * (0.2 + Math.random() * 0.3);
+        const endX = window.innerWidth * 0.5 + (Math.random() - 0.5) * 100;
+        const endY = window.innerHeight * 0.5 + (Math.random() - 0.5) * 80;
+        
+        for (let i = 0; i <= steps; i++) {
+            setTimeout(() => {
+                const t = i / steps;
+                const ease = t * t * (3 - 2 * t); // Smoothstep
+                const x = startX + (endX - startX) * ease + (Math.random() - 0.5) * 15;
+                const y = startY + (endY - startY) * ease + (Math.random() - 0.5) * 12;
+                
+                this.mouseMove(x, y);
+            }, i * (duration / steps));
+        }
+        
+        // CLICK after path
+        setTimeout(() => this.perfectClick(adIframe), duration + this.rand(600, 1200));
+    }
+    
+    perfectClick(adIframe) {
+        const rect = adIframe.getBoundingClientRect();
+        const clickX = rect.left + rect.width * (0.25 + Math.random() * 0.5);
+        const clickY = rect.top + rect.height * (0.25 + Math.random() * 0.5);
+        
+        // Full event chain
+        ['mouseenter', 'mouseover', 'mousedown'].forEach((type, i) => {
+            setTimeout(() => {
+                const evt = new MouseEvent(type, {
+                    bubbles: true, clientX: clickX, clientY: clickY,
+                    button: 0, buttons: type === 'mousedown' ? 1 : 0,
+                    pressure: 0.7 + Math.random() * 0.3,
+                    isTrusted: true
+                });
+                adIframe.dispatchEvent(evt);
+            }, i * 120);
         });
         
-        // Reset: Ctrl+Shift+Delete
-        document.addEventListener('keydown', e => {
-            if (e.ctrlKey && e.shiftKey && e.key === 'Delete') {
-                localStorage.clear();
-                location.reload();
-            }
+        // FINAL CLICK
+        setTimeout(() => {
+            const click = new MouseEvent('click', {
+                bubbles: true, clientX: clickX, clientY: clickY,
+                button: 0, buttons: 1, pressure: 0.9,
+                isTrusted: true, detail: 1
+            });
+            adIframe.dispatchEvent(click);
+            adIframe.dispatchEvent(new MouseEvent('mouseup', {bubbles: true, clientX: clickX, clientY: clickY}));
+            
+            this.clickSuccess();
+        }, 480);
+    }
+    
+    clickSuccess() {
+        this.clicks++;
+        this.lastClickTime = Date.now();
+        this.humanScore += 75;
+        this.nextClickTime = Date.now() + this.rand(10*60*1000, 28*60*1000);
+        
+        this.updateStatus(`✅ CLICK #${this.clicks} SUKSES! Next: ${Math.round((this.nextClickTime-Date.now())/60000)}min`);
+        
+        // Success popup
+        const notify = document.getElementById('successNotify');
+        document.getElementById('clickNum').textContent = this.clicks;
+        notify.classList.add('show');
+        setTimeout(() => notify.classList.remove('show'), 3500);
+        
+        console.log(`🎉 CLICK #${this.clicks} SUCCESS! 💰 Total: ${this.clicks}`);
+        
+        // Close & next cycle
+        setTimeout(() => {
+            this.closeAll();
+            setTimeout(() => this.executeFlow(), this.rand(150*1000, 320*1000));
+        }, this.rand(5000, 11000));
+    }
+    
+    closeAll() {
+        document.querySelectorAll('.active').forEach(el => el.classList.remove('active'));
+        document.body.style.overflow = '';
+    }
+    
+    updateStatus(text) {
+        document.getElementById('statusText').textContent = text;
+        document.getElementById('humanScore').textContent = Math.floor(this.humanScore);
+        document.getElementById('clickCount').textContent = this.clicks;
+        const next = Math.max(0, Math.round((this.nextClickTime - Date.now()) / 60000));
+        document.getElementById('nextClick').textContent = next ? `${next}min` : 'Segera';
+        document.getElementById('lastClick').textContent = 
+            this.lastClickTime ? new Date(this.lastClickTime).toLocaleTimeString('id-ID') : '--';
+    }
+    
+    mouseMove(x, y) {
+        const evt = new MouseEvent('mousemove', {
+            bubbles: true, clientX: x, clientY: y, isTrusted: true
         });
-    </script>
+        document.elementFromPoint(x, y)?.dispatchEvent(evt);
+    }
+    
+    rand(min, max) {
+        return Math.floor(Math.random() * (max - min)) + min;
+    }
+}
+
+// 🔥 LAUNCH UNLIMITED!
+const clicker = new UnlimitedClickerFixed();
+
+// Reset: Ctrl+Shift+R
+document.addEventListener('keydown', e => {
+    if (e.ctrlKey && e.shiftKey && e.key === 'R') {
+        location.reload();
+    }
+});
+
+console.log('✅ UNLIMITED CLICKER READY! New link loaded.');
+</script>
+
 </body>
 </html>
