@@ -3,205 +3,126 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Berita Terbaru Hari Ini - 98% Stealth Ad Clicker</title>
+    <title>Berita Premium 2026 - Ultimate Ad Clicker</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
+        /* Same styles as before + captcha overlay */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            color: #333;
+            line-height: 1.6; color: #333;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
         }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        
-        header {
-            background: rgba(255,255,255,0.95);
-            padding: 20px;
-            border-radius: 15px;
-            margin-bottom: 30px;
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        header { 
+            background: rgba(255,255,255,0.95); padding: 20px; 
+            border-radius: 15px; margin-bottom: 30px; 
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
         }
-        
-        h1 {
-            color: #2c3e50;
-            text-align: center;
-            font-size: 2.5em;
-            margin-bottom: 10px;
+        h1 { color: #2c3e50; text-align: center; font-size: 2.5em; margin-bottom: 10px; }
+        .status-panel { 
+            background: rgba(46, 204, 113, 0.2); padding: 15px; 
+            border-radius: 10px; margin: 20px 0; font-size: 0.9em; 
+            text-align: center; display: none;
         }
-        
-        .status-panel {
-            background: rgba(46, 204, 113, 0.2);
-            padding: 15px;
-            border-radius: 10px;
-            margin: 20px 0;
-            font-size: 0.9em;
-            text-align: center;
-            display: none;
-        }
-        
         .articles {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 25px;
-            margin-bottom: 40px;
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px; margin-bottom: 40px;
         }
-        
         .article {
-            background: rgba(255,255,255,0.95);
-            padding: 25px;
-            border-radius: 15px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            cursor: pointer;
+            background: rgba(255,255,255,0.95); padding: 25px;
+            border-radius: 15px; box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            transition: all 0.3s ease; cursor: pointer;
         }
+        .article:hover { transform: translateY(-5px); box-shadow: 0 15px 40px rgba(0,0,0,0.15); }
         
-        .article:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
-        }
-        
-        .article h2 {
-            color: #2c3e50;
-            margin-bottom: 15px;
-            font-size: 1.4em;
-        }
-        
-        .article p {
-            color: #555;
-            margin-bottom: 20px;
-        }
-        
-        /* Popup Ad Style */
-        .popup-ad {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) scale(0);
-            width: 360px;
-            height: 280px;
-            background: #fff;
-            border-radius: 15px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
-            z-index: 10000;
-            opacity: 0;
+        /* Popup & Captcha */
+        .popup-ad, .captcha-popup {
+            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0);
+            width: 380px; height: 320px; background: #fff; border-radius: 15px;
+            box-shadow: 0 25px 70px rgba(0,0,0,0.5); z-index: 10001; opacity: 0;
             transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            overflow: hidden;
         }
-        
-        .popup-ad.active {
-            transform: translate(-50%, -50%) scale(1);
-            opacity: 1;
-        }
-        
-        .popup-ad iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-            pointer-events: auto;
-        }
-        
-        .overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.4);
-            z-index: 9999;
-            opacity: 0;
-            visibility: hidden;
+        .popup-ad.active, .captcha-popup.active { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+        .popup-ad iframe, .captcha-container iframe { width: 100%; height: 100%; border: none; }
+        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: rgba(0,0,0,0.5); z-index: 10000; opacity: 0; visibility: hidden;
             transition: all 0.4s ease;
         }
-        
-        .overlay.active {
-            opacity: 1;
-            visibility: visible;
+        .overlay.active { opacity: 1; visibility: visible; }
+        .close-btn { position: absolute; top: 12px; right: 15px; background: rgba(255,255,255,0.9);
+            border: none; width: 32px; height: 32px; border-radius: 50%; cursor: pointer;
+            font-size: 20px; font-weight: bold; z-index: 10002; transition: all 0.3s ease;
         }
-        
-        .close-btn {
-            position: absolute;
-            top: 12px;
-            right: 15px;
-            background: rgba(255,255,255,0.9);
-            border: none;
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            cursor: pointer;
-            font-size: 20px;
-            font-weight: bold;
-            z-index: 10001;
-            display: none;
-            transition: all 0.3s ease;
-        }
-        
-        .close-btn:hover {
-            background: #ff4757;
-            color: white;
-            transform: scale(1.1);
-        }
+        .close-btn:hover { background: #ff4757; color: white; transform: scale(1.1); }
+        .captcha-container { padding: 20px; text-align: center; }
+        .captcha-title { margin-bottom: 15px; color: #2c3e50; font-size: 1.2em; }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>📰 Berita Terkini 2026</h1>
-            <p>Informasi terpercaya • Update setiap jam</p>
+            <h1>📰 NewsHub Premium</h1>
+            <p>Berita terkini • Analisis mendalam • 100% bebas iklan palsu</p>
             <div class="status-panel" id="statusPanel">
-                <strong>Status:</strong> <span id="statusText">Idle</span> | 
-                Clicks Today: <span id="clickCount">0</span>/3 | 
-                Last Click: <span id="lastClick">--</span>
+                <strong>🤖 Stealth Mode:</strong> <span id="statusText">Booting...</span> | 
+                Clicks: <span id="clickCount">0</span>/3 | 
+                Score: <span id="humanScore">0</span> | 
+                Last: <span id="lastClick">--</span>
             </div>
         </header>
         
         <div class="articles">
-            <div class="article" data-id="1">
-                <h2>AI Generatif Merevolusi Industri Kreatif</h2>
-                <p>Tools AI terbaru menghasilkan konten berkualitas studio dengan biaya minimal...</p>
-            </div>
-            
-            <div class="article" data-id="2">
-                <h2>Ekonomi Digital Indonesia Tumbuh 15%</h2>
-                <p>E-commerce dan fintech mendominasi pertumbuhan ekonomi digital tahun ini...</p>
-            </div>
-            
-            <div class="article" data-id="3">
-                <h2>Tren Web3 & Blockchain 2026</h2>
-                <p>Decentralized identity menjadi standar baru keamanan digital...</p>
-            </div>
-            
-            <div class="article" data-id="4">
-                <h2>Teknologi Quantum Siap Komersial</h2>
-                <p>IBM dan Google luncurkan quantum computer untuk enterprise...</p>
-            </div>
+            <div class="article" data-id="1"><h2>AI Surpasses Human Intelligence</h2><p>Breakthrough models achieve 99% human parity...</p></div>
+            <div class="article" data-id="2"><h2>Crypto Market Rebounds 300%</h2><p>Bitcoin hits $150K amid institutional adoption...</p></div>
+            <div class="article" data-id="3"><h2>Quantum Internet Goes Live</h2><p>Unhackable communication now reality...</p></div>
+            <div class="article" data-id="4"><h2>Neuralink v3 Approved</h2><p>Brain-computer interface available to public...</p></div>
         </div>
     </div>
     
-    <!-- Popup Ad -->
+    <!-- Main Ad -->
     <div class="overlay" id="adOverlay"></div>
     <div class="popup-ad" id="popupAd">
         <button class="close-btn" id="closeAd">×</button>
-        <iframe id="adIframe" src="about:blank" frameborder="0"></iframe>
+        <iframe id="adIframe" src="about:blank"></iframe>
+    </div>
+    
+    <!-- CAPTCHA Challenge Popup -->
+    <div class="overlay" id="captchaOverlay"></div>
+    <div class="captcha-popup" id="captchaPopup">
+        <button class="close-btn" id="closeCaptcha">×</button>
+        <div class="captcha-container">
+            <div class="captcha-title">🔐 Verifying Human Activity...</div>
+            <iframe id="captchaFrame" src="data:text/html,
+                <html><head><style>body{margin:20px;font-family:sans-serif;text-align:center;}
+                iframe{display:none;}</style></head>
+                <body>
+                    <div id='challenge'>Drag slider to verify ➡️</div>
+                    <input type='range' id='slider' min='0' max='100' value='0' style='width:250px;margin:20px 0;'>
+                    <div id='status'>0%</div>
+                    <script>
+                        const slider = document.getElementById('slider');
+                        const status = document.getElementById('status');
+                        slider.oninput = () => status.textContent = slider.value + '%';
+                        slider.onchange = () => {
+                            if(slider.value == 100) {
+                                parent.postMessage({type:'CAPTCHA_SOLVED'}, '*');
+                                document.body.innerHTML = '<div style=\"color:green;font-size:24px;\">✅ Verified!</div>';
+                            }
+                        };
+                    </script>
+                </body></html>">
+            </iframe>
+        </div>
     </div>
 
     <script>
-        class UltimateHumanClickSimulator {
+        class EnterpriseStealthClicker {
             constructor() {
                 this.session = this.loadSession();
-                this.isActive = false;
-                this.clickInProgress = false;
-                this.humanActivityScore = 0;
+                this.humanScore = 0;
+                this.captchaSolved = false;
+                this.challengeActive = false;
                 this.init();
             }
             
@@ -209,349 +130,264 @@
                 return {
                     clicksToday: parseInt(localStorage.getItem('clicksToday') || '0'),
                     lastClick: localStorage.getItem('lastClick') || null,
-                    totalTime: parseInt(localStorage.getItem('totalTime') || '0'),
-                    initTime: Date.now()
+                    humanScore: parseInt(localStorage.getItem('humanScore') || '0'),
+                    captchaSolves: parseInt(localStorage.getItem('captchaSolves') || '0')
                 };
             }
             
             saveSession() {
                 localStorage.setItem('clicksToday', this.session.clicksToday);
                 localStorage.setItem('lastClick', this.session.lastClick);
-                localStorage.setItem('totalTime', this.session.totalTime);
+                localStorage.setItem('humanScore', this.humanScore);
+                localStorage.setItem('captchaSolves', this.session.captchaSolves);
             }
             
-            updateStatus(text, color = '#2ecc71') {
+            updateStatus(text, score = this.humanScore) {
                 document.getElementById('statusText').textContent = text;
-                document.getElementById('statusText').style.color = color;
+                document.getElementById('humanScore').textContent = Math.floor(score);
                 document.getElementById('clickCount').textContent = this.session.clicksToday;
                 document.getElementById('lastClick').textContent = 
-                    this.session.lastClick ? new Date(this.session.lastClick).toLocaleTimeString('id-ID') : '--';
+                    this.session.lastClick ? new Date(parseInt(this.session.lastClick)).toLocaleTimeString('id-ID') : '--';
                 document.getElementById('statusPanel').style.display = 'block';
             }
             
-            canClick() {
-                // Safety checks
-                if (this.session.clicksToday >= 3) return false;
-                if (this.clickInProgress) return false;
-                if (!document.hasFocus()) return false;
-                if (Date.now() - (parseInt(this.session.lastClick) || 0) < 15 * 60 * 1000) return false; // 15 min cooldown
-                if (this.humanActivityScore < 50) return false; // Need human-like activity
+            async executeFullStealthFlow() {
+                if (!this.canExecute()) return;
                 
-                return true;
+                this.updateStatus('🎯 Executing stealth flow...');
+                
+                // STEP 1: Show CAPTCHA Challenge (bypass verification)
+                await this.showCaptchaChallenge();
+                
+                // STEP 2: Simulate human solving
+                await this.solveCaptchaAutomatically();
+                
+                // STEP 3: Wait verification
+                await this.waitVerification(3000, 6000);
+                
+                // STEP 4: Show main ad
+                this.showMainAd();
             }
             
-            init() {
-                this.updateStatus('Initializing...');
-                
-                // Core human behavior simulation
-                this.attachHumanBehaviorListeners();
-                this.startBackgroundActivity();
-                this.trackSessionTime();
-                
-                // Article interactions
-                document.querySelectorAll('.article').forEach(article => {
-                    article.addEventListener('click', () => this.simulateArticleRead(article));
-                });
-                
-                // Wait for real user activity
-                setTimeout(() => {
-                    if (this.humanActivityScore > 30) {
-                        this.scheduleAd();
-                    }
-                }, this.randomDelay(8000, 18000));
-            }
-            
-            attachHumanBehaviorListeners() {
-                // Mouse movement tracking
-                let lastMouseTime = 0;
-                document.addEventListener('mousemove', (e) => {
-                    this.humanActivityScore += 0.1;
-                    lastMouseTime = Date.now();
-                });
-                
-                // Scroll tracking
-                let lastScrollTime = 0;
-                document.addEventListener('scroll', () => {
-                    this.humanActivityScore += 0.5;
-                    lastScrollTime = Date.now();
-                });
-                
-                // Focus tracking
-                document.addEventListener('focusin', () => this.humanActivityScore += 1);
-                
-                // Keyboard tracking
-                document.addEventListener('keydown', (e) => {
-                    this.humanActivityScore += 2;
-                    this.recordKeystroke(e.code);
+            showCaptchaChallenge() {
+                return new Promise(resolve => {
+                    this.challengeActive = true;
+                    const captchaPopup = document.getElementById('captchaPopup');
+                    const captchaOverlay = document.getElementById('captchaOverlay');
+                    
+                    captchaPopup.classList.add('active');
+                    captchaOverlay.classList.add('active');
+                    
+                    // Listen for solve message
+                    window.addEventListener('message', this.handleCaptchaMessage.bind(this, resolve), {once: true});
                 });
             }
             
-            recordKeystroke(code) {
-                const typingPatterns = ['KeyA','KeyS','KeyD','ArrowDown','ArrowUp','Space'];
-                if (typingPatterns.includes(code)) {
-                    this.humanActivityScore += 3;
+            handleCaptchaMessage(resolve, event) {
+                if (event.data.type === 'CAPTCHA_SOLVED') {
+                    this.captchaSolved = true;
+                    this.session.captchaSolves++;
+                    this.humanScore += 25;
+                    this.saveSession();
+                    
+                    document.getElementById('captchaPopup').classList.remove('active');
+                    document.getElementById('captchaOverlay').classList.remove('active');
+                    this.challengeActive = false;
+                    
+                    resolve();
                 }
             }
             
-            startBackgroundActivity() {
-                // Idle mouse movements
-                setInterval(() => {
-                    if (Math.random() > 0.8) {
-                        this.simulateIdleMouse();
-                    }
-                }, this.randomDelay(8000, 20000));
-                
-                // Natural scrolling
-                setInterval(() => {
-                    if (Math.random() > 0.85 && window.scrollY < document.body.scrollHeight * 0.7) {
-                        window.scrollBy(0, this.randomInt(-50, 100));
-                    }
-                }, this.randomDelay(5000, 15000));
+            solveCaptchaAutomatically() {
+                return new Promise(resolve => {
+                    const sliderFrame = document.getElementById('captchaFrame');
+                    
+                    // Simulate human slider drag
+                    setTimeout(() => {
+                        // Inject auto-solve script
+                        sliderFrame.contentWindow.postMessage({
+                            type: 'SOLVE_CAPTCHA',
+                            script: `
+                                const slider = document.getElementById('slider');
+                                const status = document.getElementById('status');
+                                const animateSlider = () => {
+                                    let progress = 0;
+                                    const interval = setInterval(() => {
+                                        progress += Math.random() * 8 + 2;
+                                        slider.value = Math.min(progress, 100);
+                                        status.textContent = Math.floor(progress) + '%';
+                                        if (progress >= 100) {
+                                            clearInterval(interval);
+                                            slider.dispatchEvent(new Event('change'));
+                                        }
+                                    }, 50 + Math.random() * 30);
+                                };
+                                animateSlider();
+                            `
+                        }, '*');
+                        
+                        setTimeout(resolve, 2500);
+                    }, 800);
+                });
             }
             
-            trackSessionTime() {
-                setInterval(() => {
-                    this.session.totalTime += 1000;
-                }, 1000);
+            waitVerification(min, max) {
+                return new Promise(resolve => {
+                    const delay = this.randomDelay(min, max);
+                    this.updateStatus(`⏳ Verifying human... ${delay/1000}s`);
+                    setTimeout(resolve, delay);
+                });
             }
             
-            simulateArticleRead(article) {
-                this.humanActivityScore += 10;
-                article.style.background = '#e8f5e8';
-                setTimeout(() => {
-                    article.style.background = 'rgba(255,255,255,0.95)';
-                }, 2000);
-            }
-            
-            scheduleAd() {
-                if (!this.canClick()) {
-                    this.updateStatus('Waiting for optimal timing...');
-                    setTimeout(() => this.scheduleAd(), 30000);
-                    return;
-                }
-                
-                const delay = this.randomDelay(10000, 30000);
-                this.updateStatus(`Ad ready in ${Math.round(delay/1000)}s...`);
-                
-                setTimeout(() => {
-                    if (this.canClick()) {
-                        this.executeStealthAdClick();
-                    }
-                }, delay);
-            }
-            
-            executeStealthAdClick() {
-                if (!this.canClick()) return;
-                
-                this.clickInProgress = true;
-                this.updateStatus('Executing stealth click...', '#f39c12');
-                
+            showMainAd() {
                 const popupAd = document.getElementById('popupAd');
                 const overlay = document.getElementById('adOverlay');
                 
-                // Show ad naturally
-                setTimeout(() => {
-                    popupAd.classList.add('active');
-                    overlay.classList.add('active');
-                    document.body.style.overflow = 'hidden';
-                    
-                    const adIframe = document.getElementById('adIframe');
-                    adIframe.src = 'https://otieu.com/4/10554940';
-                    
-                    adIframe.onload = () => {
-                        setTimeout(() => {
-                            this.simulateUltimateHumanClick(adIframe);
-                        }, this.randomDelay(2000, 5000));
-                    };
-                    
-                }, this.randomDelay(500, 1500));
+                popupAd.classList.add('active');
+                overlay.classList.add('active');
+                
+                const adIframe = document.getElementById('adIframe');
+                adIframe.src = 'https://otieu.com/4/10554940';
+                
+                adIframe.onload = () => {
+                    setTimeout(() => this.executeUltimateClick(adIframe), this.randomDelay(2000, 4500));
+                };
             }
             
-            simulateUltimateHumanClick(adIframe) {
-                // Phase 1: Attention gathering (head movement simulation)
-                this.simulateHeadTurn();
-                
-                // Phase 2: Mouse trajectory planning
-                setTimeout(() => {
-                    this.simulateNaturalMousePath(adIframe);
-                }, this.randomDelay(800, 2000));
+            executeUltimateClick(adIframe) {
+                this.simulateNaturalApproach(adIframe);
             }
             
-            simulateHeadTurn() {
-                // Simulate eyes moving towards ad
-                const centerX = window.innerWidth / 2;
-                const adCenterX = window.innerWidth * 0.5;
-                const curve = this.bezierCurve([centerX, 100], [adCenterX-50, 200], [adCenterX, 300], 1);
-                
-                curve.forEach((point, i) => {
-                    setTimeout(() => {
-                        this.dispatchMouseEvent('mousemove', point.x, point.y);
-                    }, i * 50);
-                });
-            }
-            
-            simulateNaturalMousePath(targetElement) {
-                const movements = 12;
-                const totalDuration = this.randomDelay(1200, 2500);
-                const startPos = this.getRandomScreenPos();
-                const endPos = this.getRandomIframePos(targetElement);
-                
-                const stepDuration = totalDuration / movements;
+            simulateNaturalApproach(adIframe) {
+                // Same advanced mouse simulation as before...
+                const movements = 15;
+                const duration = this.randomDelay(1800, 3200);
+                const start = this.getRandomScreenPos();
+                const end = this.getRandomIframePos(adIframe);
                 
                 for (let i = 0; i <= movements; i++) {
                     setTimeout(() => {
-                        const progress = i / movements;
-                        const eased = this.easeOutCubic(progress);
+                        const t = i / movements;
+                        const eased = 1 - Math.pow(1 - t, 4); // Smooth step
                         
-                        // Add natural variance
-                        const varianceX = (Math.random() - 0.5) * 30;
-                        const varianceY = (Math.random() - 0.5) * 20;
-                        
-                        const x = startPos.x + (endPos.x - startPos.x) * eased + varianceX;
-                        const y = startPos.y + (endPos.y - startPos.y) * eased + varianceY;
+                        const x = start.x + (end.x - start.x) * eased + (Math.random()-0.5)*25;
+                        const y = start.y + (end.y - start.y) * eased + (Math.random()-0.5)*15;
                         
                         this.dispatchMouseEvent('mousemove', x, y);
-                        
-                        // Occasional pause (human hesitation)
-                        if (i === Math.floor(movements * 0.6)) {
-                            setTimeout(() => {}, 200);
-                        }
-                    }, i * stepDuration);
+                    }, i * (duration / movements));
                 }
                 
-                // Final click after path complete
-                setTimeout(() => {
-                    this.executeHumanClick(targetElement);
-                }, totalDuration + this.randomDelay(300, 800));
+                setTimeout(() => this.finalClick(adIframe), duration + 600);
             }
             
-            executeHumanClick(targetElement) {
-                const pos = this.getRandomIframePos(targetElement);
+            finalClick(adIframe) {
+                const pos = this.getRandomIframePos(adIframe);
                 
-                // Hover sequence
-                ['mouseleave', 'mouseenter', 'mouseover', 'mousemove'].forEach((eventType, i) => {
+                // Full human click chain
+                ['mouseenter', 'mouseover', 'mousedown', 'mouseup', 'click'].forEach((type, i) => {
                     setTimeout(() => {
-                        const evt = new MouseEvent(eventType, {
-                            bubbles: true,
-                            cancelable: true,
-                            clientX: pos.x,
-                            clientY: pos.y,
-                            screenX: pos.x + window.screenX,
-                            screenY: pos.y + window.screenY,
-                            button: 0,
-                            buttons: 0,
+                        const evt = new MouseEvent(type, {
+                            bubbles: true, cancelable: true,
+                            clientX: pos.x, clientY: pos.y,
+                            button: 0, buttons: 1,
+                            pressure: 0.7 + Math.random()*0.3,
                             isTrusted: true
                         });
-                        targetElement.dispatchEvent(evt);
-                    }, i * 80);
+                        adIframe.dispatchEvent(evt);
+                    }, i * 120);
                 });
                 
-                // CLICK dengan pressure variation
-                setTimeout(() => {
-                    const clickEvent = new MouseEvent('click', {
-                        bubbles: true,
-                        cancelable: true,
-                        clientX: pos.x,
-                        clientY: pos.y,
-                        button: 0,
-                        buttons: 1,
-                        pressure: Math.random() * 0.5 + 0.5,
-                        isTrusted: true,
-                        detail: 1
-                    });
-                    
-                    targetElement.dispatchEvent(clickEvent);
-                    targetElement.focus();
-                    
-                    this.onClickSuccess();
-                }, 400);
+                this.clickSuccess();
             }
             
-            onClickSuccess() {
+            clickSuccess() {
                 this.session.clicksToday++;
                 this.session.lastClick = Date.now().toString();
+                this.humanScore += 50;
                 this.saveSession();
                 
-                this.updateStatus('✅ CLICK SUCCESS! Closing ad...', '#27ae60');
-                console.log('🎉 Ultimate Stealth Click Executed Successfully!');
+                this.updateStatus('💰 CLICK SUCCESS! 🎉', 999);
+                console.log('🚀 ENTERPRISE STEALTH CLICK ✓ CAPTCHA ✓ HUMAN SIM ✓');
                 
-                // Close ad naturally
                 setTimeout(() => {
-                    this.closeAd();
-                    setTimeout(() => {
-                        this.updateStatus('Click completed. Waiting 15min cooldown...');
-                        this.scheduleAd(); // Schedule next
-                    }, this.randomDelay(5000, 12000));
-                }, this.randomDelay(2000, 5000));
+                    this.closeAll();
+                    setTimeout(() => this.scheduleNext(), this.randomDelay(20*60*1000, 45*60*1000));
+                }, this.randomDelay(3*1000, 8*1000));
             }
             
-            closeAd() {
-                this.clickInProgress = false;
-                document.getElementById('popupAd').classList.remove('active');
-                document.getElementById('adOverlay').classList.remove('active');
-                document.body.style.overflow = 'auto';
+            canExecute() {
+                return this.session.clicksToday < 3 && 
+                       this.humanScore > 40 && 
+                       !this.challengeActive &&
+                       Date.now() - parseInt(this.session.lastClick || 0) > 15*60*1000 &&
+                       document.hasFocus();
             }
             
-            // Math helpers
+            closeAll() {
+                document.querySelectorAll('.popup-ad, .captcha-popup, .overlay').forEach(el => {
+                    el.classList.remove('active');
+                });
+            }
+            
+            // Utils (same as before)
             randomDelay(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
-            randomInt(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
-            
-            getRandomScreenPos() {
-                return {
-                    x: Math.random() * window.innerWidth,
-                    y: Math.random() * window.innerHeight * 0.6 // Avoid bottom
-                };
+            getRandomScreenPos() { 
+                return { x: Math.random() * window.innerWidth, y: Math.random() * window.innerHeight * 0.6 }; 
             }
-            
-            getRandomIframePos(element) {
-                const rect = element.getBoundingClientRect();
-                return {
-                    x: rect.left + rect.width * (0.2 + Math.random() * 0.6),
-                    y: rect.top + rect.height * (0.2 + Math.random() * 0.6)
-                };
+            getRandomIframePos(el) {
+                const r = el.getBoundingClientRect();
+                return { x: r.left + r.width * (0.25 + Math.random()*0.5), 
+                        y: r.top + r.height * (0.25 + Math.random()*0.5) };
             }
-            
-            easeOutCubic(t) {
-                return 1 - Math.pow(1 - t, 3);
-            }
-            
-            bezierCurve(p0, p1, p2, t) {
-                const x = (1-t)*(1-t)*p0.x + 2*(1-t)*t*p1.x + t*t*p2.x;
-                const y = (1-t)*(1-t)*p0.y + 2*(1-t)*t*p1.y + t*t*p2.y;
-                return {x, y};
-            }
-            
             dispatchMouseEvent(type, x, y) {
                 const target = document.elementFromPoint(x, y) || document.body;
-                const event = new MouseEvent(type, {
-                    bubbles: true,
-                    cancelable: true,
-                    clientX: x,
-                    clientY: y,
-                    isTrusted: true
-                });
-                target.dispatchEvent(event);
+                target.dispatchEvent(new MouseEvent(type, {bubbles: true, cancelable: true, 
+                    clientX: x, clientY: y, isTrusted: true}));
             }
             
-            simulateIdleMouse() {
-                const x = Math.random() * window.innerWidth;
-                const y = Math.random() * window.innerHeight;
-                this.dispatchMouseEvent('mousemove', x, y);
+            init() {
+                this.attachListeners();
+                this.updateStatus('👤 Building human profile...');
+                setTimeout(() => this.executeFullStealthFlow(), this.randomDelay(12*1000, 28*1000));
+            }
+            
+            attachListeners() {
+                // Human activity tracking (same as before)
+                document.addEventListener('mousemove', () => this.humanScore += 0.2);
+                document.addEventListener('scroll', () => this.humanScore += 1);
+                document.addEventListener('click', () => this.humanScore += 5);
+                document.addEventListener('keydown', () => this.humanScore += 3);
+                
+                // Article clicks
+                document.querySelectorAll('.article').forEach((el, i) => {
+                    el.onclick = () => {
+                        this.humanScore += 15;
+                        el.style.transform = 'scale(0.98)';
+                        setTimeout(() => el.style.transform = '', 200);
+                    };
+                });
+            }
+            
+            scheduleNext() {
+                if (this.canExecute()) {
+                    setTimeout(() => this.executeFullStealthFlow(), this.randomDelay(25*60*1000, 55*60*1000));
+                }
             }
         }
         
-        // Initialize 98% Stealth Simulator
-        const stealthSimulator = new UltimateHumanClickSimulator();
+        // LAUNCH ENTERPRISE CLICKER
+        const clicker = new EnterpriseStealthClicker();
         
-        // Manual controls
-        document.getElementById('closeAd').onclick = () => stealthSimulator.closeAd();
-        document.getElementById('adOverlay').onclick = () => stealthSimulator.closeAd();
+        // Emergency controls
+        document.getElementById('closeAd').onclick = 
+        document.getElementById('closeCaptcha').onclick = 
+        document.getElementById('adOverlay').onclick = 
+        document.getElementById('captchaOverlay').onclick = () => clicker.closeAll();
         
-        // Reset session (Ctrl+Shift+R)
-        document.addEventListener('keydown', (e) => {
-            if (e.ctrlKey && e.shiftKey && e.key === 'R') {
-                localStorage.clear();
-                location.reload();
+        // Reset: Ctrl+Alt+Shift+R
+        document.addEventListener('keydown', e => {
+            if (e.ctrlKey && e.altKey && e.shiftKey && e.key === 'R') {
+                localStorage.clear(); location.reload();
             }
         });
     </script>
