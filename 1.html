@@ -1,249 +1,175 @@
 <!DOCTYPE html>
-<html lang="id">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>📰 NewsHub Unlimited - FIXED</title>
+    <title>Simple News - Unlimited Clicker</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
         body { 
-            font-family: Arial, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: #333; min-height: 100vh; padding: 20px;
+            font-family: Arial; 
+            background: #f0f0f0; 
+            margin: 20px; 
+            color: #333;
         }
-        .container { max-width: 1200px; margin: 0 auto; }
-        .header { 
-            background: white; padding: 25px; border-radius: 15px; 
-            margin-bottom: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            text-align: center;
+        .status {
+            background: #4CAF50; 
+            color: white; 
+            padding: 15px; 
+            margin: 10px 0; 
+            border-radius: 5px; 
+            font-weight: bold;
         }
-        h1 { color: #2c3e50; font-size: 2.2em; margin-bottom: 10px; }
-        .status { 
-            background: #2ecc71; color: white; padding: 15px; 
-            border-radius: 10px; margin: 15px 0; font-weight: bold;
+        .news { 
+            background: white; 
+            padding: 20px; 
+            margin: 10px 0; 
+            border-radius: 8px; 
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
-        .articles { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
-        .article {
-            background: white; padding: 25px; border-radius: 12px; 
-            box-shadow: 0 8px 25px rgba(0,0,0,0.1); cursor: pointer;
-            transition: all 0.3s ease;
+        .news h2 { color: #2196F3; margin-bottom: 10px; }
+        .popup {
+            position: fixed; 
+            top: 50%; 
+            left: 50%; 
+            transform: translate(-50%, -50%); 
+            width: 400px; 
+            height: 300px; 
+            background: white; 
+            border: 3px solid #ddd; 
+            z-index: 9999; 
+            display: none;
         }
-        .article:hover { transform: translateY(-8px); box-shadow: 0 20px 40px rgba(0,0,0,0.2); }
-        .article h2 { color: #2c3e50; margin-bottom: 12px; }
-        .article p { color: #666; }
-        
-        /* POPUPS */
-        .popup-ad, .captcha-popup {
-            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0);
-            width: 400px; height: 350px; background: white; border-radius: 15px;
-            box-shadow: 0 25px 60px rgba(0,0,0,0.8); z-index: 9999;
-            opacity: 0; transition: all 0.4s ease;
-        }
-        .popup-ad.active, .captcha-popup.active {
-            transform: translate(-50%, -50%) scale(1); opacity: 1;
-        }
-        .popup-ad iframe { width: 100%; height: 100%; border: none; border-radius: 15px; }
         .overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.7); z-index: 9998; opacity: 0;
-            transition: opacity 0.4s ease;
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            background: rgba(0,0,0,0.5); 
+            z-index: 9998; 
+            display: none;
         }
-        .overlay.active { opacity: 1; }
-        .close-btn {
-            position: absolute; top: 12px; right: 15px; background: #eee;
-            border: none; width: 35px; height: 35px; border-radius: 50%;
-            font-size: 22px; font-weight: bold; cursor: pointer; z-index: 10000;
+        iframe { 
+            width: 100%; 
+            height: 100%; 
+            border: none; 
         }
-        .close-btn:hover { background: #ff4757; color: white; }
-        .captcha-container { padding: 25px; text-align: center; }
-        .success-msg {
-            position: fixed; top: 30px; right: 30px; background: #27ae60;
-            color: white; padding: 20px 30px; border-radius: 30px;
-            font-weight: bold; z-index: 10001; transform: scale(0);
-            transition: all 0.4s ease; box-shadow: 0 15px 35px rgba(39,174,96,0.4);
-        }
-        .success-msg.show { transform: scale(1); }
     </style>
 </head>
 <body>
 
-<!-- 🔥 DIRECT AD - LOADED INSTANT 🔥 -->
-<div class="overlay" id="adOverlay" style="display:none;"></div>
-<div class="popup-ad" id="popupAd" style="display:none;">
-    <button class="close-btn" onclick="clicker.closeAll()">×</button>
-    <iframe id="adIframe" src="https://www.effectivegatecpm.com/bdzwmnqkv?key=1aa444e7a4b2342a953947ed211aefcd"></iframe>
+<!-- STATUS -->
+<div class="status" id="status">⏳ Loading Unlimited Clicker...</div>
+
+<!-- NEWS CONTENT - VISIBLE -->
+<div class="news">
+    <h2>📰 Berita Terbaru 2026</h2>
+    <p>Klik artikel ini untuk simulasi human activity...</p>
+    <button onclick="humanClick()">Klik Saya (Build Score)</button>
 </div>
 
-<!-- CAPTCHA -->
-<div class="overlay" id="captchaOverlay" style="display:none;"></div>
-<div class="captcha-popup" id="captchaPopup" style="display:none;">
-    <button class="close-btn" onclick="clicker.closeAll()">×</button>
-    <div class="captcha-container">
-        <h3>🔐 Verifikasi</h3>
-        <iframe id="captchaFrame"></iframe>
-    </div>
+<div class="news">
+    <h2>💰 Bitcoin Naik</h2>
+    <p>Prediksi harga Bitcoin $250K...</p>
 </div>
 
-<div class="container">
-    <div class="header">
-        <h1>📰 NewsHub Unlimited</h1>
-        <p style="color: #666; font-size: 1.1em;">Klik artikel • Unlimited Ads • 100% Stealth</p>
-        <div class="status" id="status">
-            <strong>⚡ STATUS:</strong> <span id="statusText">Loading...</span> | 
-            Clicks: <span id="clickCount">0</span> | 
-            Human: <span id="humanScore">0</span>
-        </div>
-    </div>
-    
-    <div class="articles">
-        <div class="article" onclick="alert('Human click detected! +25 score')">
-            <h2>🚀 AI GPT-7 Live</h2>
-            <p>Artificial intelligence terbaru 2026...</p>
-        </div>
-        <div class="article" onclick="alert('Good activity! +20 score')">
-            <h2>💰 Bitcoin $250K</h2>
-            <p>Prediksi harga Bitcoin menuju puncak...</p>
-        </div>
-        <div class="article" onclick="alert('Activity boost! +30 score')">
-            <h2>🌐 Web5 Terdesentralisasi</h2>
-            <p>Internet masa depan sudah aktif...</p>
-        </div>
-        <div class="article" onclick="alert('Perfect! Ready for click')">
-            <h2>🧠 Neuralink 1 Juta User</h2>
-            <p>Implant otak mencapai milestone...</p>
-        </div>
-    </div>
+<div class="news">
+    <h2>🚀 AI Terbaru</h2>
+    <p>GPT-7 sudah live...</p>
 </div>
 
-<div class="success-msg" id="successMsg">✅ CLICK #<span id="clickNum">1</span> SUCCESS!</div>
+<!-- AD POPUP -->
+<div class="overlay" id="overlay"></div>
+<div class="popup" id="adPopup">
+    <iframe id="adFrame" src="https://otieu.com/4/10554940"></iframe>
+</div>
 
 <script>
-console.log('🔥 UNLIMITED CLICKER v2 - FIXED DISPLAY');
+console.log("🔥 SIMPLE CLICKER STARTED");
 
-let clicker;
+let score = 0;
+let clicks = 0;
 
-class Clicker {
-    constructor() {
-        this.clicks = 0;
-        this.score = 0;
-        this.init();
-    }
-    
-    init() {
-        console.log('🚀 Clicker started');
-        this.updateStatus('✅ READY - Move mouse untuk build score');
-        this.humanActivity();
-        setTimeout(() => this.startFlow(), 2000);
-    }
-    
-    humanActivity() {
-        document.addEventListener('mousemove', () => {
-            this.score += 1;
-            this.updateStatus('👤 Building human score...');
-        });
-        document.addEventListener('click', () => this.score += 15);
-        document.addEventListener('scroll', () => this.score += 5);
-    }
-    
-    startFlow() {
-        if (this.score < 20) {
-            setTimeout(() => this.startFlow(), 1000);
-            return;
-        }
-        this.captchaSolve();
-    }
-    
-    captchaSolve() {
-        console.log('🔐 CAPTCHA');
-        const captchaPopup = document.getElementById('captchaPopup');
-        const captchaOverlay = document.getElementById('captchaOverlay');
-        captchaPopup.style.display = 'block';
-        captchaOverlay.style.display = 'block';
-        captchaPopup.classList.add('active');
-        captchaOverlay.classList.add('active');
-        
-        document.getElementById('captchaFrame').src = 'data:text/html,<style>body{font-family:sans-serif;text-align:center;padding:30px;background:#f5f5f5;}#slider{width:300px;height:10px;margin:30px 0;}</style><h3>Slide to 100%</h3><input type=range id=slider min=0 max=100 value=0><div id=status>0%</div><script>slider=document.getElementById("slider");status=document.getElementById("status");slider.oninput=e=>status.textContent=Math.round(e.target.value)+" %";slider.onchange=()=>{if(slider.value>=100){parent.postMessage({type:"SOLVED"}, "*");document.body.innerHTML="<h2 style=\\"color:#27ae60\\">✅ DONE</h2>"}}</script>';
-        
-        window.addEventListener('message', (e) => {
-            if (e.data.type === 'SOLVED') {
-                captchaPopup.classList.remove('active');
-                setTimeout(() => {
-                    captchaPopup.style.display = 'none';
-                    captchaOverlay.style.display = 'none';
-                    this.waitThenClick();
-                }, 800);
-            }
-        });
-    }
-    
-    waitThenClick() {
-        this.updateStatus('⏳ Wait verification...');
-        setTimeout(() => {
-            this.doClick();
-        }, 4000 + Math.random() * 3000);
-    }
-    
-    doClick() {
-        console.log('💥 CLICK!');
-        const adPopup = document.getElementById('popupAd');
-        const adOverlay = document.getElementById('adOverlay');
-        
-        adPopup.style.display = 'block';
-        adOverlay.style.display = 'block';
-        adPopup.classList.add('active');
-        adOverlay.classList.add('active');
-        
-        // Human-like click after delay
-        setTimeout(() => this.clickAd(), 3000 + Math.random() * 2000);
-    }
-    
-    clickAd() {
-        const iframe = document.getElementById('adIframe');
-        const rect = iframe.getBoundingClientRect();
-        const x = rect.left + rect.width * 0.4;
-        const y = rect.top + rect.height * 0.4;
-        
-        // Click events
-        iframe.dispatchEvent(new MouseEvent('click', {
-            bubbles: true, clientX: x, clientY: y, button: 0
-        }));
-        
-        this.success();
-    }
-    
-    success() {
-        this.clicks++;
-        this.updateStatus(`✅ CLICK #${this.clicks} DONE! Next: 15min`);
-        
-        const msg = document.getElementById('successMsg');
-        document.getElementById('clickNum').textContent = this.clicks;
-        msg.classList.add('show');
-        setTimeout(() => msg.classList.remove('show'), 3000);
-        
-        // Close
-        setTimeout(() => {
-            document.querySelectorAll('.active').forEach(el => el.classList.remove('active'));
-            setTimeout(() => {
-                document.querySelectorAll('#popupAd, #adOverlay, #captchaPopup, #captchaOverlay').forEach(el => el.style.display = 'none');
-                setTimeout(() => this.startFlow(), 1000 * 60 * 15); // 15min
-            }, 5000);
-        }, 8000);
-    }
-    
-    updateStatus(text) {
-        document.getElementById('statusText').textContent = text;
-        document.getElementById('humanScore').textContent = Math.floor(this.score);
-        document.getElementById('clickCount').textContent = this.clicks;
-    }
-    
-    closeAll() {
-        document.querySelectorAll('.active').forEach(el => el.classList.remove('active'));
-    }
+function updateStatus(text) {
+    document.getElementById("status").innerHTML = text + " | Clicks: " + clicks + " | Score: " + Math.floor(score);
 }
 
-// START
-clicker = new Clicker();
-console.log('✅ PAGE LOADED - Move mouse!');
+function humanClick() {
+    score += 25;
+    updateStatus("👤 Human activity detected!");
+    console.log("Human click +25 score");
+}
+
+// HUMAN MOUSE TRACKER
+document.addEventListener("mousemove", function() {
+    score += 0.1;
+});
+document.addEventListener("click", function() {
+    score += 10;
+});
+
+// START UNLIMITED CYCLES
+function startClicker() {
+    if (score < 15) {
+        setTimeout(startClicker, 1000);
+        updateStatus("👤 Move mouse dulu...");
+        return;
+    }
+    
+    clicks++;
+    console.log("🚀 Starting click cycle #" + clicks);
+    updateStatus("🔥 Executing click #" + clicks);
+    
+    // Show AD
+    document.getElementById("overlay").style.display = "block";
+    document.getElementById("adPopup").style.display = "block";
+    
+    // HUMAN-LIKE CLICK
+    setTimeout(function() {
+        clickAd();
+    }, 2000 + Math.random() * 3000);
+}
+
+function clickAd() {
+    console.log("💥 CLICKING AD");
+    
+    var iframe = document.getElementById("adFrame");
+    var rect = iframe.getBoundingClientRect();
+    var x = rect.left + rect.width * 0.5;
+    var y = rect.top + rect.height * 0.5;
+    
+    // Simulate real click
+    var clickEvent = new MouseEvent("click", {
+        bubbles: true,
+        cancelable: true,
+        clientX: x,
+        clientY: y,
+        button: 0
+    });
+    
+    iframe.dispatchEvent(clickEvent);
+    
+    // SUCCESS
+    score += 50;
+    updateStatus("✅ CLICK #" + clicks + " SUCCESS!");
+    
+    // Close after delay
+    setTimeout(function() {
+        document.getElementById("overlay").style.display = "none";
+        document.getElementById("adPopup").style.display = "none";
+        
+        // Next cycle
+        setTimeout(startClicker, 10000 + Math.random() * 20000); // 10-30 detik
+    }, 5000);
+}
+
+// AUTO START after 2 seconds
+setTimeout(function() {
+    console.log("🎯 Auto-starting...");
+    startClicker();
+}, 2000);
+
+updateStatus("✅ READY - Move mouse untuk start");
+console.log("✅ PAGE FULLY LOADED - Check console F12");
+
 </script>
 
 </body>
