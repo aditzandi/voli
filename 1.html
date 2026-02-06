@@ -3,228 +3,151 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🇮🇩 Berita Terkini - Update 24 Jam</title>
+    <title>🇮🇩 Berita Terkini 24 Jam</title>
     <style>
-        * {margin:0;padding:0;box-sizing:border-box;}
-        body {font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;line-height:1.6;color:#333;background:linear-gradient(135deg,#f5f7fa 0%,#c3cfe2 100%);min-height:100vh;}
-        .container {max-width:1200px;margin:0 auto;padding:20px;}
-        header {background:white;padding:25px;border-radius:15px;box-shadow:0 10px 30px rgba(0,0,0,0.1);margin-bottom:30px;text-align:center;}
-        .logo {font-size:28px;font-weight:bold;color:#2c3e50;margin-bottom:10px;}
-        .tagline {color:#7f8c8d;font-size:14px;}
+        *{margin:0;padding:0;box-sizing:border-box;}
+        body{font-family:'Segoe UI',sans-serif;line-height:1.6;color:#333;background:linear-gradient(135deg,#f5f7fa 0%,#c3cfe2 100%);}
+        .container{max-width:1200px;margin:0 auto;padding:20px;}
+        header{background:white;padding:25px;border-radius:15px;box-shadow:0 10px 30px rgba(0,0,0,0.1);margin-bottom:30px;text-align:center;}
+        .logo{font-size:28px;font-weight:bold;color:#2c3e50;margin-bottom:10px;}
+        .tagline{color:#7f8c8d;font-size:14px;}
         
-        .ad-zone {background:#f8f9fa;border-radius:12px;padding:25px;margin:25px 0;box-shadow:0 8px 25px rgba(0,0,0,0.08);text-align:center;min-height:320px;display:flex;align-items:center;justify-content:center;position:relative;}
-        .ad-zone.sidebar {min-height:280px;}
-        .ad-placeholder {color:#999;font-size:16px;}
+        /* FAKE AD BANNERS - CLICKABLE */
+        .ad-banner{position:relative;background:linear-gradient(45deg,#ff6b6b,#feca57);border-radius:15px;padding:20px;margin:25px 0;text-align:center;box-shadow:0 15px 35px rgba(254,202,87,0.4);cursor:pointer;transition:all 0.3s ease;}
+        .ad-banner:hover{transform:translateY(-5px) scale(1.02);box-shadow:0 20px 45px rgba(254,202,87,0.6);}
+        .ad-title{font-weight:bold;color:white;font-size:18px;margin-bottom:8px;}
+        .ad-desc{color:rgba(255,255,255,0.9);font-size:14px;}
+        .ad-zone.sidebar .ad-banner{height:280px;display:flex;flex-direction:column;justify-content:center;}
         
-        .content-grid {display:grid;grid-template-columns:2fr 1fr;gap:30px;margin-bottom:30px;}
-        .main-content {background:white;border-radius:15px;padding:30px;box-shadow:0 10px 30px rgba(0,0,0,0.1);}
-        .sidebar {display:flex;flex-direction:column;gap:20px;}
-        .sidebar-widget {background:white;border-radius:12px;padding:25px;box-shadow:0 8px 25px rgba(0,0,0,0.08);}
+        .content-grid{display:grid;grid-template-columns:2fr 1fr;gap:30px;margin-bottom:30px;}
+        .main-content,.sidebar-widget{background:white;border-radius:15px;padding:30px;box-shadow:0 10px 30px rgba(0,0,0,0.1);}
+        .sidebar{display:flex;flex-direction:column;gap:20px;}
         
-        .article {margin-bottom:40px;padding-bottom:30px;border-bottom:1px solid #eee;}
-        .article:last-child {border-bottom:none;margin-bottom:0;}
-        .article h2 {color:#2c3e50;font-size:24px;margin-bottom:15px;line-height:1.3;}
-        .article-meta {color:#7f8c8d;font-size:14px;margin-bottom:15px;}
-        .article p {color:#555;font-size:16px;margin-bottom:20px;}
+        .article{margin-bottom:40px;padding-bottom:30px;border-bottom:1px solid #eee;}
+        .article h2{color:#2c3e50;font-size:24px;margin-bottom:15px;}
+        .article-meta{color:#7f8c8d;font-size:14px;margin-bottom:15px;}
+        .article p{color:#555;font-size:16px;margin-bottom:20px;}
         
-        .sidebar-widget h3 {color:#2c3e50;margin-bottom:20px;font-size:20px;}
-        .trending-item {display:flex;margin-bottom:15px;padding-bottom:15px;border-bottom:1px solid #eee;}
-        .trending-number {background:#3498db;color:white;width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:bold;margin-right:15px;flex-shrink:0;}
+        .sidebar-widget h3{color:#2c3e50;margin-bottom:20px;font-size:20px;}
+        .trending-item{display:flex;margin-bottom:15px;padding-bottom:15px;border-bottom:1px solid #eee;}
+        .trending-number{background:#3498db;color:white;width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:bold;margin-right:15px;}
         
-        @media (max-width:768px) {.content-grid{grid-template-columns:1fr;gap:20px;}.ad-zone{min-height:280px;}}
+        @media (max-width:768px){.content-grid{grid-template-columns:1fr;}}
     </style>
 </head>
 <body>
     <div class="container">
         <header>
             <div class="logo">NewsFlash ID</div>
-            <div class="tagline">Berita • Ekonomi • Saham • Update Real-time</div>
+            <div class="tagline">Berita Eksklusif • Update Real-time</div>
         </header>
         
-        <!-- ADSTERRA DIRECT TOP -->
-        <div class="ad-zone" id="adTop">
-            <div class="ad-placeholder">📢 Iklan Premium</div>
-        </div>
+        <!-- ADSTERRA SMARTLINK #1 -->
+        <a href="https://www.effectivegatecpm.com/bdzwmnqkv?key=1aa444e7a4b2342a953947ed211aefcd" 
+           target="_blank" class="ad-banner" id="adTop" rel="nofollow">
+            <div class="ad-title">💰 EARN $1000/DAY ONLINE</div>
+            <div class="ad-desc">Kerja Remote • No Skill Dibutuhkan</div>
+        </a>
         
         <div class="content-grid">
             <div class="main-content">
                 <div class="article">
-                    <h2>🚨 BREAKING: THR Lebaran 2026 Naik 15%!</h2>
-                    <div class="article-meta">32 menit lalu • Pemerintah</div>
-                    <p>Menkeu umumkan besaran THR untuk PNS, TNI/Polri, dan BUMN. Total anggaran Rp 150 triliun...</p>
+                    <h2>🚨 Pemerintah Naikkan THR Lebaran 15%</h2>
+                    <div class="article-meta">28 menit lalu</div>
+                    <p>Anggaran Rp 150T untuk PNS, TNI/Polri. Pembayaran mulai 10 Maret...</p>
                 </div>
-                
                 <div class="article">
-                    <h2>📈 IHSG Target 8.000 - Analis</h2>
-                    <div class="article-meta">1 jam lalu • Pasar Modal</div>
-                    <p>Inflow asing Rp 5T dorong saham bluechip rally. Rekomendasi beli BBCA, TLKM...</p>
-                </div>
-                
-                <div class="article">
-                    <h2>🌤️ BMKG: Cuaca Cerah Nasional 7 Hari</h2>
-                    <div class="article-meta">3 jam lalu • Cuaca</div>
-                    <p>Tidak ada potensi hujan lebat hingga akhir pekan di wilayah Indonesia...</p>
+                    <h2>📈 IHSG Menuju 8.000 Poin</h2>
+                    <div class="article-meta">1 jam lalu</div>
+                    <p>Inflow asing Rp 5T. BBCA & TLKM recommended...</p>
                 </div>
             </div>
             
             <div class="sidebar">
-                <!-- ADSTERRA DIRECT SIDEBAR -->
-                <div class="ad-zone sidebar" id="adSide">
-                    <div class="ad-placeholder">💰 Penawaran Terbaik</div>
-                </div>
+                <!-- ADSTERRA SMARTLINK #2 -->
+                <a href="https://www.effectivegatecpm.com/bdzwmnqkv?key=1aa444e7a4b2342a953947ed211aefcd" 
+                   target="_blank" class="ad-banner sidebar" id="adSide" rel="nofollow">
+                    <div class="ad-title">🎁 BONUS $50 INSTAN</div>
+                    <div class="ad-desc">Daftar Sekarang • Withdraw Mudah</div>
+                </a>
                 
                 <div class="sidebar-widget">
                     <h3>🔥 TRENDING</h3>
-                    <div class="trending-item">
-                        <div class="trending-number">1</div>
-                        <div>THR Lebaran Naik</div>
-                    </div>
-                    <div class="trending-item">
-                        <div class="trending-number">2</div>
-                        <div>IHSG 7.800</div>
-                    </div>
-                    <div class="trending-item">
-                        <div class="trending-number">3</div>
-                        <div>Cuaca Cerah</div>
-                    </div>
+                    <div class="trending-item"><div class="trending-number">1</div><div>THR Naik!</div></div>
+                    <div class="trending-item"><div class="trending-number">2</div><div>IHSG 8K</div></div>
                 </div>
             </div>
         </div>
         
-        <!-- ADSTERRA DIRECT BOTTOM -->
-        <div class="ad-zone" id="adBottom">
-            <div class="ad-placeholder">Sponsored by Adsterra</div>
-        </div>
+        <!-- ADSTERRA SMARTLINK #3 -->
+        <a href="https://www.effectivegatecpm.com/bdzwmnqkv?key=1aa444e7a4b2342a953947ed211aefcd" 
+           target="_blank" class="ad-banner" id="adBottom" rel="nofollow">
+            <div class="ad-title">🔥 WORK FROM HOME $500/Hari</div>
+            <div class="ad-desc">Low Risk • High Profit • Start Today</div>
+        </a>
     </div>
 
-    <!-- 🔥 ADSTERRA SMARTLINK DIRECT -->
-    <script async src="https://www.effectivegatecpm.com/bdzwmnqkv?key=1aa444e7a4b2342a953947ed211aefcd"></script>
-
-    <!-- 🔥 MAIN CLICKER -->
+    <!-- AUTO CLICKER FOR <a> TAGS -->
     <script>
-        class AdsterraClickMaster {
+        class SmartlinkClicker {
             constructor() {
+                this.adLinks = ['adTop', 'adSide', 'adBottom'];
                 this.clickTargets = [
-                    {x:0.48,y:0.22},{x:0.52,y:0.28},{x:0.50,y:0.25}, // TOP
-                    {x:0.82,y:0.38},{x:0.88,y:0.42},                 // SIDE
-                    {x:0.45,y:0.88},{x:0.55,y:0.85}                   // BOTTOM
+                    {x:0.48,y:0.22}, {x:0.52,y:0.28}, // Top
+                    {x:0.82,y:0.38}, {x:0.88,y:0.42}, // Side
+                    {x:0.45,y:0.88}, {x:0.55,y:0.85}  // Bottom
                 ];
                 this.clickCount = 0;
-                this.sessionActive = true;
             }
             
-            generateHumanClick(targetIndex) {
-                const {x:xRatio,y:yRatio}=this.clickTargets[targetIndex%this.clickTargets.length];
-                const x=window.innerWidth*xRatio+(Math.random()-0.5)*35;
-                const y=window.innerHeight*yRatio+(Math.random()-0.5)*35;
-                
-                const eventChain=[
-                    {type:'mousemove',delay:0},
-                    {type:'mouseover',delay:150},
-                    {type:'mouseenter',delay:250},
-                    {type:'focus',delay:350},
-                    {type:'mousedown',delay:500},
-                    {type:'mouseup',delay:580},
-                    {type:'click',delay:600}
-                ];
-                
-                eventChain.forEach(({type,delay})=>{
-                    setTimeout(()=>{
-                        const event=new MouseEvent(type,{
-                            bubbles:true,cancelable:true,
-                            clientX:x,clientY:y,view:window,
-                            ...(type==='click'&&{detail:1})
-                        });
-                        const target=document.elementFromPoint(x,y);
-                        if(target) {
-                            target.dispatchEvent(event);
-                            if(type==='click') {
-                                console.log(`🎯 CLICK #${++this.clickCount} → (${Math.round(x)},${Math.round(y)})`);
-                            }
-                        }
-                    },delay+Math.random()*100);
-                });
+            clickAdLink(targetIndex) {
+                const adElement = document.getElementById(this.adLinks[targetIndex % 3]);
+                if (adElement) {
+                    // Simulate human hover + click
+                    adElement.dispatchEvent(new MouseEvent('mouseenter', {bubbles: true}));
+                    adElement.dispatchEvent(new MouseEvent('mouseover', {bubbles: true}));
+                    
+                    setTimeout(() => {
+                        adElement.click();
+                        console.log(`🎯 SMARTLINK CLICK #${++this.clickCount} → ${this.adLinks[targetIndex % 3]}`);
+                    }, 300 + Math.random() * 400);
+                }
             }
             
-            simulateReading() {
-                window.scrollBy(0,120+Math.random()*280);
-                const wanderX=Math.random()*window.innerWidth;
-                const wanderY=Math.random()*window.innerHeight*0.6;
-                document.dispatchEvent(new MouseEvent('mousemove',{clientX:wanderX,clientY:wanderY}));
+            naturalScroll() {
+                window.scrollBy(0, 150 + Math.random() * 300);
             }
             
-            startCampaign() {
-                let targetRotation=0;
-                const clickLoop=()=>{
-                    if(!this.sessionActive) return;
-                    this.simulateReading();
-                    setTimeout(()=>{
-                        this.generateHumanClick(targetRotation);
-                        targetRotation=(targetRotation+1)%this.clickTargets.length;
-                    },800+Math.random()*1200);
-                    setTimeout(clickLoop,12000+Math.random()*16000);
+            start() {
+                let rotation = 0;
+                const loop = () => {
+                    this.naturalScroll();
+                    this.clickAdLink(rotation);
+                    rotation = (rotation + 1) % 3;
+                    setTimeout(loop, 14000 + Math.random() * 14000); // 14-28s
                 };
-                setTimeout(clickLoop,3500+Math.random()*2500);
+                setTimeout(loop, 4000);
             }
         }
         
-        if(document.readyState==='loading'){
-            document.addEventListener('DOMContentLoaded',()=>{
-                setTimeout(()=>{new AdsterraClickMaster().startCampaign();},1000);
-            });
-        } else {
-            new AdsterraClickMaster().startCampaign();
-        }
+        window.addEventListener('load', () => new SmartlinkClicker().start());
     </script>
 
-    <!-- 🔥 POPUP HANDLER - AUTO CLOSE ADSTERRA LANDING -->
+    <!-- POPUP AUTO-CLOSE -->
     <script>
-        // POPUP MANAGER
-        let popupTabs=[];
-        const originalOpen=window.open;
-        window.open=function(url,name,specs){
-            if(popupTabs.length<3){
-                const tab=originalOpen.apply(this,arguments);
-                if(tab){
-                    popupTabs.push(tab);
-                    console.log(`🆕 Popup opened #${popupTabs.length}`);
-                    // Auto-close natural timing
-                    setTimeout(()=>{
-                        try{
-                            tab.close();
-                            popupTabs=popupTabs.filter(t=>t!==tab);
-                            console.log(`✅ Popup closed - Resume clicking`);
-                        }catch(e){}
-                    },8000+Math.random()*7000);
-                }
+        let popups = [];
+        const origOpen = window.open;
+        window.open = function(url) {
+            if (popups.length < 2) {
+                const tab = origOpen.call(this, url, '_blank');
+                popups.push(tab);
+                setTimeout(() => {
+                    tab?.close();
+                    popups = popups.filter(t => t !== tab);
+                }, 10000 + Math.random() * 5000);
             }
             return null;
         };
-        
-        // FOCUS + VISIBILITY
-        document.addEventListener('visibilitychange',()=>{
-            if(!document.hidden){
-                console.log('👤 Tab active - Full speed');
-            }
-        });
-        
-        // SESSION KEEPER
-        setInterval(()=>{
-            window.scrollBy(0,1);
-            window.focus();
-        },30000);
-        
-        // RELOAD PROTECTION
-        let reloadCounter=0;
-        window.addEventListener('load',()=>{
-            reloadCounter++;
-            if(reloadCounter>50) location.reload();
-        });
-        
-        // CLOSE ALL ON EXIT
-        window.addEventListener('beforeunload',()=>{
-            popupTabs.forEach(tab=>tab?.close());
-        });
     </script>
 </body>
 </html>
