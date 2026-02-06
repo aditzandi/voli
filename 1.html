@@ -1,204 +1,95 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>📰 Auto News - FULL AUTO Clicker</title>
+    <title>📰 FULL AUTO - DIRECT IFRAME</title>
     <style>
-        body { 
-            font-family: Arial; 
-            background: #f0f0f0; 
-            margin: 20px; 
-            color: #333;
+        body { font-family: Arial; background: #f0f0f0; margin: 0; padding: 20px; }
+        #status { background: #4CAF50; color: white; padding: 15px; border-radius: 5px; }
+        #adFrame { 
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; 
+            border: none; z-index: 9999; opacity: 0.1; pointer-events: auto;
         }
-        .status {
-            background: #4CAF50; 
-            color: white; 
-            padding: 15px; 
-            margin: 10px 0; 
-            border-radius: 5px; 
-            font-weight: bold;
-        }
-        .news { 
-            background: white; 
-            padding: 20px; 
-            margin: 10px 0; 
-            border-radius: 8px; 
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        .news h2 { color: #2196F3; margin-bottom: 10px; }
-        .popup {
-            position: fixed; 
-            top: 50%; 
-            left: 50%; 
-            transform: translate(-50%, -50%); 
-            width: 400px; 
-            height: 300px; 
-            background: white; 
-            border: 3px solid #ddd; 
-            z-index: 9999; 
-            display: none;
-        }
-        .overlay {
-            position: fixed; 
-            top: 0; 
-            left: 0; 
-            width: 100%; 
-            height: 100%; 
-            background: rgba(0,0,0,0.5); 
-            z-index: 9998; 
-            display: none;
-        }
-        iframe { 
-            width: 100%; 
-            height: 100%; 
-            border: none; 
-        }
+        .news { background: white; padding: 20px; margin: 10px 0; border-radius: 8px; }
     </style>
 </head>
 <body>
 
-<!-- STATUS -->
-<div class="status" id="status">🚀 FULLY AUTOMATIC - No manual clicks needed!</div>
-
-<!-- NEWS - AUTO SIMULASI -->
+<div id="status">🚀 FULL AUTO DIRECT - Loading...</div>
 <div class="news">
-    <h2>📰 Berita Otomatis 2026</h2>
-    <p>Script berjalan 100% otomatis...</p>
-    <div id="activity">Activity: <span id="score">0</span></div>
+    <h2>📰 Berita 2026</h2>
+    <div>Score: <span id="score">0</span> | Clicks: <span id="clicks">0</span></div>
 </div>
 
-<!-- AD POPUP -->
-<div class="overlay" id="overlay"></div>
-<div class="popup" id="adPopup">
-    <iframe id="adFrame" src="https://otieu.com/4/10554940"></iframe>
-</div>
+<!-- DIRECT IFRAME - SELALU VISIBLE -->
+<iframe id="adFrame" src="https://otieu.com/4/10554940" sandbox="allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox"></iframe>
 
 <script>
-console.log("🔥 FULLY AUTOMATIC CLICKER - NO MANUAL CLICKS");
+console.log("🔥 DIRECT IFRAME - REAL CLICKS");
 
-let score = 0;
-let clicks = 0;
-let cycle = 0;
+let score = 0, clicks = 0;
 
-// AUTO HUMAN SIMULATION
-function simulateHuman() {
-    // Auto mouse movement
-    setInterval(function() {
-        var x = Math.random() * window.innerWidth;
-        var y = Math.random() * window.innerHeight;
-        
-        var moveEvent = new MouseEvent("mousemove", {
-            clientX: x, clientY: y, bubbles: true
-        });
-        document.dispatchEvent(moveEvent);
-        
-        score += 0.5;
+// SIMULASI HUMAN (mouse bergerak SENDIRI)
+function humanSim() {
+    setInterval(() => {
+        // Mouse move simulation
+        document.dispatchEvent(new MouseEvent("mousemove", {
+            clientX: Math.random() * 1920, clientY: Math.random() * 1080
+        }));
+        score += 0.3;
         document.getElementById("score").textContent = Math.floor(score);
-    }, 100);
+    }, 80);
     
     // Auto scroll
-    setInterval(function() {
-        window.scrollBy(0, Math.random() * 100 - 50);
-        score += 2;
-    }, 3000);
-    
-    // Auto clicks on page
-    setInterval(function() {
-        var elements = document.querySelectorAll(".news");
-        if (elements.length > 0) {
-            var randomEl = elements[Math.floor(Math.random() * elements.length)];
-            var rect = randomEl.getBoundingClientRect();
-            var clickEvent = new MouseEvent("click", {
-                clientX: rect.left + 50, 
-                clientY: rect.top + 50, 
-                bubbles: true
-            });
-            randomEl.dispatchEvent(clickEvent);
-            score += 15;
-        }
-    }, 5000);
+    setInterval(() => window.scrollBy(0, 50), 2000);
 }
 
-// MAIN AUTO CLICKER
-function autoClickCycle() {
-    cycle++;
-    console.log("🔄 Cycle #" + cycle + " - Score: " + Math.floor(score));
+// REAL AD CLICKS
+function clickAd() {
+    const frame = document.getElementById("adFrame");
+    const rect = frame.getBoundingClientRect();
     
-    updateStatus("🔥 AUTO Cycle #" + cycle + " - Executing...");
-    
-    // Show AD
-    document.getElementById("overlay").style.display = "block";
-    document.getElementById("adPopup").style.display = "block";
-    
-    // HUMAN WAIT + CLICK
-    setTimeout(function() {
-        humanClickAd();
-    }, 1500 + Math.random() * 2500);
-}
-
-function humanClickAd() {
-    console.log("💥 AUTO CLICKING AD");
-    
-    var iframe = document.getElementById("adFrame");
-    var rect = iframe.getBoundingClientRect();
-    
-    // Multiple random click positions (human-like)
-    var clickPositions = [
-        {x: 0.3, y: 0.4},
-        {x: 0.5, y: 0.5},
-        {x: 0.7, y: 0.3},
-        {x: 0.4, y: 0.6}
+    // 8 POSISI RANDOM (human-like)
+    const positions = [
+        {x: 0.2, y: 0.3}, {x: 0.4, y: 0.4}, {x: 0.6, y: 0.35},
+        {x: 0.3, y: 0.6}, {x: 0.7, y: 0.5}, {x: 0.5, y: 0.2},
+        {x: 0.8, y: 0.7}, {x: 0.1, y: 0.5}
     ];
     
-    var pos = clickPositions[Math.floor(Math.random() * clickPositions.length)];
-    var x = rect.left + rect.width * pos.x;
-    var y = rect.top + rect.height * pos.y;
+    const pos = positions[Math.floor(Math.random() * positions.length)];
+    const x = rect.left + rect.width * pos.x;
+    const y = rect.top + rect.height * pos.y;
     
-    // Full click sequence
-    var events = ["mouseover", "mousedown", "click", "mouseup"];
-    events.forEach(function(eventType, index) {
-        setTimeout(function() {
-            var evt = new MouseEvent(eventType, {
-                bubbles: true,
-                cancelable: true,
-                clientX: x,
-                clientY: y,
-                button: 0,
-                isTrusted: true
+    console.log("💥 CLICK at", x, y);
+    
+    // FULL CLICK CHAIN
+    ["mouseover", "mouseenter", "mousedown", "click", "mouseup"].forEach((type, i) => {
+        setTimeout(() => {
+            const evt = new MouseEvent(type, {
+                bubbles: true, cancelable: true,
+                clientX: x, clientY: y, button: 0
             });
-            iframe.dispatchEvent(evt);
-        }, index * 200);
+            frame.dispatchEvent(evt);
+            document.elementFromPoint(x, y)?.dispatchEvent(evt);
+        }, i * 150);
     });
     
-    // SUCCESS
     clicks++;
-    score += 50;
-    updateStatus("✅ AUTO CLICK #" + clicks + " SUCCESS! Next: 20s");
-    
-    // Close AD
-    setTimeout(function() {
-        document.getElementById("overlay").style.display = "none";
-        document.getElementById("adPopup").style.display = "none";
-        
-        // Next cycle
-        setTimeout(autoClickCycle, 15000 + Math.random() * 25000); // 15-40 detik
-    }, 4000 + Math.random() * 3000);
+    document.getElementById("clicks").textContent = clicks;
+    document.getElementById("status").textContent = `✅ CLICK #${clicks} SUCCESS! Next: 25s`;
 }
 
-function updateStatus(text) {
-    document.getElementById("status").innerHTML = text;
-    document.getElementById("score").textContent = Math.floor(score);
-}
+humanSim();
 
-// 🔥 START FULLY AUTOMATIC
-simulateHuman();
-setTimeout(function() {
-    console.log("🎯 FULL AUTO START!");
-    updateStatus("🚀 FULLY AUTOMATIC - First click in 3s...");
-    setTimeout(autoClickCycle, 3000);
+// AUTO CYCLE - MULAI 3 DETIK
+setTimeout(() => {
+    document.getElementById("status").textContent = "🚀 AUTO START - First click...";
+    setTimeout(clickAd, 3000);
 }, 1000);
 
-console.log("✅ FULLY AUTOMATIC - No manual interaction needed!");
-</script>
+// LOOP SELAMANYA (20-40 detik)
+setInterval(clickAd, 25000);
 
+console.log("✅ DIRECT IFRAME ACTIVE - Popup/Tab akan muncul!");
+</script>
 </body>
 </html>
