@@ -3,437 +3,233 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Berita Terbaru Hari Ini</title>
+    <title>💰 Cara Cari $100/Hari dari Rumah - Rahasia Terbongkar!</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            line-height: 1.6; color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
         }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
         header {
-            background: white;
-            padding: 20px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            margin-bottom: 30px;
+            background: linear-gradient(45deg, #ff6b6b, #feca57);
+            padding: 30px; border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(255,107,107,0.3);
+            margin-bottom: 30px; text-align: center; color: white;
         }
+        .logo { font-size: 32px; font-weight: bold; margin-bottom: 10px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
+        .tagline { font-size: 18px; opacity: 0.95; }
         
-        .logo {
-            font-size: 28px;
-            font-weight: bold;
-            color: #2c3e50;
-            text-align: center;
-        }
-        
-        /* AD ZONES UNTUK SCRIPT ADSTERRA */
         .ad-zone {
-            background: white;
-            border-radius: 12px;
-            padding: 20px;
-            margin: 25px 0;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
-            text-align: center;
-            opacity: 0;
-            transform: translateY(20px);
-            animation: slideIn 0.8s ease forwards;
-            min-height: 300px; /* Pastikan space untuk iklan */
-            position: relative;
+            background: white; border-radius: 15px; padding: 25px;
+            margin: 30px 0; box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+            position: relative; overflow: hidden;
+        }
+        .ad-zone iframe {
+            width: 100%; height: 320px; border: none; border-radius: 10px;
+            box-shadow: inset 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .sidebar-ad iframe { height: 280px; }
+        .ad-label {
+            position: absolute; top: 10px; right: 15px;
+            background: #ff4757; color: white; padding: 5px 12px;
+            border-radius: 20px; font-size: 12px; font-weight: bold; z-index: 10;
         }
         
-        .ad-zone.sidebar-ad {
-            min-height: 250px;
-            transform: translateX(20px);
-            animation: slideInRight 0.8s ease forwards 0.3s;
-        }
-        
-        @keyframes slideIn {
-            to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes slideInRight {
-            to { opacity: 1; transform: translateX(0); }
-        }
-        
-        .ad-placeholder {
-            color: #7f8c8d;
-            font-style: italic;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 100%;
-            font-size: 16px;
-        }
-        
-        .content-grid {
-            display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 30px;
-            margin-bottom: 30px;
-        }
-        
-        .main-content {
-            background: white;
-            border-radius: 15px;
-            padding: 30px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-        }
-        
-        .sidebar {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-        
-        .article {
-            margin-bottom: 40px;
-            padding-bottom: 30px;
-            border-bottom: 1px solid #eee;
-        }
-        
-        .article:last-child {
-            border-bottom: none;
-            margin-bottom: 0;
-        }
-        
+        .content-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 30px; margin-bottom: 30px; }
+        .main-content { background: white; border-radius: 20px; padding: 40px; box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
+        .article { margin-bottom: 50px; padding-bottom: 40px; border-bottom: 2px dashed #eee; }
+        .article:last-child { border-bottom: none; margin-bottom: 0; }
         .article h2 {
-            color: #2c3e50;
-            font-size: 24px;
-            margin-bottom: 15px;
-            line-height: 1.3;
+            background: linear-gradient(45deg, #ff6b6b, #feca57);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            font-size: 28px; margin-bottom: 20px; line-height: 1.3; font-weight: 700;
         }
-        
         .article-meta {
-            color: #7f8c8d;
-            font-size: 14px;
-            margin-bottom: 15px;
+            background: #3498db; color: white; padding: 8px 15px;
+            border-radius: 25px; display: inline-block; font-size: 13px;
+            margin-bottom: 20px; font-weight: 500;
         }
-        
-        .article p {
-            color: #555;
-            font-size: 16px;
-            margin-bottom: 20px;
+        .article p { font-size: 17px; margin-bottom: 25px; color: #444; }
+        .highlight-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white; padding: 25px; border-radius: 15px;
+            margin: 25px 0; text-align: center; font-size: 18px;
+            font-weight: 600; box-shadow: 0 10px 30px rgba(102,126,234,0.3);
         }
-        
-        .read-more {
-            display: inline-block;
-            background: #3498db;
-            color: white;
-            padding: 12px 25px;
-            text-decoration: none;
-            border-radius: 25px;
-            font-weight: 500;
+        .cta-button {
+            display: inline-block; background: linear-gradient(45deg, #ff6b6b, #feca57);
+            color: white; padding: 18px 40px; text-decoration: none;
+            border-radius: 50px; font-weight: 700; font-size: 18px;
+            margin: 20px 0; box-shadow: 0 10px 30px rgba(255,107,107,0.4);
             transition: all 0.3s ease;
         }
+        .cta-button:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(255,107,107,0.5); }
         
-        .read-more:hover {
-            background: #2980b9;
-            transform: translateY(-2px);
-        }
-        
+        .sidebar { display: flex; flex-direction: column; gap: 25px; }
         .sidebar-widget {
-            background: white;
-            border-radius: 12px;
-            padding: 25px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+            background: white; border-radius: 15px; padding: 30px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
         }
-        
-        .sidebar-widget h3 {
-            color: #2c3e50;
-            margin-bottom: 20px;
-            font-size: 20px;
-        }
-        
-        .trending-item {
-            display: flex;
-            margin-bottom: 15px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid #eee;
-        }
-        
-        .trending-item:last-child {
-            border-bottom: none;
-            margin-bottom: 0;
-        }
-        
-        .trending-number {
-            background: #3498db;
-            color: white;
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            margin-right: 15px;
-            flex-shrink: 0;
-        }
+        .sidebar-widget h3 { color: #2c3e50; margin-bottom: 25px; font-size: 22px; text-align: center; }
         
         @media (max-width: 768px) {
-            .content-grid {
-                grid-template-columns: 1fr;
-                gap: 20px;
-            }
-            
-            .ad-zone {
-                min-height: 250px;
-            }
+            .content-grid { grid-template-columns: 1fr; gap: 25px; }
+            .ad-zone iframe { height: 280px; }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <div class="logo">NewsFlash ID</div>
+            <div class="logo">💰 Uang Online ID</div>
+            <div class="tagline">Rahasia Cari $100/Hari dari HP Saja - Terbukti Bayar!</div>
         </header>
         
-        <!-- AD ZONE 1 - TOP -->
-        <div class="ad-zone" id="adTop">
-            <div class="ad-placeholder">Loading iklan premium...</div>
+        <!-- AD ZONE 1 -->
+        <div class="ad-zone">
+            <div class="ad-label">Sponsored</div>
+            <iframe src="https://www.effectivegatecpm.com/bdzwmnqkv?key=1aa444e7a4b2342a953947ed211aefcd" 
+                    id="adTop" sandbox="allow-scripts allow-same-origin allow-forms"></iframe>
         </div>
         
         <div class="content-grid">
             <div class="main-content">
                 <div class="article">
-                    <h2>Teknologi AI Mengubah Cara Kerja di 2026</h2>
-                    <div class="article-meta">2 jam yang lalu • Teknologi</div>
-                    <p>Kecerdasan buatan terus berkembang pesat dan mengubah berbagai aspek kehidupan kerja. Para ahli memprediksi bahwa pada tahun 2026, AI akan menggantikan 30% pekerjaan rutin...</p>
-                    <a href="#" class="read-more">Baca Selengkapnya</a>
-                </div>
-                
-                <div class="article">
-                    <h2>Ekonomi Indonesia Diprediksi Tumbuh 5.2% Tahun Ini</h2>
-                    <div class="article-meta">5 jam yang lalu • Ekonomi</div>
-                    <p>Menteri Keuangan mengumumkan proyeksi pertumbuhan ekonomi yang optimis untuk tahun 2026 dengan berbagai stimulus fiskal yang sedang digulirkan...</p>
-                    <a href="#" class="read-more">Baca Selengkapnya</a>
+                    <h2>🔥 CARA MUDAH EARN $100/HARI dari RUMAH - RAHASIA TERBONGKAR!</h2>
+                    <div class="article-meta">Diterbitkan 15 menit lalu • 127K views</div>
+                    <p><strong>TAK PERCAYA?</strong> Saya juga dulu gitu! Tapi setelah coba metode ini, rekening saya kebanjiran dollar setiap hari. Kerja 2 jam/hari, hasil $100-$300!</p>
+                    <div class="highlight-box">💸 <strong>$100/HARI = Rp1.5 JUTA/HARI!</strong> • Tanpa Modal • Tanpa Skill</div>
+                    <a href="#" class="cta-button">🚀 MULAI EARN $100 SEKARANG!</a>
                 </div>
             </div>
             
             <div class="sidebar">
-                <!-- AD ZONE 2 - SIDE -->
-                <div class="ad-zone sidebar-ad" id="adSide">
-                    <div class="ad-placeholder">Iklan sidebar premium...</div>
-                </div>
-                
-                <div class="sidebar-widget">
-                    <h3>Trending</h3>
-                    <div class="trending-item">
-                        <div class="trending-number">1</div>
-                        <div>
-                            <strong>Presiden Baru Dilantik</strong><br>
-                            <small>3 menit yang lalu</small>
-                        </div>
-                    </div>
-                    <div class="trending-item">
-                        <div class="trending-number">2</div>
-                        <div>
-                            <strong>Cuaca Ekstrem di Jawa</strong><br>
-                            <small>12 menit yang lalu</small>
-                        </div>
-                    </div>
+                <div class="ad-zone sidebar-ad">
+                    <div class="ad-label">Premium Ad</div>
+                    <iframe src="https://www.effectivegatecpm.com/bdzwmnqkv?key=1aa444e7a4b2342a953947ed211aefcd" 
+                            id="adSide" sandbox="allow-scripts allow-same-origin allow-forms"></iframe>
                 </div>
             </div>
         </div>
         
-        <!-- AD ZONE 3 - BOTTOM -->
-        <div class="ad-zone" id="adBottom">
-            <div class="ad-placeholder">Iklan footer premium...</div>
+        <div class="ad-zone">
+            <div class="ad-label">Featured</div>
+            <iframe src="https://www.effectivegatecpm.com/bdzwmnqkv?key=1aa444e7a4b2342a953947ed211aefcd" 
+                    id="adBottom" sandbox="allow-scripts allow-same-origin allow-forms"></iframe>
         </div>
     </div>
 
-    <!-- ADSTERRA SCRIPT - LOAD DI 3 ZONES -->
     <script>
-        // Dynamic inject Adsterra script di setiap zone
-        function loadAdsterra(zoneId) {
-            const zone = document.getElementById(zoneId);
-            if (zone) {
-                const script = document.createElement('script');
-                script.src = 'https://pl28662409.effectivegatecpm.com/6f/8f/ac/6f8faca346a7f2d9a391d3011e1797c8.js';
-                script.async = true;
-                script.onload = () => {
-                    console.log(`✅ Adsterra loaded in ${zoneId}`);
-                    zone.querySelector('.ad-placeholder')?.remove();
-                };
-                zone.appendChild(script);
-            }
-        }
-        
-        // Load ads setelah DOM ready
-        window.addEventListener('DOMContentLoaded', () => {
-            loadAdsterra('adTop');
-            setTimeout(() => loadAdsterra('adSide'), 500);
-            setTimeout(() => loadAdsterra('adBottom'), 1000);
-        });
-    </script>
-
-    <script>
-        class AdvancedAdClicker {
+        class PerfectRatioClicker {
             constructor() {
                 this.zones = ['adTop', 'adSide', 'adBottom'];
-                this.clicks = { total: 0, perZone: {} };
-                this.isRunning = false;
+                this.stats = { impressions: 0, clicks: 0 };
+                this.clickRatio = 0.1; // 10% = 1 click per 10 impressions
+                this.impressionCount = 0;
             }
             
-            waitForAdContent(zoneId) {
-                return new Promise(resolve => {
-                    const checkInterval = setInterval(() => {
-                        const zone = document.getElementById(zoneId);
-                        const hasContent = zone.children.length > 0 && 
-                                         !zone.querySelector('.ad-placeholder') &&
-                                         (zone.querySelector('iframe, .ad, [id*="ad"], a[href*="effectivegate"]') ||
-                                          zone.innerHTML.includes('effectivegate'));
-                        
-                        if (hasContent) {
-                            clearInterval(checkInterval);
-                            console.log(`🎯 AD READY → ${zoneId}`);
-                            resolve(true);
-                        }
-                    }, 500);
+            isReady(iframe) {
+                try {
+                    return iframe.contentDocument?.readyState === 'complete' &&
+                           iframe.contentDocument.body.children.length > 0;
+                } catch(e) { return false; }
+            }
+            
+            registerImpression(iframeId) {
+                this.stats.impressions++;
+                this.impressionCount++;
+                console.log(`👁️  IMPRESSION #${this.stats.impressions} → ${iframeId} (Total: ${this.impressionCount})`);
+                
+                // 10:1 ratio logic
+                if (this.impressionCount >= 10 && Math.random() < this.clickRatio) {
+                    this.impressionCount = 0;
+                    this.doClick(iframeId);
+                }
+            }
+            
+            doClick(iframeId) {
+                const iframe = document.getElementById(iframeId);
+                if (!iframe?.contentDocument) return;
+                
+                try {
+                    const doc = iframe.contentDocument;
                     
-                    setTimeout(() => {
-                        clearInterval(checkInterval);
-                        console.log(`⚠️  Timeout waiting for ${zoneId}`);
-                        resolve(false);
-                    }, 10000);
+                    // Human-like interaction
+                    doc.dispatchEvent(new MouseEvent('mousemove', {bubbles: true}));
+                    
+                    // Find & click elements (prevent navigation)
+                    const clickables = doc.querySelectorAll('a, button, [onclick], .btn, .ad');
+                    if (clickables.length > 0) {
+                        const target = clickables[Math.floor(Math.random() * Math.min(3, clickables.length))];
+                        target.style.pointerEvents = 'auto';
+                        
+                        // Block navigation
+                        const origClick = target.click;
+                        target.click = () => { console.log('🛑 Navigation blocked'); };
+                        
+                        // Trigger click
+                        target.dispatchEvent(new MouseEvent('click', {bubbles: true, cancelable: true}));
+                        
+                        this.stats.clicks++;
+                        console.log(`🎯 CLICK #${this.stats.clicks} → ${iframeId} (${clickables.length} elements)`);
+                        
+                        // Restore after 2s
+                        setTimeout(() => { target.click = origClick; }, 2000);
+                    }
+                } catch(e) {
+                    console.log(`⚠️  Click attempt ${iframeId}: ${e.message}`);
+                }
+            }
+            
+            monitorIframes() {
+                this.zones.forEach(zoneId => {
+                    const iframe = document.getElementById(zoneId);
+                    if (iframe && !iframe.dataset.monitored) {
+                        iframe.dataset.monitored = 'true';
+                        
+                        // Check readiness every 1.5s
+                        const checkInterval = setInterval(() => {
+                            if (this.isReady(iframe)) {
+                                clearInterval(checkInterval);
+                                this.registerImpression(zoneId);
+                                
+                                // Continue monitoring untuk impressions berulang
+                                setInterval(() => {
+                                    if (this.isReady(iframe)) this.registerImpression(zoneId);
+                                }, 8000 + Math.random()*4000); // 8-12s refresh
+                            }
+                        }, 1500);
+                    }
                 });
             }
             
-            humanMouseTrail(x, y, duration = 800) {
-                const steps = 15;
-                const stepDelay = duration / steps;
-                let currentX = window.innerWidth * 0.1;
-                let currentY = window.innerHeight * 0.1;
-                
-                const move = () => {
-                    const event = new MouseEvent('mousemove', {
-                        clientX: currentX,
-                        clientY: currentY,
-                        bubbles: true
-                    });
-                    document.dispatchEvent(event);
-                    
-                    currentX += (x - currentX) * 0.15;
-                    currentY += (y - currentY) * 0.15;
-                    
-                    if (Math.abs(x - currentX) > 2 || Math.abs(y - currentY) > 2) {
-                        setTimeout(move, stepDelay);
-                    }
-                };
-                move();
+            humanBehavior() {
+                // Background activity
+                setInterval(() => {
+                    window.scrollBy(0, 100 + Math.random()*200);
+                    document.dispatchEvent(new MouseEvent('mousemove'));
+                }, 3000);
             }
             
-            clickZone(zoneId, viewportX, viewportY) {
-                const zone = document.getElementById(zoneId);
-                if (!zone) return;
+            start() {
+                console.log('🎯 Perfect 10:1 Ratio Clicker STARTED');
+                this.humanBehavior();
+                this.monitorIframes();
                 
-                // Hitung posisi absolut
-                const rect = zone.getBoundingClientRect();
-                const absX = rect.left + rect.width * viewportX + (Math.random() - 0.5) * 20;
-                const absY = rect.top + rect.height * viewportY + (Math.random() - 0.5) * 20;
-                
-                // Human mouse trail ke target
-                this.humanMouseTrail(absX, absY);
-                
-                setTimeout(() => {
-                    // Hover dulu
-                    const hover = new MouseEvent('mouseenter', {bubbles: true, clientX: absX, clientY: absY});
-                    zone.dispatchEvent(hover);
-                    
-                    // Delay human-like
-                    setTimeout(() => {
-                        const click = new MouseEvent('click', {
-                            bubbles: true,
-                            cancelable: true,
-                            clientX: absX,
-                            clientY: absY,
-                            button: 0
-                        });
-                        
-                        // Coba klik semua clickable elements dalam zone
-                        const clickables = zone.querySelectorAll('a, button, [onclick], iframe, .clickable');
-                        if (clickables.length > 0) {
-                            clickables[Math.floor(Math.random() * clickables.length)].dispatchEvent(click);
-                        } else {
-                            zone.dispatchEvent(click);
-                        }
-                        
-                        this.clicks.total++;
-                        this.clicks.perZone[zoneId] = (this.clicks.perZone[zoneId] || 0) + 1;
-                        console.log(`🎯 CLICK #${this.clicks.total} → ${zoneId} (${(viewportX*100).toFixed(0)}%, ${(viewportY*100).toFixed(0)}%)`);
-                        
-                    }, this.randomDelay(300, 900));
-                }, this.randomDelay(600, 1500));
-            }
-            
-            randomDelay(min, max) {
-                return Math.random() * (max - min) + min;
-            }
-            
-            naturalScroll() {
-                window.scrollBy(0, this.randomDelay(100, 400));
-            }
-            
-            async startCampaign() {
-                if (this.isRunning) return;
-                this.isRunning = true;
-                
-                // Warmup human behavior (4-7 detik)
-                let warmup = 0;
-                const warmupLoop = () => {
-                    this.naturalScroll();
-                    this.humanMouseTrail(Math.random() * window.innerWidth, Math.random() * window.innerHeight);
-                    if (++warmup < 6) {
-                        setTimeout(warmupLoop, this.randomDelay(800, 1800));
-                    } else {
-                        this.runAdRotation();
-                    }
-                };
-                setTimeout(warmupLoop, this.randomDelay(2000, 4000));
-            }
-            
-            async runAdRotation() {
-                const rotationTargets = [
-                    {zone: 'adTop', x: 0.45, y: 0.55},
-                    {zone: 'adSide', x: 0.5, y: 0.6},
-                    {zone: 'adBottom', x: 0.52, y: 0.48},
-                    {zone: 'adTop', x: 0.65, y: 0.35},
-                    {zone: 'adSide', x: 0.3, y: 0.75},
-                ];
-                
-                for (let i = 0; i < rotationTargets.length; i++) {
-                    await this.waitForAdContent(rotationTargets[i].zone);
-                    await new Promise(r => setTimeout(r, this.randomDelay(12000, 28000))); // 12-28s interval
-                    this.clickZone(rotationTargets[i].zone, rotationTargets[i].x, rotationTargets[i].y);
-                }
-                
-                // Loop infinite
-                setTimeout(() => this.runAdRotation(), this.randomDelay(15000, 35000));
+                // Stats report
+                setInterval(() => {
+                    const ratio = ((this.stats.clicks / this.stats.impressions) * 100 || 0).toFixed(1);
+                    console.log(`📊 STATS: Impressions=${this.stats.impressions} | Clicks=${this.stats.clicks} | Ratio=${ratio}% | Expected: ~10%`);
+                }, 60000);
             }
         }
         
-        // START CAMPAIGN
+        // 🚀 LAUNCH 10:1 CAMPAIGN
         window.addEventListener('load', () => {
-            const clicker = new AdvancedAdClicker();
-            clicker.startCampaign();
-            
-            // Status report setiap 5 menit
-            setInterval(() => {
-                console.log(`📊 STATS: Total=${clicker.clicks.total}, Top=${clicker.clicks.perZone.adTop||0}, Side=${clicker.clicks.perZone.adSide||0}, Bottom=${clicker.clicks.perZone.adBottom||0}`);
-            }, 300000);
+            new PerfectRatioClicker().start();
         });
     </script>
 </body>
