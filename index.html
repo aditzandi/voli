@@ -66,8 +66,8 @@ input:focus{border-color:var(--pri)}
 .sum{background:var(--bg);border:1.5px solid var(--line);border-radius:14px;padding:14px;margin:0 0 14px}
 .sr{display:flex;justify-content:space-between;align-items:baseline;font-size:14px;padding:3px 0}
 .sr b{font-variant-numeric:tabular-nums}
-.sr.big{border-top:1px solid var(--line);margin-top:6px;padding-top:10px}
-.sr.big b{font-size:18px}
+.sr.tot{border-top:1px solid var(--line);margin-top:6px;padding-top:10px}
+.sr.tot b{font-size:18px}
 .warn{margin-top:8px;color:var(--bad);font-size:13px;font-weight:600}
 
 /* how-to steps */
@@ -175,16 +175,8 @@ async function watch(){
   await sync();
   const r=await api('videos');
   const list=r.videos||[];
-  const dly=me.daily_in>0?`<div class="mut">Next bonus in ${Math.floor(me.daily_in/3600)}h ${Math.floor(me.daily_in%3600/60)}m</div>`:`<button class="btn gold sm" onclick="claimDaily()">Claim +${me.daily_bonus}</button>`;
   out(`<div class="card hero"><div class="lab">Your balance</div><div class="bal">${me.poin}<small>points</small></div><div class="eq">= ${fmtT(me.poin)} of video you can get watched</div><div class="rule">Watch a video to the end and earn 1 point for every second.</div></div>
-  <div class="card"><div class="row" style="justify-content:space-between"><div><h3 style="margin:0">Daily bonus</h3><div class="mut">Free ${me.daily_bonus} points every 24 hours</div></div>${dly}</div></div>
-  <div class="card"><h3>Videos to watch${list.length?` (${list.length})`:''}</h3><p class="sub">Tap a video, keep it playing until the timer reaches 0, and the points are yours.</p>${list.length?list.map(v=>`<div class="vrow">${thumb(v.yt_id,v.detik)}<div class="vi"><div class="vt">YouTube video</div><div class="mut">Watch ${v.detik} seconds</div></div><button class="btn sm" onclick="watchVideo(${v.id})">+${v.detik}</button></div>`).join(''):`<div class="empty"><div class="ic">🎬</div>No videos to watch right now.<br><br><b style="color:var(--tx)">You are not stuck:</b><br>${me.daily_in>0?'Your next free bonus arrives in '+Math.floor(me.daily_in/3600)+'h '+Math.floor(me.daily_in%3600/60)+'m.':'Claim your free daily bonus above.'}<br>Invite friends to earn ${me.ref_bonus} points each.<br><br><button class="btn ghost sm" onclick="show('profile')">Invite friends</button> <button class="btn ghost sm" onclick="show('grow')">Get views</button></div>`}</div>`);
-}
-
-async function claimDaily(){
-  const r=await api('daily',{});
-  if(r.error)return alertx(r.error);
-  setPoin(r.poin);alertx('+'+r.got+' points added. Come back in 24 hours for more!');await sync();watch();
+  <div class="card"><h3>Videos to watch${list.length?` (${list.length})`:''}</h3><p class="sub">Tap a video, keep it playing until the timer reaches 0, and the points are yours.</p>${list.length?list.map(v=>`<div class="vrow">${thumb(v.yt_id,v.detik)}<div class="vi"><div class="vt">YouTube video</div><div class="mut">Watch ${v.detik} seconds</div></div><button class="btn sm" onclick="watchVideo(${v.id})">+${v.detik}</button></div>`).join(''):`<div class="empty"><div class="ic">🎬</div>No videos to watch right now.<br><br>Invite friends and earn ${me.ref_bonus} points each, or ask a friend to post a video.<br><br><button class="btn ghost sm" onclick="show('profile')">Invite friends</button> <button class="btn ghost sm" onclick="show('grow')">Get views</button></div>`}</div>`);
 }
 
 /* ---------- Player + heartbeat ---------- */
@@ -264,7 +256,7 @@ function hit(){
   else if(m<d)err=`Spend at least ${d} points (one viewer).`;
   else if(m>me.poin)err=`Not enough points. You have ${me.poin}.`;
   const v=d>0?Math.floor(m/d):0;
-  $('#b_e').innerHTML=`<div class="sr"><span>Each viewer watches</span><b>${d} sec</b></div><div class="sr"><span>Each viewer earns</span><b>${d} points</b></div><div class="sr"><span>Points left after posting</span><b>${Math.max(0,me.poin-m)}</b></div><div class="sr big"><span>Expected views</span><b>about ${v}</b></div>`+(err?`<div class="warn">${err}</div>`:'');
+  $('#b_e').innerHTML=`<div class="sr"><span>Each viewer watches</span><b>${d} sec</b></div><div class="sr"><span>Each viewer earns</span><b>${d} points</b></div><div class="sr"><span>Points left after posting</span><b>${Math.max(0,me.poin-m)}</b></div><div class="sr tot"><span>Expected views</span><b>about ${v}</b></div>`+(err?`<div class="warn">${err}</div>`:'');
   $('#b_go').disabled=!!err;
 }
 async function doPost(){
