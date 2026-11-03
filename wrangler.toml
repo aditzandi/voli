@@ -13,8 +13,8 @@ database_name = "tukarview"
 database_id = "GANTI_DENGAN_ID_DATABASE"
 
 [vars]
-BOT_USERNAME = "GANTI_USERNAME_BOT_TANPA_@"
-ADMIN_IDS = "123456789"   # ID Telegram admin, pisahkan dengan koma
+BOT_USERNAME = "dewi91"
+ADMIN_IDS = "8878121744:AAGHsEoRuETRraWX35llyEB9JIPYcLlyub4"   # ID Telegram admin, pisahkan dengan koma
 IP_LIMIT = "1"            # maksimal akun per IP
 BONUS_DAFTAR = "60"       # poin awal (= 60 detik tontonan)
 BONUS_REFERRAL = "30"
