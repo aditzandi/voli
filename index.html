@@ -176,7 +176,7 @@ async function watch(){
   const r=await api('videos');
   const list=r.videos||[];
   out(`<div class="card hero"><div class="lab">Your balance</div><div class="bal">${me.poin}<small>points</small></div><div class="eq">= ${fmtT(me.poin)} of video you can get watched</div><div class="rule">Watch a video to the end and earn 1 point for every second.</div></div>
-  <div class="card"><h3>Videos to watch${list.length?` (${list.length})`:''}</h3><p class="sub">Tap a video, keep it playing until the timer reaches 0, and the points are yours.</p>${list.length?list.map(v=>`<div class="vrow">${thumb(v.yt_id,v.detik)}<div class="vi"><div class="vt">YouTube video</div><div class="mut">Watch ${v.detik} seconds</div></div><button class="btn sm" onclick="watchVideo(${v.id})">+${v.detik}</button></div>`).join(''):`<div class="empty"><div class="ic">🎬</div>No videos to watch right now.<br><br>Invite friends and earn ${me.ref_bonus} points each, or ask a friend to post a video.<br><br><button class="btn ghost sm" onclick="show('profile')">Invite friends</button> <button class="btn ghost sm" onclick="show('grow')">Get views</button></div>`}</div>`);
+  <div class="card"><h3>Videos to watch${list.length?` (${list.length})`:''}</h3><p class="sub">Tap a video, keep it playing until the timer reaches 0, and the points are yours.</p>${list.length?list.map(v=>`<div class="vrow">${thumb(v.yt_id,v.detik)}<div class="vi"><div class="vt">YouTube video</div><div class="mut">Watch ${v.detik} seconds</div></div><button class="btn sm" onclick="watchVideo(${v.id})">+${v.detik}</button></div>`).join(''):`<div class="empty"><div class="ic">🎬</div>No videos to watch right now.<br><br>Invite friends and earn ${me.ref_percent}% of what they earn, or ask a friend to post a video.<br><br><button class="btn ghost sm" onclick="show('profile')">Invite friends</button> <button class="btn ghost sm" onclick="show('grow')">Get views</button></div>`}</div>`);
 }
 
 /* ---------- Player + heartbeat ---------- */
@@ -294,9 +294,9 @@ async function profile(){
   const r=await api('ledger');
   const led=r.ledger||[];
   out(`<div class="card"><div class="prof"><div class="avatar">${esc((me.name||'?').trim().charAt(0).toUpperCase()||'?')}</div><div><h2 style="margin:0">${esc(me.name)}</h2><div class="mut">Telegram ID ${me.tg_id}</div></div></div>
-  <div class="stat"><div><b>${me.poin}</b><span class="mut">Points</span></div><div><b>${me.refs}</b><span class="mut">Friends invited</span></div></div></div>
-  <div class="card"><div class="reward"><span class="coin">P</span><div><b>${me.ref_bonus} points per friend</b>Paid when your friend finishes their first video.</div></div>
-  <h3>Invite friends</h3><p class="sub" style="margin:0">Share your personal link. Every friend who joins with it and watches one video to the end earns you ${me.ref_bonus} points.</p><div class="link">${esc(refLink())}</div><div class="row"><button class="btn" onclick="copyLink()">Copy link</button><button class="btn ghost" onclick="shareLink()">Share</button></div></div>
+  <div class="stat"><div><b>${me.poin}</b><span class="mut">Points</span></div><div><b>${me.refs}</b><span class="mut">Friends invited</span></div><div><b>${me.ref_total}</b><span class="mut">Earned from friends</span></div></div></div>
+  <div class="card"><div class="reward"><span class="coin">P</span><div><b>Earn ${me.ref_percent}% from every friend</b>Up to ${me.ref_cap} points per friend.</div></div>
+  <h3>Invite friends</h3><p class="sub" style="margin:0">Share your personal link. Whenever a friend who joined with it earns points by watching, you also get ${me.ref_percent}% extra. Your friend still gets 100%.</p><div class="link">${esc(refLink())}</div><div class="row"><button class="btn" onclick="copyLink()">Copy link</button><button class="btn ghost" onclick="shareLink()">Share</button></div></div>
   <div class="card"><h3>Points history</h3>${led.length?led.map(l=>`<div class="hist"><div><div>${esc(l.reason)}</div><div class="mut">${new Date(l.t*1000).toLocaleDateString('en-US',{month:'short',day:'numeric'})}</div></div><b style="color:${l.delta>0?'var(--ok)':'var(--bad)'}">${l.delta>0?'+':''}${l.delta}</b></div>`).join(''):'<div class="empty">No activity yet.</div>'}</div>`);
 }
 
