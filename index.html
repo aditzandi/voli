@@ -186,7 +186,7 @@ async function boost(){
   const r=await api('mine');
   const vids=r.videos||[];
   out(`<div class="card"><h2>Post a video</h2><p class="sub">Posting is free. You pay with points and real members watch your video.</p>
-  <div class="step"><span class="n">1</span><div class="f"><label>Paste your YouTube link</label><input id="b_url" inputmode="url" placeholder="https://youtu.be/..."></div></div>
+  <div class="step"><span class="n">1</span><div class="f"><label>Paste your YouTube link</label><input id="b_url" inputmode="url" autocomplete="off" placeholder="https://youtu.be/...">
   <div class="step"><span class="n">2</span><div class="f"><label>How long must each viewer watch?</label><select id="b_d" onchange="hit()"><option value="30">30 seconds</option><option value="60">60 seconds</option><option value="120">120 seconds</option><option value="300">300 seconds</option></select><div class="mut" style="margin-top:4px">Choose a time that is not longer than your video.</div></div></div>
   <div class="step"><span class="n">3</span><div class="f"><label>How many viewers do you want?</label><input id="b_m" type="number" min="1" inputmode="numeric" value="${Math.max(1,Math.min(Math.floor(me.poin/30),5))}" oninput="hit()"></div></div>
   <div class="sum" id="b_e"></div>
