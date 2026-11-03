@@ -117,21 +117,21 @@ async function boost(){
   <div class="mut">Poin tersedia: <b>${me.poin}</b></div>
   <label>Link YouTube</label><input id="b_url" placeholder="https://youtu.be/...">
   <label>Durasi tonton per penonton</label><select id="b_d" onchange="hit()"><option value="30">30 detik</option><option value="60">60 detik</option><option value="120">120 detik</option><option value="300">300 detik</option></select>
-  <label>Modal poin untuk video ini</label><input id="b_m" type="number" value="${Math.min(me.poin,60)}" oninput="hit()">
+  <label>Jumlah penonton</label><input id="b_m" type="number" value="${Math.max(1,Math.min(Math.floor(me.poin/30),5))}" oninput="hit()">
   <p id="b_e"></p>
   <button class="btn" onclick="doBoost()">Pasang video</button>
   <div class="mut" style="margin-top:8px">Pasang GRATIS. 1 detik = 1 poin. Modal dipindah dari poin Anda ke video ini. Setiap penonton yang menonton penuh mendapat poin sesuai durasi, diambil dari modal video. Modal habis, video berhenti tampil sampai Anda mengisi lagi. Menghentikan video mengembalikan sisa modal ke poin Anda. Pilih durasi yang tidak lebih panjang dari video. Anda tidak bisa menonton video sendiri.</div></div>
-  <div class="card"><h3>Video saya</h3>${(r.videos||[]).map(v=>`<div class="vid" style="display:block"><div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><div>${esc(v.yt_id)}<div class="mut">${v.detik} dtk · ${v.dilihat}x ditonton · modal sisa ${v.sisa} <span class="tag">${v.status==='aktif'?(v.sisa<v.detik?'modal habis: isi poin':'aktif'):v.status}</span></div></div>${v.status==='aktif'?`<button class="btn s r" onclick="cancel(${v.id})">Hentikan</button>`:''}</div>${v.status==='aktif'?`<div class="row" style="margin-top:6px"><input id="tp_${v.id}" type="number" placeholder="Tambah modal (poin)" style="margin:0"><button class="btn s" style="flex:0 0 auto" onclick="topup(${v.id})">Isi modal</button></div>`:''}</div>`).join('')||'<div class="mut">Belum ada.</div>'}</div>`);
+  <div class="card"><h3>Video saya</h3>${(r.videos||[]).map(v=>`<div class="vid" style="display:block"><div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><div>${esc(v.yt_id)}<div class="mut">${v.detik} dtk · ${v.dilihat}x ditonton · sisa ${Math.floor(v.sisa/v.detik)} penonton (${v.sisa} poin) <span class="tag">${v.status==='aktif'?(v.sisa<v.detik?'modal habis: isi poin':'aktif'):v.status}</span></div></div>${v.status==='aktif'?`<button class="btn s r" onclick="cancel(${v.id})">Hentikan</button>`:''}</div>${v.status==='aktif'?`<div class="row" style="margin-top:6px"><input id="tp_${v.id}" type="number" placeholder="Tambah penonton" style="margin:0"><button class="btn s" style="flex:0 0 auto" onclick="topup(${v.id})">Tambah</button></div>`:''}</div>`).join('')||'<div class="mut">Belum ada.</div>'}</div>`);
   hit();
 }
-function hit(){const d=+$('#b_d').value,m=parseInt($('#b_m').value)||0;$('#b_e').innerHTML='Cukup untuk <b>'+Math.floor(m/d)+'</b> penonton ('+d+' poin per penonton).'+(m>me.poin?' <span style="color:#d45b15">Melebihi poin Anda.</span>':'')}
+function hit(){const d=+$('#b_d').value,n=parseInt($('#b_m').value)||0,c=d*n;$('#b_e').innerHTML='Modal yang dipakai: <b>'+c+'</b> poin ('+n+' penonton x '+d+' poin).'+(c>me.poin?' <span style="color:#d45b15">Melebihi poin Anda.</span>':'')}
 async function doBoost(){
-  const r=await api('boost',{url:$('#b_url').value,detik:$('#b_d').value,modal:$('#b_m').value});
+  const r=await api('boost',{url:$('#b_url').value,detik:$('#b_d').value,views:$('#b_m').value});
   if(r.error)return alertx(r.error);
   setPoin(r.poin);alertx('Video terpasang!');boost();
 }
 async function cancel(id){const r=await api('cancel',{video_id:id});if(r.error)return alertx(r.error);alertx('Dihentikan. '+r.refund+' poin dikembalikan.');boost()}
-async function topup(id){const r=await api('topup',{video_id:id,poin:$('#tp_'+id).value});if(r.error)return alertx(r.error);alertx('Modal ditambah');boost()}
+async function topup(id){const r=await api('topup',{video_id:id,views:$('#tp_'+id).value});if(r.error)return alertx(r.error);alertx('Penonton ditambah');boost()}
 window.boost=boost;
 
 /* ---------- Saya ---------- */
