@@ -212,16 +212,6 @@ async function doBoost(){
   if(r.error)return alertx(r.error);
   setPoin(r.poin);alertx('Video posted!');boost();
 }
-async function cancel(id){
-  const r=await api('cancel',{video_id:id});
-  if(r.error)return alertx(r.error);
-  alertx('Video stopped and removed. '+r.refund+' points refunded.');boost();
-}
-async function topup(id){
-  const r=await api('topup',{video_id:id,views:$('#tp_'+id).value});
-  if(r.error)return alertx(r.error);
-  alertx('Viewers added.');boost();
-}
 window.boost=boost;
 
 /* ---------- Profile ---------- */
