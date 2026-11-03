@@ -240,7 +240,7 @@ async function grow(){
     <div class="hint">You have ${me.poin} points. You cannot spend more than that.</div></div>
   <div class="sum" id="b_e"></div>
   <button class="btn" id="b_go" onclick="doPost()">Start getting views</button>
-  <div class="note" style="margin-top:12px"><b>Good to know:</b> members can watch your video again and again, as long as it stays posted and has points. Your first video is free to post with your starting points. After that, you can only put in as many points as you earned by watching in the last 24 hours.</div></div>
+  <div class="note" style="margin-top:12px"><b>Good to know:</b> members can watch your video again and again, as long as it stays posted and has points. Your starting points are free to use. Once points have actually been used by viewers, you can only put in as many points as you earned by watching in the last 24 hours.</div></div>
 
   <div class="card"><h3>Your active videos${vids.length?` (${vids.length})`:''}</h3>${vids.length?`<p class="sub">Pressing Stop returns the unused points and removes the video.</p>`:''}${vids.length?vids.map(v=>{
     const left=Math.floor(v.sisa/v.detik),pct=Math.max(0,Math.min(100,Math.round((v.target-v.sisa)/v.target*100))),off=v.sisa<v.detik;
