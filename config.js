@@ -4,5 +4,5 @@
 const CONFIG = {
   // Alamat Worker Cloudflare Anda, harus berakhiran /api/
   // Contoh: "https://tukarview.dewi91.workers.dev/api/"
-  API_URL: "https://GANTI.workers.dev/api/"
+  API_URL: "tukarview.cyberex04.workers.dev"
 };
