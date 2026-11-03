@@ -36,7 +36,7 @@ label{font-size:13px;color:var(--mut)}
 <main id="main"><div class="card">Memuat...</div></main>
 <nav id="nav"></nav>
 <div id="ov"></div>
-<script src="config.js?v=2"></script>
+<script src="config.js"></script>
 <script>
 const tg=window.Telegram&&Telegram.WebApp;if(tg){tg.ready();tg.expand()}
 const $=s=>document.querySelector(s);
@@ -66,7 +66,7 @@ const out=h=>$('#main').innerHTML=h;
 async function tonton(){
   out('<div class="card">Memuat...</div>');
   const r=await api('videos');
-  out(`<div class="card"><h3>Tonton &amp; kumpulkan poin</h3><div class="mut">1 detik tonton = 1 poin. Poin dipakai untuk boost video Anda. Video harus benar-benar diputar penuh sesuai durasi.</div></div>
+  out(`<div class="card"><h3>Tonton &amp; kumpulkan poin</h3><div class="mut">1 detik tonton = 1 poin. Semakin banyak poin Anda, semakin cepat video Anda tampil di antrian orang lain. Video harus benar-benar diputar penuh sesuai durasi.</div></div>
   <div class="card">${(r.videos||[]).map(v=>`<div class="vid"><div>▶ Video ${v.yt_id.slice(0,4)}…<div class="mut">${v.detik} detik</div></div><button class="btn s" onclick="watch(${v.id})">+${v.detik} poin</button></div>`).join('')||'<div class="mut">Belum ada video tersedia. Coba lagi nanti.</div>'}</div>`);
 }
 
@@ -114,18 +114,18 @@ async function boost(){
   <label>Link YouTube</label><input id="b_url" placeholder="https://youtu.be/...">
   <label>Durasi tonton wajib</label><select id="b_d" onchange="hit()"><option>10</option><option>30</option><option>60</option><option>120</option></select>
   <label>Jumlah penonton (1-500)</label><input id="b_n" type="number" value="5" oninput="hit()">
-  <p>Biaya: <b id="b_c">50</b> poin (durasi x jumlah). Saldo: ${me.poin}</p>
+  <p>Posting <b>GRATIS</b>. Poin Anda: <b>${me.poin}</b>. Makin banyak Anda menonton, makin cepat video Anda ditampilkan.</p>
   <button class="btn" onclick="doBoost()">Boost sekarang</button>
   <div class="mut" style="margin-top:8px">Anda tidak bisa menonton video sendiri. Penonton dihitung hanya jika menonton penuh sesuai durasi.</div></div>
   <div class="card"><h3>Boost saya</h3>${(r.videos||[]).map(v=>`<div class="vid"><div>${esc(v.yt_id)}<div class="mut">${v.detik} dtk · ${v.target-v.sisa}/${v.target} <span class="tag">${v.status}</span></div></div>${v.status==='aktif'?`<button class="btn s r" onclick="cancel(${v.id})">Batalkan</button>`:''}</div>`).join('')||'<div class="mut">Belum ada.</div>'}</div>`);
 }
-function hit(){$('#b_c').textContent=(+$('#b_d').value)*(parseInt($('#b_n').value)||0)}
+function hit(){}
 async function doBoost(){
   const r=await api('boost',{url:$('#b_url').value,detik:$('#b_d').value,views:$('#b_n').value});
   if(r.error)return alertx(r.error);
   setPoin(r.poin);alertx('Boost aktif!');boost();
 }
-async function cancel(id){const r=await api('cancel',{video_id:id});if(r.error)return alertx(r.error);setPoin(me.poin+r.refund);alertx('Refund '+r.refund+' poin');boost()}
+async function cancel(id){const r=await api('cancel',{video_id:id});if(r.error)return alertx(r.error);alertx('Boost dibatalkan');boost()}
 window.boost=boost;
 
 /* ---------- Saya ---------- */
