@@ -181,6 +181,28 @@ const setS=t=>{const e=$('#st');if(e)e.textContent=t};
 function closeW(){clearInterval(tm);try{player&&player.destroy()}catch(e){}player=null;$('#ov').innerHTML=''}
 
 /* ---------- Post video ---------- */
+async function boost(){
+  await sync();
+  out(`<div class="card"><h2>Post a video</h2><p class="sub">Posting is free. You pay with points and real members watch your video.</p>
+  <div class="step"><span class="n">1</span><div class="f"><label>Paste your YouTube link</label><input id="b_url" inputmode="url" autocomplete="off" placeholder="https://youtu.be/..."></div></div>
+  <div class="step"><span class="n">2</span><div class="f"><label>How long must each viewer watch?</label><select id="b_d" onchange="hit()"><option value="30">30 seconds</option><option value="60">60 seconds</option><option value="120">120 seconds</option><option value="300">300 seconds</option></select><div class="mut" style="margin-top:4px">Choose a time that is not longer than your video.</div></div></div>
+  <div class="step"><span class="n">3</span><div class="f"><label>How many viewers do you want?</label><input id="b_m" type="number" min="1" inputmode="numeric" value="${Math.max(1,Math.min(Math.floor(me.poin/30),5))}" oninput="hit()"></div></div>
+  <div class="sum" id="b_e"></div>
+  <button class="btn" onclick="doBoost()">Post video</button></div>
+
+  <div class="card">
+    <details><summary>How it works</summary><ul>
+      <li><b>Points are your budget.</b> 1 second watched = 1 point.</li>
+      <li>The cost moves from your balance to your video. Each viewer who watches to the end is paid from it.</li>
+      <li>When the budget runs out, the video stops. Add viewers to continue.</li>
+      <li><b>Stop</b> a video any time to get the unused points back. The video is then removed.</li>
+      <li><b>Fair rule:</b> within 24 hours you can only post as many points as you earned by watching (unless there is nothing to watch yet).</li>
+      <li>Videos with no views for 3 days are stopped and the unused points are refunded.</li>
+      <li>You cannot watch your own videos. Max 5 active videos.</li>
+    </ul></details>
+  </div>`);
+  hit();
+}
 function hit(){
   const d=+$('#b_d').value,n=parseInt($('#b_m').value)||0,c=d*n;
   $('#b_e').innerHTML=`<div class="sr"><span>Total cost</span><b>${c} points</b></div><div class="sr mut"><span>${n} viewers × ${d} seconds</span><span>Your balance: ${me.poin}</span></div>`+(c>me.poin?`<div class="warn">Not enough points. You have ${me.poin}.</div>`:'');
