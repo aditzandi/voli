@@ -8,83 +8,115 @@
 <style>
 :root{
   --bg:var(--tg-theme-bg-color,#ffffff);
-  --tx:var(--tg-theme-text-color,#1c1c1e);
-  --mut:var(--tg-theme-hint-color,#8e8e93);
-  --pri:var(--tg-theme-button-color,#6c5ce7);
-  --ptx:var(--tg-theme-button-text-color,#ffffff);
-  --card:var(--tg-theme-secondary-bg-color,#f2f2f7);
-  --line:rgba(128,128,128,.2);
-  --bad:#e5533d;--ok:#2fa56b;--warn:#e8a317;
+  --tx:var(--tg-theme-text-color,#14161f);
+  --mut:var(--tg-theme-hint-color,#7a7f8e);
+  --card:var(--tg-theme-secondary-bg-color,#f3f4f8);
+  --line:rgba(128,132,150,.22);
+  --pri:#2f5bff;--pri2:#1b3fd1;--ptx:#fff;
+  --ink:#0d1636;
+  --gold:#f5b73b;--ok:#1f9d63;--bad:#dd4b39;--warn:#d98a0b;
+  --r:16px;
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0}
-body{background:var(--bg);color:var(--tx);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:15px;line-height:1.4;padding-bottom:84px}
+body{background:var(--bg);color:var(--tx);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:15px;line-height:1.45;padding-bottom:88px;-webkit-font-smoothing:antialiased}
 header{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line);padding:10px 16px;display:flex;align-items:center;justify-content:space-between}
-.brand{display:flex;align-items:center;gap:8px;font-weight:800;font-size:17px;letter-spacing:-.2px}
-.logo{width:28px;height:28px;border-radius:8px;background:var(--pri);color:var(--ptx);display:grid;place-items:center}
-.chip{display:inline-flex;align-items:center;gap:6px;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:5px 12px 5px 8px;font-weight:700}
-.coin{width:18px;height:18px;border-radius:50%;background:#f5b73b;color:#7a5200;display:grid;place-items:center;font-size:11px;font-weight:800}
+.brand{display:flex;align-items:center;gap:9px;font-weight:800;font-size:18px;letter-spacing:-.3px}
+.logo{width:30px;height:30px;border-radius:9px;background:linear-gradient(135deg,var(--pri),var(--pri2));color:#fff;display:grid;place-items:center}
+.chip{display:inline-flex;align-items:center;gap:7px;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:5px 13px 5px 6px;font-weight:800;font-variant-numeric:tabular-nums}
+.coin{width:20px;height:20px;border-radius:50%;background:var(--gold);color:#6b4700;display:grid;place-items:center;font-size:11px;font-weight:900}
 main{max-width:640px;margin:0 auto;padding:14px}
-.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:14px}
-.hero{border:0;color:var(--ptx);background:var(--pri);background:linear-gradient(135deg,var(--pri),color-mix(in srgb,var(--pri) 55%,#000))}
-.hero h2,.hero .sub{color:var(--ptx)}
-.hero .sub{opacity:.85}
-h2{margin:0 0 4px;font-size:19px;letter-spacing:-.2px}
-h3{margin:0 0 12px;font-size:16px}
-.sub{color:var(--mut);font-size:13px;margin:0 0 12px}
-.mut{color:var(--mut);font-size:12px}
-.btn{display:block;width:100%;border:0;border-radius:12px;padding:13px 16px;font-size:15px;font-weight:700;background:var(--pri);color:var(--ptx);cursor:pointer}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:16px;margin-bottom:14px}
+h2{margin:0 0 4px;font-size:20px;letter-spacing:-.3px}
+h3{margin:0 0 4px;font-size:16px;letter-spacing:-.2px}
+.sub{color:var(--mut);font-size:13px;margin:0 0 14px}
+.mut{color:var(--mut);font-size:12.5px}
+
+/* hero balance */
+.hero{position:relative;overflow:hidden;border:0;border-radius:20px;padding:20px;color:#fff;background:linear-gradient(140deg,var(--ink) 0%,#1d3a9e 70%,var(--pri) 100%)}
+.hero:after{content:"";position:absolute;right:-40px;top:-40px;width:170px;height:170px;border-radius:50%;border:26px solid rgba(255,255,255,.07)}
+.hero .lab{font-size:13px;opacity:.75}
+.hero .bal{font-size:40px;font-weight:800;letter-spacing:-1.2px;line-height:1.1;margin:4px 0 2px;font-variant-numeric:tabular-nums}
+.hero .bal small{font-size:15px;font-weight:600;opacity:.75;letter-spacing:0;margin-left:4px}
+.hero .eq{font-size:13px;opacity:.8}
+.hero .rule{margin-top:14px;padding-top:12px;border-top:1px solid rgba(255,255,255,.18);font-size:13px;opacity:.9}
+
+.btn{display:block;width:100%;border:0;border-radius:12px;padding:14px 16px;font-size:15px;font-weight:700;background:var(--pri);color:var(--ptx);cursor:pointer;font-family:inherit}
 .btn:active{opacity:.85}
-.btn:disabled{opacity:.45}
-.btn.sm{display:inline-block;width:auto;padding:8px 14px;font-size:13px;border-radius:10px;white-space:nowrap}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.btn.sm{display:inline-block;width:auto;padding:9px 15px;font-size:13px;border-radius:10px;white-space:nowrap}
 .btn.ghost{background:transparent;color:var(--pri);border:1.5px solid var(--pri)}
 .btn.danger{background:transparent;color:var(--bad);border:1.5px solid var(--bad)}
-.btn.light{background:rgba(255,255,255,.2);color:var(--ptx)}
-label{display:block;font-size:13px;font-weight:600;margin:0 0 6px}
-input,select{width:100%;padding:12px;border-radius:12px;border:1px solid var(--line);background:var(--bg);color:var(--tx);font-size:15px;outline:none}
-input:focus,select:focus{border-color:var(--pri)}
-.step{display:flex;gap:12px;margin-bottom:16px}
-.step .n{flex:0 0 26px;height:26px;border-radius:50%;background:var(--pri);color:var(--ptx);font-size:13px;font-weight:800;display:grid;place-items:center;margin-top:1px}
-.step .f{flex:1;min-width:0}
-.sum{background:var(--bg);border:1px dashed var(--line);border-radius:12px;padding:12px;margin:2px 0 14px}
-.sr{display:flex;justify-content:space-between;font-size:14px}
-.sr+.sr{margin-top:4px}
+.btn.gold{background:var(--gold);color:#4a3200}
+label{display:block;font-size:14px;font-weight:700;margin:0 0 6px}
+input{width:100%;padding:13px;border-radius:12px;border:1.5px solid var(--line);background:var(--bg);color:var(--tx);font-size:16px;outline:none;font-family:inherit}
+input:focus{border-color:var(--pri)}
+.hint{color:var(--mut);font-size:12.5px;margin-top:6px}
+.field{margin-bottom:18px}
+.pills{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}
+.pill{border:1.5px solid var(--line);background:var(--bg);color:var(--tx);border-radius:999px;padding:6px 14px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit}
+.pill:active{border-color:var(--pri);color:var(--pri)}
+.inwrap{position:relative}
+.inwrap span{position:absolute;right:14px;top:50%;transform:translateY(-50%);color:var(--mut);font-size:13px;pointer-events:none}
+.inwrap input{padding-right:64px}
+
+/* summary */
+.sum{background:var(--bg);border:1.5px solid var(--line);border-radius:14px;padding:14px;margin:0 0 14px}
+.sr{display:flex;justify-content:space-between;align-items:baseline;font-size:14px;padding:3px 0}
+.sr b{font-variant-numeric:tabular-nums}
+.sr.big{border-top:1px solid var(--line);margin-top:6px;padding-top:10px}
+.sr.big b{font-size:18px}
 .warn{margin-top:8px;color:var(--bad);font-size:13px;font-weight:600}
-details summary{cursor:pointer;font-weight:700;font-size:16px;list-style:none}
-details summary::-webkit-details-marker{display:none}
-details ul{margin:10px 0 0;padding-left:18px;color:var(--mut);font-size:13px}
-details li{margin-bottom:6px}
-.vrow{display:flex;align-items:center;gap:12px;padding:10px 0;border-top:1px solid var(--line)}
+
+/* how-to steps */
+.how{counter-reset:s;list-style:none;margin:12px 0 0;padding:0}
+.how li{counter-increment:s;display:flex;gap:12px;margin-bottom:12px;font-size:14px}
+.how li:before{content:counter(s);flex:0 0 24px;height:24px;border-radius:8px;background:var(--pri);color:#fff;font-size:13px;font-weight:800;display:grid;place-items:center;margin-top:1px}
+.how b{display:block}
+.how span{color:var(--mut);font-size:13px}
+.note{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:11px 12px;font-size:13px;color:var(--mut);margin-top:4px}
+.note b{color:var(--tx)}
+
+/* video rows */
+.vrow{display:flex;align-items:center;gap:12px;padding:12px 0;border-top:1px solid var(--line)}
 .vrow:first-of-type{border-top:0;padding-top:0}
-.thw{position:relative;flex:0 0 96px;aspect-ratio:16/9;border-radius:10px;overflow:hidden;background:#000}
+.thw{position:relative;flex:0 0 108px;aspect-ratio:16/9;border-radius:10px;overflow:hidden;background:#111}
 .th{width:100%;height:100%;object-fit:cover;display:block}
-.dur{position:absolute;right:4px;bottom:4px;background:rgba(0,0,0,.75);color:#fff;font-size:11px;font-weight:700;padding:1px 5px;border-radius:5px}
+.dur{position:absolute;right:4px;bottom:4px;background:rgba(0,0,0,.78);color:#fff;font-size:11px;font-weight:700;padding:1px 6px;border-radius:5px}
 .vi{flex:1;min-width:0}
 .vt{font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.tag{display:inline-block;padding:2px 8px;border-radius:999px;font-size:11px;font-weight:700;background:var(--bg);border:1px solid var(--line)}
+.earn{display:inline-flex;align-items:center;gap:5px;font-weight:800;color:var(--ok);font-size:13px}
+.tag{display:inline-block;padding:2px 9px;border-radius:999px;font-size:11.5px;font-weight:700;background:var(--bg);border:1px solid var(--line)}
 .tag.ok{color:var(--ok);border-color:var(--ok)}.tag.warn{color:var(--warn);border-color:var(--warn)}.tag.bad{color:var(--bad);border-color:var(--bad)}
-.bar{height:6px;border-radius:3px;background:var(--line);overflow:hidden;margin:8px 0}
-.bar i{display:block;height:100%;width:0;background:var(--pri);border-radius:3px;transition:width .5s}
+.bar{height:6px;border-radius:3px;background:var(--line);overflow:hidden;margin:10px 0}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--pri),#6f8cff);border-radius:3px;transition:width .5s}
 .row{display:flex;gap:8px;align-items:center}
-.row>input{flex:1}
-.empty{text-align:center;padding:18px 8px;color:var(--mut)}
+.row>input{flex:1;min-width:0}
+.mv{padding:14px 0;border-top:1px solid var(--line)}
+.mv:first-of-type{border-top:0;padding-top:4px}
+.empty{text-align:center;padding:22px 8px;color:var(--mut)}
 .empty .ic{font-size:34px;margin-bottom:6px}
 .stat{display:flex;gap:10px}
 .stat>div{flex:1;background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:12px;text-align:center}
-.stat b{display:block;font-size:20px}
-.avatar{width:54px;height:54px;border-radius:50%;background:var(--pri);color:var(--ptx);display:grid;place-items:center;font-size:22px;font-weight:800}
+.stat b{display:block;font-size:22px;font-variant-numeric:tabular-nums}
+.avatar{width:54px;height:54px;border-radius:50%;background:linear-gradient(135deg,var(--pri),var(--pri2));color:#fff;display:grid;place-items:center;font-size:22px;font-weight:800}
 .prof{display:flex;align-items:center;gap:14px;margin-bottom:14px}
-.link{word-break:break-all;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px;font-size:12px;color:var(--mut);margin:10px 0}
-.hist{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-top:1px solid var(--line)}
+.link{word-break:break-all;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px;font-size:12px;color:var(--mut);margin:12px 0}
+.reward{display:flex;align-items:center;gap:12px;background:linear-gradient(135deg,#fff4d6,#ffe7a8);color:#4a3200;border-radius:14px;padding:12px 14px;margin-bottom:12px}
+.reward .coin{width:34px;height:34px;font-size:15px;flex:0 0 34px}
+.reward b{font-size:17px;display:block}
+.hist{display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-top:1px solid var(--line)}
 .hist:first-of-type{border-top:0}
-nav{position:fixed;left:0;right:0;bottom:0;z-index:6;display:flex;background:var(--bg);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px)}
-nav button{flex:1;border:0;background:none;color:var(--mut);padding:9px 4px 8px;font-size:11px;font-weight:600;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer}
-nav button.on{color:var(--pri)}
+
+nav{position:fixed;left:0;right:0;bottom:0;z-index:6;display:flex;background:var(--bg);border-top:1px solid var(--line);padding:4px 6px calc(4px + env(safe-area-inset-bottom,0px));gap:4px}
+nav button{flex:1;border:0;background:none;color:var(--mut);padding:7px 4px 6px;font-size:11.5px;font-weight:700;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;border-radius:12px;font-family:inherit}
+nav button.on{color:var(--pri);background:color-mix(in srgb,var(--pri) 12%,transparent)}
 nav svg{width:23px;height:23px}
 .ov{position:fixed;inset:0;z-index:20;background:var(--bg);padding:16px;overflow:auto}
 #yt,#yt iframe{width:100%;aspect-ratio:16/9;background:#000;border-radius:14px;display:block}
-.big{font-size:54px;font-weight:800;text-align:center;color:var(--pri);margin:8px 0 0;letter-spacing:-1px}
+.big{font-size:56px;font-weight:800;text-align:center;color:var(--pri);margin:8px 0 0;letter-spacing:-1.5px;font-variant-numeric:tabular-nums}
 .center{text-align:center}
+@media (prefers-reduced-motion:reduce){.bar i{transition:none}}
 </style>
 </head>
 <body>
@@ -101,8 +133,8 @@ const tg=window.Telegram&&Telegram.WebApp;if(tg){tg.ready();tg.expand()}
 const $=s=>document.querySelector(s);
 const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const alertx=m=>tg&&tg.showAlert?tg.showAlert(m):alert(m);
-const REF_BONUS=600;
-let me=null,tab='tonton',am={q:'',pg:0};
+const askx=(m,ok)=>tg&&tg.showConfirm?tg.showConfirm(m,y=>y&&ok()):(confirm(m)&&ok());
+let me=null,tab='watch',am={q:'',pg:0};
 
 async function api(path,body){
   const h={'Authorization':'tma '+(tg?tg.initData:'')};
@@ -111,36 +143,46 @@ async function api(path,body){
   try{const r=await fetch(CONFIG.API_URL+path,o);return await r.json()}catch(e){return{error:'Connection problem. Please try again.'}}
 }
 async function init(){
-  if(typeof CONFIG==='undefined'||/GANTI/.test(CONFIG.API_URL)){$('#main').innerHTML='<div class="card">API address is not set. Open config.js and fill in API_URL.</div>';return}
+  if(typeof CONFIG==='undefined'||/GANTI|CHANGE/.test(CONFIG.API_URL)){$('#main').innerHTML='<div class="card">API address is not set. Open config.js and fill in API_URL.</div>';return}
   const r=await api('me');
   if(r.error){$('#main').innerHTML='<div class="card">'+esc(r.error)+'</div>';return}
-  me=r;setPoin(r.poin);nav();show('tonton');
+  me=r;setPoin(r.poin);nav();show('watch');
 }
 function setPoin(p){me.poin=p;$('#poin').textContent=p}
-async function sync(){const m=await api('me');if(!m.error){me.refs=m.refs;setPoin(m.poin)}}
+async function sync(){const m=await api('me');if(!m.error){Object.assign(me,m);setPoin(m.poin)}}
+const fmtT=s=>s<60?s+' sec':(Math.floor(s/60)+' min'+(s%60?' '+(s%60)+' sec':''));
 
+const IC=(p)=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${p}</svg>`;
 const ICON={
-  tonton:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M10 8.5v7l6-3.5z" fill="currentColor"/></svg>',
-  boost:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5"/><path d="M12 8v8M8 12h8"/></svg>',
-  saya:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/></svg>',
-  admin:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/></svg>'
+  watch:IC('<circle cx="12" cy="12" r="9"/><path d="M10 8.5v7l6-3.5z" fill="currentColor"/>'),
+  grow:IC('<path d="M4 17l6-6 4 4 6-7"/><path d="M15 8h5v5"/>'),
+  profile:IC('<circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/>'),
+  admin:IC('<path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/>')
 };
 function nav(){
-  const t=[['tonton','Watch'],['boost','Post'],['saya','Profile']];if(me.admin)t.push(['admin','Admin']);
+  const t=[['watch','Watch & Earn'],['grow','Get Views'],['profile','Profile']];if(me.admin)t.push(['admin','Admin']);
   $('#nav').innerHTML=t.map(x=>`<button class="${tab===x[0]?'on':''}" onclick="show('${x[0]}')">${ICON[x[0]]}<span>${x[1]}</span></button>`).join('');
 }
-function show(t){tab=t;nav();({tonton,boost,saya,admin})[t]()}
+function show(t){tab=t;nav();({watch,grow,profile,admin})[t]()}
 const out=h=>$('#main').innerHTML=h;
 const thumb=(id,d)=>`<div class="thw"><img class="th" src="https://i.ytimg.com/vi/${esc(id)}/mqdefault.jpg" alt="" loading="lazy" onerror="this.style.visibility='hidden'">${d?`<span class="dur">${d}s</span>`:''}</div>`;
 
-/* ---------- Watch ---------- */
-async function tonton(){
+/* ---------- Watch & Earn ---------- */
+async function watch(){
   out('<div class="card empty">Loading…</div>');
   await sync();
   const r=await api('videos');
   const list=r.videos||[];
-  out(`<div class="card hero"><h2>Watch &amp; earn</h2><p class="sub" style="margin:0 0 12px">Watch other members' videos to the end. 1 second = 1 point.</p><div style="font-size:30px;font-weight:800">${me.poin} <span style="font-size:14px;font-weight:600;opacity:.85">points</span></div></div>
-  <div class="card"><h3>Available videos${list.length?` (${list.length})`:''}</h3>${list.length?list.map(v=>`<div class="vrow">${thumb(v.yt_id,v.detik)}<div class="vi"><div class="vt">Video ${esc(v.yt_id.slice(0,4))}…</div><div class="mut">Watch ${v.detik} seconds</div></div><button class="btn sm" onclick="watch(${v.id})">+${v.detik} pts</button></div>`).join(''):`<div class="empty"><div class="ic">🎬</div>No videos to watch right now.<br>Check back soon, or post your own video.<br><br><button class="btn ghost sm" onclick="show('boost')">Post a video</button></div>`}</div>`);
+  const dly=me.daily_in>0?`<div class="mut">Next bonus in ${Math.floor(me.daily_in/3600)}h ${Math.floor(me.daily_in%3600/60)}m</div>`:`<button class="btn gold sm" onclick="claimDaily()">Claim +${me.daily_bonus}</button>`;
+  out(`<div class="card hero"><div class="lab">Your balance</div><div class="bal">${me.poin}<small>points</small></div><div class="eq">= ${fmtT(me.poin)} of video you can get watched</div><div class="rule">Watch a video to the end and earn 1 point for every second.</div></div>
+  <div class="card"><div class="row" style="justify-content:space-between"><div><h3 style="margin:0">Daily bonus</h3><div class="mut">Free ${me.daily_bonus} points every 24 hours</div></div>${dly}</div></div>
+  <div class="card"><h3>Videos to watch${list.length?` (${list.length})`:''}</h3><p class="sub">Tap a video, keep it playing until the timer reaches 0, and the points are yours.</p>${list.length?list.map(v=>`<div class="vrow">${thumb(v.yt_id,v.detik)}<div class="vi"><div class="vt">YouTube video</div><div class="mut">Watch ${v.detik} seconds</div></div><button class="btn sm" onclick="watchVideo(${v.id})">+${v.detik}</button></div>`).join(''):`<div class="empty"><div class="ic">🎬</div>No videos to watch right now.<br><br><b style="color:var(--tx)">You are not stuck:</b><br>${me.daily_in>0?'Your next free bonus arrives in '+Math.floor(me.daily_in/3600)+'h '+Math.floor(me.daily_in%3600/60)+'m.':'Claim your free daily bonus above.'}<br>Invite friends to earn ${me.ref_bonus} points each.<br><br><button class="btn ghost sm" onclick="show('profile')">Invite friends</button> <button class="btn ghost sm" onclick="show('grow')">Get views</button></div>`}</div>`);
+}
+
+async function claimDaily(){
+  const r=await api('daily',{});
+  if(r.error)return alertx(r.error);
+  setPoin(r.poin);alertx('+'+r.got+' points added. Come back in 24 hours for more!');await sync();watch();
 }
 
 /* ---------- Player + heartbeat ---------- */
@@ -151,7 +193,7 @@ function loadYT(ok,bad){
   const s=document.createElement('script');s.src='https://www.youtube.com/iframe_api';s.onerror=bad;document.head.appendChild(s);
   setTimeout(()=>{if(!(window.YT&&YT.Player))bad()},8000);
 }
-async function watch(id){
+async function watchVideo(id){
   const r=await api('start',{video_id:id});
   if(r.error)return alertx(r.error);
   let local=0,c=0,busy=false;ps=-1;
@@ -170,7 +212,7 @@ async function watch(id){
           clearInterval(tm);const f=await api('finish',{sid:r.sid});
           closeW();
           if(f.error){alertx(f.error)}else{setPoin(f.poin);alertx('Done! +'+f.got+' points')}
-          return tonton();
+          return watch();
         }
         busy=false;
       }
@@ -180,53 +222,66 @@ async function watch(id){
 const setS=t=>{const e=$('#st');if(e)e.textContent=t};
 function closeW(){clearInterval(tm);try{player&&player.destroy()}catch(e){}player=null;$('#ov').innerHTML=''}
 
-/* ---------- Post video ---------- */
-async function boost(){
+/* ---------- Get Views (post your video) ---------- */
+async function grow(){
   await sync();
   const r=await api('mine');
   const vids=r.videos||[];
-  out(`<div class="card"><h2>Post a video</h2><p class="sub">Posting is free. You pay with points and real members watch your video.</p>
-  <div class="step"><span class="n">1</span><div class="f"><label>Paste your YouTube link</label><input id="b_url" inputmode="url" placeholder="https://youtu.be/..."></div></div>
-  <div class="step"><span class="n">2</span><div class="f"><label>How long must each viewer watch?</label><select id="b_d" onchange="hit()"><option value="30">30 seconds</option><option value="60">60 seconds</option><option value="120">120 seconds</option><option value="300">300 seconds</option></select><div class="mut" style="margin-top:4px">Choose a time that is not longer than your video.</div></div></div>
-  <div class="step"><span class="n">3</span><div class="f"><label>How many viewers do you want?</label><input id="b_m" type="number" min="1" inputmode="numeric" value="${Math.max(1,Math.min(Math.floor(me.poin/30),5))}" oninput="hit()"></div></div>
+  const defD=Math.min(30,Math.max(me.min_dur,me.poin));
+  out(`<div class="card"><h2>Get views for your video</h2><p class="sub">Other members watch your YouTube video and you pay them with points.</p>
+  <ol class="how">
+    <li><div><b>Paste your YouTube link</b><span>Any normal YouTube or Shorts link works.</span></div></li>
+    <li><div><b>Choose how many seconds each person watches</b><span>Each viewer earns exactly this many points. 1 second = 1 point.</span></div></li>
+    <li><div><b>Choose how many points to spend</b><span>Your video stays live until these points are used up. You can add more or stop at any time.</span></div></li>
+  </ol></div>
+
+  <div class="card"><h3 style="margin-bottom:14px">New video</h3>
+  <div class="field"><label>YouTube link</label><input id="b_url" inputmode="url" placeholder="https://youtu.be/..."></div>
+  <div class="field"><label>Watch time per viewer</label><div class="inwrap"><input id="b_d" type="number" min="${me.min_dur}" max="${me.max_dur}" inputmode="numeric" value="${defD}" oninput="hit()"><span>seconds</span></div>
+    <div class="pills">${[15,30,60,120].map(x=>`<button class="pill" onclick="setD(${x})">${x}s</button>`).join('')}</div>
+    <div class="hint">Between ${me.min_dur} and ${me.max_dur} seconds. Short time = more viewers for the same points.</div></div>
+  <div class="field"><label>Points to spend</label><div class="inwrap"><input id="b_m" type="number" min="1" inputmode="numeric" value="${me.poin}" oninput="hit()"><span>points</span></div>
+    <div class="pills"><button class="pill" onclick="setM(1)">All (${me.poin})</button><button class="pill" onclick="setM(.5)">Half</button></div>
+    <div class="hint">You have ${me.poin} points. You cannot spend more than that.</div></div>
   <div class="sum" id="b_e"></div>
-  <button class="btn" onclick="doBoost()">Post video</button></div>
+  <button class="btn" id="b_go" onclick="doPost()">Start getting views</button>
+  <div class="note" style="margin-top:12px"><b>Good to know:</b> members can watch your video again and again, as long as it stays posted and has points. Watch-first rule: within 24 hours you can spend on your videos only as many points as you earned by watching.</div></div>
 
-  <div class="card"><h3>My videos${vids.length?` (${vids.length})`:''}</h3>${vids.length?vids.map(v=>{
-    const left=Math.floor(v.sisa/v.detik),total=Math.max(1,Math.round(v.target/v.detik)),pct=Math.min(100,Math.round(v.dilihat/total*100)),off=v.sisa<v.detik;
-    return `<div style="padding:12px 0;border-top:1px solid var(--line)"><div class="row" style="align-items:flex-start;gap:12px">${thumb(v.yt_id,v.detik)}<div class="vi"><div class="vt">Video ${esc(v.yt_id.slice(0,4))}…</div><div class="mut">${v.dilihat} views · ${left} viewers left (${v.sisa} pts)</div><div style="margin-top:6px">${off?'<span class="tag warn">Out of points</span>':'<span class="tag ok">Active</span>'}</div></div></div><div class="bar"><i style="width:${pct}%"></i></div><div class="row"><input id="tp_${v.id}" type="number" min="1" inputmode="numeric" placeholder="Add viewers"><button class="btn sm" onclick="topup(${v.id})">Add</button><button class="btn sm danger" onclick="cancel(${v.id})">Stop</button></div></div>`}).join(''):`<div class="empty"><div class="ic">📹</div>You have not posted any videos yet.</div>`}</div>
-
-  <div class="card"><details open><summary>How it works</summary><ul>
-    <li><b>Points are your budget.</b> 1 second watched = 1 point.</li>
-    <li>The cost moves from your balance to your video. Each viewer who watches to the end is paid from it.</li>
-    <li>When the budget runs out, the video stops. Add viewers to continue.</li>
-    <li><b>Stop</b> a video any time to get the unused points back. The video is then removed.</li>
-    <li><b>Fair rule:</b> within 24 hours you can only post as many points as you earned by watching (unless there is nothing to watch yet).</li>
-    <li>Videos with no views for 3 days are stopped and the unused points are refunded.</li>
-    <li>You cannot watch your own videos. Max 5 active videos.</li>
-  </ul></details></div>`);
+  <div class="card"><h3>Your active videos${vids.length?` (${vids.length})`:''}</h3>${vids.length?`<p class="sub">Pressing Stop returns the unused points and removes the video.</p>`:''}${vids.length?vids.map(v=>{
+    const left=Math.floor(v.sisa/v.detik),pct=Math.max(0,Math.min(100,Math.round((v.target-v.sisa)/v.target*100))),off=v.sisa<v.detik;
+    return `<div class="mv"><div class="row" style="align-items:flex-start;gap:12px">${thumb(v.yt_id,v.detik)}<div class="vi"><div class="vt">YouTube video</div><div class="mut">${v.dilihat} views received<br>${v.detik}s per viewer · ${v.sisa} points left</div><div style="margin-top:6px">${off?'<span class="tag warn">Out of points</span>':`<span class="tag ok">Live · ${left} more view${left==1?'':'s'}</span>`}</div></div></div><div class="bar"><i style="width:${pct}%"></i></div><div class="row"><input id="tp_${v.id}" type="number" min="1" inputmode="numeric" placeholder="Points to add"><button class="btn sm" onclick="topup(${v.id})">Add points</button><button class="btn sm danger" onclick="cancel(${v.id})">Stop</button></div></div>`}).join(''):`<div class="empty"><div class="ic">📹</div>No active videos. Post your first video above.</div>`}</div>`);
   hit();
 }
+function setD(x){$('#b_d').value=x;hit()}
+function setM(f){$('#b_m').value=Math.floor(me.poin*f);hit()}
 function hit(){
-  const d=+$('#b_d').value,n=parseInt($('#b_m').value)||0,c=d*n;
-  $('#b_e').innerHTML=`<div class="sr"><span>Total cost</span><b>${c} points</b></div><div class="sr mut"><span>${n} viewers × ${d} seconds</span><span>Your balance: ${me.poin}</span></div>`+(c>me.poin?`<div class="warn">Not enough points. You have ${me.poin}.</div>`:'');
+  const d=parseInt($('#b_d').value)||0,m=parseInt($('#b_m').value)||0;
+  let err='';
+  if(d<me.min_dur||d>me.max_dur)err=`Watch time must be between ${me.min_dur} and ${me.max_dur} seconds.`;
+  else if(d>me.poin)err=`Watch time cannot be more than your points (${me.poin}).`;
+  else if(m<d)err=`Spend at least ${d} points (one viewer).`;
+  else if(m>me.poin)err=`Not enough points. You have ${me.poin}.`;
+  const v=d>0?Math.floor(m/d):0;
+  $('#b_e').innerHTML=`<div class="sr"><span>Each viewer watches</span><b>${d} sec</b></div><div class="sr"><span>Each viewer earns</span><b>${d} points</b></div><div class="sr"><span>Points left after posting</span><b>${Math.max(0,me.poin-m)}</b></div><div class="sr big"><span>Expected views</span><b>about ${v}</b></div>`+(err?`<div class="warn">${err}</div>`:'');
+  $('#b_go').disabled=!!err;
 }
-async function doBoost(){
-  const r=await api('boost',{url:$('#b_url').value,detik:$('#b_d').value,views:$('#b_m').value});
+async function doPost(){
+  const r=await api('boost',{url:$('#b_url').value,dur:$('#b_d').value,budget:$('#b_m').value});
   if(r.error)return alertx(r.error);
-  setPoin(r.poin);alertx('Video posted!');boost();
+  setPoin(r.poin);alertx('Your video is live! Members can watch it now.');grow();
 }
-async function cancel(id){
-  const r=await api('cancel',{video_id:id});
-  if(r.error)return alertx(r.error);
-  alertx('Video stopped and removed. '+r.refund+' points refunded.');boost();
+function cancel(id){
+  askx('Stop this video? Unused points are returned and the video is removed.',async()=>{
+    const r=await api('cancel',{video_id:id});
+    if(r.error)return alertx(r.error);
+    alertx('Video removed. '+r.refund+' points returned.');grow();
+  });
 }
 async function topup(id){
-  const r=await api('topup',{video_id:id,views:$('#tp_'+id).value});
+  const r=await api('topup',{video_id:id,points:$('#tp_'+id).value});
   if(r.error)return alertx(r.error);
-  alertx('Viewers added.');boost();
+  alertx('Points added.');grow();
 }
-window.boost=boost;
 
 /* ---------- Profile ---------- */
 const refLink=()=>`https://t.me/${me.bot}?startapp=ref_${me.tg_id}`;
@@ -239,13 +294,14 @@ function shareLink(){
   const u='https://t.me/share/url?url='+encodeURIComponent(refLink())+'&text='+encodeURIComponent('Watch videos, earn points and grow your YouTube views on TukarView!');
   tg&&tg.openTelegramLink?tg.openTelegramLink(u):window.open(u);
 }
-async function saya(){
+async function profile(){
   await sync();
-  const r=await api('mine');
+  const r=await api('ledger');
   const led=r.ledger||[];
   out(`<div class="card"><div class="prof"><div class="avatar">${esc((me.name||'?').trim().charAt(0).toUpperCase()||'?')}</div><div><h2 style="margin:0">${esc(me.name)}</h2><div class="mut">Telegram ID ${me.tg_id}</div></div></div>
   <div class="stat"><div><b>${me.poin}</b><span class="mut">Points</span></div><div><b>${me.refs}</b><span class="mut">Friends invited</span></div></div></div>
-  <div class="card"><h3>Invite friends, earn ${REF_BONUS} points each</h3><p class="sub" style="margin:0">You get ${REF_BONUS} points when a friend you invited watches their first video to the end.</p><div class="link">${esc(refLink())}</div><div class="row"><button class="btn" onclick="copyLink()">Copy link</button><button class="btn ghost" onclick="shareLink()">Share</button></div></div>
+  <div class="card"><div class="reward"><span class="coin">P</span><div><b>${me.ref_bonus} points per friend</b>Paid when your friend finishes their first video.</div></div>
+  <h3>Invite friends</h3><p class="sub" style="margin:0">Share your personal link. Every friend who joins with it and watches one video to the end earns you ${me.ref_bonus} points.</p><div class="link">${esc(refLink())}</div><div class="row"><button class="btn" onclick="copyLink()">Copy link</button><button class="btn ghost" onclick="shareLink()">Share</button></div></div>
   <div class="card"><h3>Points history</h3>${led.length?led.map(l=>`<div class="hist"><div><div>${esc(l.reason)}</div><div class="mut">${new Date(l.t*1000).toLocaleDateString('en-US',{month:'short',day:'numeric'})}</div></div><b style="color:${l.delta>0?'var(--ok)':'var(--bad)'}">${l.delta>0?'+':''}${l.delta}</b></div>`).join(''):'<div class="empty">No activity yet.</div>'}</div>`);
 }
 
