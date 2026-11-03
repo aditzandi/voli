@@ -1,1 +1,3 @@
-<script>const CONFIG={API_URL:"https://tukarview.cyberex04.workers.dev/"};</script>
+const CONFIG = {
+  API_URL: "https://tukarview.cyberex04.workers.dev/api/"
+};
