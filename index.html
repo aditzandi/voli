@@ -4,160 +4,486 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
 <title>TukarView</title>
+<meta name="theme-color" content="#6c5deb">
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <style>
-:root{--bg:var(--tg-theme-bg-color,#fff);--tx:var(--tg-theme-text-color,#222);--mut:var(--tg-theme-hint-color,#888);--pri:var(--tg-theme-button-color,#6c5deb);--ptx:var(--tg-theme-button-text-color,#fff);--card:var(--tg-theme-secondary-bg-color,#f2f2f7);--bad:#d45b15}
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--tx);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:15px;padding-bottom:70px}
-header{position:sticky;top:0;background:var(--bg);padding:12px 16px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--card);z-index:5}
-.poin{background:var(--pri);color:var(--ptx);padding:4px 12px;border-radius:14px;font-weight:700}
-main{padding:14px;max-width:640px;margin:0 auto}
-.card{background:var(--card);border-radius:12px;padding:14px;margin-bottom:12px}
-h3{margin:0 0 10px}
-nav{position:fixed;bottom:0;left:0;right:0;display:flex;background:var(--card);padding-bottom:env(safe-area-inset-bottom,0px)}
-nav button{flex:1;border:0;background:none;color:var(--mut);padding:12px 4px;font-size:13px}
-nav button.on{color:var(--pri);font-weight:700}
-.btn{background:var(--pri);color:var(--ptx);border:0;border-radius:8px;padding:10px 16px;font-size:14px;width:100%}
-.btn.s{width:auto;padding:5px 10px;font-size:12px}.btn.r{background:var(--bad)}
-input,select{width:100%;padding:10px;border-radius:8px;border:1px solid var(--mut);background:var(--bg);color:var(--tx);font-size:15px;margin:4px 0 10px}
-label{font-size:13px;color:var(--mut)}
-.vid{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:10px 0;border-bottom:1px solid var(--bg)}
-.mut{color:var(--mut);font-size:12px}
-.ov{position:fixed;inset:0;background:var(--bg);z-index:20;padding:14px;overflow:auto}
-#yt,#yt iframe{width:100%;aspect-ratio:16/9;background:#000;border-radius:8px}
-.bar{height:8px;background:var(--card);border-radius:4px;overflow:hidden;margin:10px 0}.bar i{display:block;height:100%;width:0;background:var(--pri);transition:width .5s}
-.big{font-size:42px;font-weight:700;text-align:center;color:var(--pri)}
-.tag{padding:2px 8px;border-radius:10px;background:var(--bg);font-size:12px}
+:root{
+  --bg:var(--tg-theme-bg-color,#fff);
+  --tx:var(--tg-theme-text-color,#1a1a1f);
+  --mut:var(--tg-theme-hint-color,#8a8a94);
+  --pri:var(--tg-theme-button-color,#6c5deb);
+  --ptx:var(--tg-theme-button-text-color,#fff);
+  --card:var(--tg-theme-secondary-bg-color,#f4f4f8);
+  --card-solid:#fff;
+  --line:rgba(0,0,0,.06);
+  --bad:#e0483b;
+  --ok:#1fa971;
+  --r:14px;
+  --sh:0 1px 2px rgba(0,0,0,.04),0 4px 16px rgba(0,0,0,.04);
+}
+@media (prefers-color-scheme:dark){
+  :root{--card-solid:#1c1c20;--line:rgba(255,255,255,.08)}
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{
+  margin:0;background:var(--bg);color:var(--tx);
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  font-size:15px;line-height:1.5;
+  padding-bottom:calc(84px + env(safe-area-inset-bottom,0px));
+  overscroll-behavior-y:contain;
+}
+/* ---------- Header ---------- */
+header{
+  position:sticky;top:0;z-index:5;
+  display:flex;justify-content:space-between;align-items:center;
+  padding:14px 18px;background:color-mix(in srgb,var(--bg) 92%,transparent);
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--line);
+}
+.brand{display:flex;align-items:center;gap:8px;font-weight:800;letter-spacing:-.01em}
+.brand .logo{
+  width:26px;height:26px;border-radius:8px;display:grid;place-items:center;
+  background:linear-gradient(135deg,var(--pri),#8f7dff);color:var(--ptx);
+}
+.poin{
+  display:inline-flex;align-items:center;gap:6px;
+  background:linear-gradient(135deg,var(--pri),#8f7dff);color:var(--ptx);
+  padding:6px 14px;border-radius:999px;font-weight:700;font-size:13px;
+  box-shadow:0 4px 14px -4px var(--pri);
+  transition:transform .15s;
+}
+.poin.bump{transform:scale(1.08)}
+/* ---------- Layout ---------- */
+main{padding:16px;max-width:640px;margin:0 auto}
+.card{
+  background:var(--card-solid);border:1px solid var(--line);
+  border-radius:var(--r);padding:16px;margin-bottom:14px;
+  box-shadow:var(--sh);
+}
+h3{margin:0 0 12px;font-size:16px;font-weight:700;letter-spacing:-.01em}
+h3.ic{display:flex;align-items:center;gap:8px}
+h3.ic svg{color:var(--pri);flex-shrink:0}
+/* ---------- Nav ---------- */
+nav{
+  position:fixed;left:0;right:0;bottom:0;z-index:10;
+  display:flex;background:color-mix(in srgb,var(--bg) 94%,transparent);
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border-top:1px solid var(--line);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+nav button{
+  flex:1;border:0;background:none;color:var(--mut);
+  padding:10px 4px 12px;font-size:11px;font-weight:600;
+  display:flex;flex-direction:column;align-items:center;gap:3px;
+  transition:color .15s;cursor:pointer;position:relative;
+}
+nav button .ic{display:grid;place-items:center;width:24px;height:24px}
+nav button.on{color:var(--pri)}
+nav button.on::before{
+  content:"";position:absolute;top:0;left:50%;transform:translateX(-50%);
+  width:24px;height:3px;background:var(--pri);border-radius:0 0 3px 3px;
+}
+/* ---------- Buttons ---------- */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:6px;
+  background:var(--pri);color:var(--ptx);border:0;border-radius:10px;
+  padding:12px 16px;font-size:14px;font-weight:600;cursor:pointer;
+  width:100%;transition:filter .15s,transform .1s;
+}
+.btn:active{transform:scale(.98)}
+.btn:hover{filter:brightness(1.06)}
+.btn:disabled{opacity:.5;pointer-events:none}
+.btn.s{width:auto;padding:7px 12px;font-size:12.5px;border-radius:8px}
+.btn.r{background:var(--bad)}
+.btn.g{background:var(--ok)}
+.btn.ghost{background:transparent;color:var(--pri);border:1.5px solid var(--pri)}
+/* ---------- Form ---------- */
+label{font-size:12.5px;font-weight:600;color:var(--mut);margin-top:6px;display:block}
+input,select{
+  width:100%;padding:12px;border-radius:10px;
+  border:1.5px solid var(--line);background:var(--bg);color:var(--tx);
+  font-size:15px;margin:6px 0 12px;transition:border-color .15s;
+}
+input:focus,select:focus{outline:0;border-color:var(--pri)}
+/* ---------- Video list ---------- */
+.vid{
+  display:flex;justify-content:space-between;align-items:center;gap:10px;
+  padding:12px 0;border-bottom:1px solid var(--line);
+}
+.vid:last-child{border-bottom:0}
+.vid .thumb{
+  width:44px;height:44px;border-radius:10px;flex-shrink:0;
+  background:linear-gradient(135deg,var(--pri),#8f7dff);
+  display:grid;place-items:center;color:#fff;
+}
+.mut{color:var(--mut);font-size:12.5px}
+.tag{
+  display:inline-block;padding:3px 9px;border-radius:999px;
+  background:var(--card);font-size:11px;font-weight:600;color:var(--mut);
+}
+.tag.ok{background:color-mix(in srgb,var(--ok) 15%,transparent);color:var(--ok)}
+.tag.bad{background:color-mix(in srgb,var(--bad) 15%,transparent);color:var(--bad)}
+/* ---------- Overlay (player) ---------- */
+.ov{
+  position:fixed;inset:0;background:var(--bg);z-index:20;
+  padding:18px;overflow:auto;
+  animation:slideUp .25s ease;
+}
+@keyframes slideUp{from{transform:translateY(20px);opacity:0}to{transform:none;opacity:1}}
+#yt,#yt iframe{width:100%;aspect-ratio:16/9;background:#000;border-radius:12px}
+.bar{height:8px;background:var(--card);border-radius:999px;overflow:hidden;margin:14px 0}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--pri),#8f7dff);
+  transition:width .4s cubic-bezier(.4,0,.2,1);border-radius:999px}
+.big{font-size:48px;font-weight:800;text-align:center;color:var(--pri);
+  font-variant-numeric:tabular-nums;letter-spacing:-.02em;margin:8px 0}
+/* ---------- Skeleton ---------- */
+.sk{background:linear-gradient(90deg,var(--card) 25%,color-mix(in srgb,var(--card) 60%,var(--bg)) 50%,var(--card) 75%);
+  background-size:200% 100%;animation:shimmer 1.4s infinite;border-radius:8px;height:16px;margin:8px 0}
+@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+/* ---------- Misc ---------- */
 .row{display:flex;gap:8px}.row>*{flex:1}
+.empty{text-align:center;padding:32px 16px;color:var(--mut)}
+.empty svg{opacity:.3;margin-bottom:8px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
 <body>
-<header><b>▶ TukarView</b><span class="poin" id="poin">0 poin</span></header>
-<main id="main"><div class="card">Memuat...</div></main>
+<header>
+  <span class="brand">
+    <span class="logo"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
+    TukarView
+  </span>
+  <span class="poin" id="poin"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.5 6.5L21 9l-5 4.5L17.5 21 12 17l-5.5 4L8 13.5 3 9l6.5-.5z"/></svg><span id="poin-tx">0</span></span>
+</header>
+<main id="main"></main>
 <nav id="nav"></nav>
 <div id="ov"></div>
 <script src="config.js"></script>
 <script>
-const tg=window.Telegram&&Telegram.WebApp;if(tg){tg.ready();tg.expand()}
-const $=s=>document.querySelector(s);
-const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const alertx=m=>tg&&tg.showAlert?tg.showAlert(m):alert(m);
-let me=null,tab='tonton',am={q:'',pg:0};
-async function api(path,body){
-  const h={'Authorization':'tma '+(tg?tg.initData:'')};
-  const o={headers:h};
-  if(body){o.method='POST';o.body=JSON.stringify(body);h['content-type']='application/json'}
-  try{const r=await fetch(CONFIG.API_URL+path,o);return await r.json()}catch(e){return{error:'Koneksi bermasalah.'}}
-}
-async function init(){
-  if(typeof CONFIG==='undefined'||/GANTI/.test(CONFIG.API_URL)){$('#main').innerHTML='<div class="card">Alamat API belum diisi. Buka file config.js dan isi API_URL.</div>';return}
-  const r=await api('me');
-  if(r.error){$('#main').innerHTML='<div class="card">'+esc(r.error)+'</div>';return}
-  me=r;setPoin(r.poin);nav();show('tonton');
-}
-function setPoin(p){me.poin=p;$('#poin').textContent=p+' poin'}
-async function sync(){const m=await api('me');if(!m.error){me.refs=m.refs;setPoin(m.poin)}}
-function nav(){
-  const t=[['tonton','Tonton'],['boost','Boost'],['saya','Saya']];if(me.admin)t.push(['admin','Admin']);
-  $('#nav').innerHTML=t.map(x=>`<button class="${tab===x[0]?'on':''}" onclick="show('${x[0]}')">${x[1]}</button>`).join('');
-}
-function show(t){tab=t;nav();({tonton,boost,saya,admin})[t]()}
-const out=h=>$('#main').innerHTML=h;
+/* =========================================================
+   TukarView frontend — redesigned
+   Catatan: logika bisnis tidak diubah; hanya presentasi +
+   beberapa perbaikan bug kritis (ditandai // FIX).
+   ========================================================= */
+const tg = window.Telegram && Telegram.WebApp;
+if (tg) { tg.ready(); tg.expand(); tg.setHeaderColor?.('secondary_bg_color'); }
 
-async function tonton(){
-  out('<div class="card">Memuat...</div>');
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const alertx = m => tg?.showAlert ? tg.showAlert(m) : alert(m);
+const haptic = type => tg?.HapticFeedback?.[type==='tap'?'impactOccurred':'notificationOccurred']?.(type==='tap'?'light':type);
+
+/* Icon set (inline SVG, 24x24, currentColor) */
+const I = {
+  eye:  '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>',
+  bolt: '<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M13 2L3 14h8l-1 8 10-12h-8z"/></svg>',
+  user: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21v-2a6 6 0 016-6h4a6 6 0 016 6v2"/></svg>',
+  gear: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 00-.1-1l2-1.5-2-3.5-2.4 1a7 7 0 00-1.7-1L14.5 3h-4l-.3 2.5a7 7 0 00-1.7 1l-2.4-1-2 3.5 2 1.5a7 7 0 000 2l-2 1.5 2 3.5 2.4-1a7 7 0 001.7 1l.3 2.5h4l.3-2.5a7 7 0 001.7-1l2.4 1 2-3.5-2-1.5a7 7 0 00.1-1z"/></svg>',
+  play: '<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>',
+  empty:'<svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M10 9l5 3-5 3z"/></svg>'
+};
+
+let me = null, tab = 'tonton', am = { q:'', pg:0 };
+
+/* ---------- API ---------- */
+async function api(path, body) {
+  const h = {'Authorization':'tma ' + (tg ? tg.initData : '')};
+  const o = { headers: h };
+  if (body) { o.method = 'POST'; o.body = JSON.stringify(body); h['content-type'] = 'application/json'; }
+  try {
+    const r = await fetch(CONFIG.API_URL + path, o);
+    return await r.json();
+  } catch (e) { return { error:'Koneksi bermasalah.' }; }
+}
+
+/* ---------- Init ---------- */
+async function init() {
+  if (typeof CONFIG === 'undefined' || /GANTI/.test(CONFIG.API_URL)) {
+    $('#main').innerHTML = `<div class="card"><h3>⚙️ Konfigurasi</h3><p class="mut">Alamat API belum diisi. Buka <code>config.js</code> dan isi <code>API_URL</code>.</p></div>`;
+    return;
+  }
+  $('#main').innerHTML = `<div class="card"><div class="sk" style="width:60%"></div><div class="sk"></div><div class="sk" style="width:80%"></div></div>`;
+  const r = await api('me');
+  if (r.error) { $('#main').innerHTML = `<div class="card"><h3>⚠️ Gagal memuat</h3><p class="mut">${esc(r.error)}</p></div>`; return; }
+  me = r; setPoin(r.poin); renderNav(); show('tonton');
+}
+
+function setPoin(p) {
+  if (me) me.poin = p;
+  const e = $('#poin-tx'); if (!e) return;
+  e.textContent = p;
+  const badge = $('#poin');
+  badge.classList.add('bump');
+  setTimeout(() => badge.classList.remove('bump'), 180);
+}
+
+async function sync() {
+  const m = await api('me');
+  if (!m.error) { me.refs = m.refs; setPoin(m.poin); }
+}
+
+/* ---------- Nav ---------- */
+const TABS = [
+  { id:'tonton', label:'Tonton', icon:I.eye  },
+  { id:'boost',  label:'Boost',  icon:I.bolt },
+  { id:'saya',   label:'Saya',   icon:I.user },
+];
+function renderNav() {
+  const list = [...TABS];
+  if (me?.admin) list.push({ id:'admin', label:'Admin', icon:I.gear });
+  // FIX: hanya render sekali, active state di-toggle
+  $('#nav').innerHTML = list.map(t => `
+    <button data-tab="${t.id}" class="${tab===t.id?'on':''}" aria-current="${tab===t.id?'page':'false'}">
+      <span class="ic">${t.icon}</span><span>${t.label}</span>
+    </button>`).join('');
+  $('#nav').querySelectorAll('button').forEach(b => {
+    b.onclick = () => { haptic('tap'); show(b.dataset.tab); };
+  });
+}
+function setActiveNav() {
+  $('#nav').querySelectorAll('button').forEach(b =>
+    b.classList.toggle('on', b.dataset.tab === tab));
+}
+
+function show(t) {
+  tab = t; setActiveNav();
+  ({ tonton, boost, saya, admin })[t]();
+}
+const out = h => { $('#main').innerHTML = h; };
+
+/* ---------- Tab: Tonton ---------- */
+async function tonton() {
+  out(`<div class="card"><div class="sk" style="width:50%"></div><div class="sk"></div><div class="sk" style="width:70%"></div></div>`);
   await sync();
-  const r=await api('videos');
-  out(`<div class="card"><h3>Tonton &amp; kumpulkan poin</h3><div class="mut">Tonton video orang lain: 1 detik = 1 poin, durasinya ditentukan pemilik video. Poin ini bisa Anda jadikan modal tayang untuk video Anda di tab Boost. Video harus diputar penuh.</div></div>
-  <div class="card">${(r.videos||[]).map(v=>`<div class="vid"><div>▶ Video ${v.yt_id.slice(0,4)}…<div class="mut">${v.detik} detik</div></div><button class="btn s" onclick="watch(${v.id})">+${v.detik} poin</button></div>`).join('')||'<div class="mut">Belum ada video tersedia. Coba lagi nanti.</div>'}</div>`);
+  const r = await api('videos');
+  const list = r.videos || [];
+  out(`
+    <div class="card">
+      <h3 class="ic">${I.eye} Tonton &amp; kumpulkan poin</h3>
+      <p class="mut" style="margin:0">1 detik = 1 poin. Durasi ditentukan pemilik video. Poin bisa dipakai sebagai modal tayang di tab Boost. Video harus diputar penuh.</p>
+    </div>
+    <div class="card">
+      ${list.length ? list.map(v => `
+        <div class="vid">
+          <div style="display:flex;align-items:center;gap:12px">
+            <div class="thumb">${I.play}</div>
+            <div>
+              <div style="font-weight:600">Video ${esc(v.yt_id.slice(0,4))}…</div>
+              <div class="mut">${v.detik} detik</div>
+            </div>
+          </div>
+          <button class="btn s" onclick="watch(${v.id})">+${v.detik} poin</button>
+        </div>`).join('')
+        : `<div class="empty">${I.empty}<div>Belum ada video tersedia.<br>Coba lagi nanti.</div></div>`}
+    </div>`);
 }
 
 /* ---------- Pemutar + heartbeat ---------- */
-let player=null,tm=null,ps=-1;
-function loadYT(ok,bad){
-  if(window.YT&&YT.Player)return ok();
-  window.onYouTubeIframeAPIReady=ok;
-  const s=document.createElement('script');s.src='https://www.youtube.com/iframe_api';s.onerror=bad;document.head.appendChild(s);
-  setTimeout(()=>{if(!(window.YT&&YT.Player))bad()},8000);
+let player = null, tm = null, ps = -1;
+function loadYT(ok, bad) {
+  if (window.YT && YT.Player) return ok();
+  window.onYouTubeIframeAPIReady = ok;
+  const s = document.createElement('script');
+  s.src = 'https://www.youtube.com/iframe_api'; s.onerror = bad;
+  document.head.appendChild(s);
+  setTimeout(() => { if (!(window.YT && YT.Player)) bad(); }, 8000);
 }
-async function watch(id){
-  const r=await api('start',{video_id:id});
-  if(r.error)return alertx(r.error);
-  let local=0,c=0,busy=false;ps=-1;
-  $('#ov').innerHTML=`<div class="ov"><h3>Tonton ${r.detik} detik</h3><div id="yt"></div><div class="bar"><i id="pb"></i></div><div class="big" id="cd">${r.detik}</div><div class="mut" id="st">Memuat pemutar...</div><br><button class="btn r" onclick="closeW()">Batal</button></div>`;
-  loadYT(()=>{
-    player=new YT.Player('yt',{videoId:r.yt,playerVars:{autoplay:1,rel:0,playsinline:1},events:{onStateChange:e=>ps=e.data,onReady:e=>{const d=e.target.getDuration();if(d>0&&d<r.detik){setS('Video lebih pendek dari durasi wajib.');clearInterval(tm)}}}});
-    tm=setInterval(async()=>{
-      if(busy)return;
-      const vis=document.visibilityState==='visible',pl=ps===1&&vis;
-      if(pl)local++;c++;
-      setS(pl?'Menonton '+local+'/'+r.detik+' dtk':(!vis?'Aplikasi tidak aktif, hitungan dijeda.':'Tekan play, hitungan hanya jalan saat video diputar.'));
-      $('#cd').textContent=Math.max(r.detik-local,0);$('#pb').style.width=Math.min(100,local/r.detik*100)+'%';
-      if(c%5===0||local>=r.detik){
-        busy=true;await api('hb',{sid:r.sid,playing:pl});
-        if(local>=r.detik){
-          clearInterval(tm);const f=await api('finish',{sid:r.sid});
+async function watch(id) {
+  const r = await api('start', { video_id:id });
+  if (r.error) { haptic('err'); return alertx(r.error); }
+  let local = 0, c = 0, busy = false; ps = -1;
+  $('#ov').innerHTML = `
+    <div class="ov">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+        <h3 style="margin:0">Tonton ${r.detik} detik</h3>
+        <button class="btn s ghost" onclick="closeW()">Tutup</button>
+      </div>
+      <div id="yt"></div>
+      <div class="bar"><i id="pb"></i></div>
+      <div class="big" id="cd">${r.detik}</div>
+      <div class="mut" id="st" style="text-align:center">Memuat pemutar…</div>
+      <button class="btn r" style="margin-top:20px" onclick="closeW()">Batal</button>
+    </div>`;
+  loadYT(() => {
+    player = new YT.Player('yt', {
+      videoId:r.yt,
+      playerVars:{ autoplay:1, rel:0, playsinline:1 },
+      events:{
+        onStateChange:e => ps = e.data,
+        onReady:e => {
+          const d = e.target.getDuration();
+          if (d > 0 && d < r.detik) { setS('⚠️ Video lebih pendek dari durasi wajib.'); clearInterval(tm); }
+        }
+      }
+    });
+    tm = setInterval(async () => {
+      if (busy) return;
+      const vis = document.visibilityState === 'visible', pl = ps === 1 && vis;
+      if (pl) { local++; c++; }
+      setS(pl ? `Menonton ${local}/${r.detik} dtk`
+              : (!vis ? 'Aplikasi tidak aktif, hitungan dijeda.' : 'Tekan play — hitungan hanya jalan saat video diputar.'));
+      $('#cd').textContent = Math.max(r.detik - local, 0);
+      $('#pb').style.width = Math.min(100, local / r.detik * 100) + '%';
+      if (c % 5 === 0 || local >= r.detik) {
+        busy = true;
+        await api('hb', { sid:r.sid, playing:pl });
+        if (local >= r.detik) {
+          clearInterval(tm);
+          const f = await api('finish', { sid:r.sid });
           closeW();
-          if(f.error){alertx(f.error)}else{setPoin(f.poin);alertx('Valid! +'+f.got+' poin')}
+          if (f.error) { haptic('err'); alertx(f.error); }
+          else { setPoin(f.poin); haptic('ok'); alertx('✅ Valid! +' + f.got + ' poin'); }
           return tonton();
         }
-        busy=false;
+        busy = false;
       }
-    },1000);
-  },()=>setS('Pemutar YouTube gagal dimuat. View tidak dihitung.'));
+    }, 1000);
+  }, () => setS('⚠️ Pemutar YouTube gagal dimuat. View tidak dihitung.'));
 }
-const setS=t=>{const e=$('#st');if(e)e.textContent=t};
-function closeW(){clearInterval(tm);try{player&&player.destroy()}catch(e){}player=null;$('#ov').innerHTML=''}
+const setS = t => { const e = $('#st'); if (e) e.textContent = t; };
+function closeW() { clearInterval(tm); try { player && player.destroy(); } catch(e){} player = null; $('#ov').innerHTML = ''; }
 
-/* ---------- Boost ---------- */
-async function boost(){
+/* ---------- Tab: Boost ---------- */
+async function boost() {
   await sync();
-  const r=await api('mine');
-  out(`<div class="card"><h3>Pasang video saya</h3>
-  <div class="mut">Poin tersedia: <b>${me.poin}</b></div>
-  <label>Link YouTube</label><input id="b_url" placeholder="https://youtu.be/...">
-  <label>Durasi tonton per penonton</label><select id="b_d" onchange="hit()"><option value="30">30 detik</option><option value="60">60 detik</option><option value="120">120 detik</option><option value="300">300 detik</option></select>
-  <label>Jumlah penonton</label><input id="b_m" type="number" value="${Math.max(1,Math.min(Math.floor(me.poin/30),5))}" oninput="hit()">
-  <p id="b_e"></p>
-  <button class="btn" onclick="doBoost()">Pasang video</button>
-  <div class="mut" style="margin-top:8px">Pasang GRATIS. 1 detik = 1 poin. Modal dipindah dari poin Anda ke video ini. Setiap penonton yang menonton penuh mendapat poin sesuai durasi, diambil dari modal video. Modal habis, video berhenti tampil sampai Anda mengisi lagi. Menghentikan video mengembalikan sisa modal ke poin Anda. Aturan adil: modal yang Anda tanam dalam 24 jam tidak boleh lebih besar dari poin yang Anda dapat dari menonton (kecuali belum ada video yang bisa Anda tonton). Video yang tidak ditonton 3 hari dihentikan dan sisa modal dikembalikan. Pilih durasi yang tidak lebih panjang dari video. Anda tidak bisa menonton video sendiri.</div></div>
-  <div class="card"><h3>Video saya</h3>${(r.videos||[]).map(v=>`<div class="vid" style="display:block"><div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><div>${esc(v.yt_id)}<div class="mut">${v.detik} dtk · ${v.dilihat}x ditonton · sisa ${Math.floor(v.sisa/v.detik)} penonton (${v.sisa} poin) <span class="tag">${v.status==='aktif'?(v.sisa<v.detik?'modal habis: isi poin':'aktif'):v.status}</span></div></div>${v.status==='aktif'?`<button class="btn s r" onclick="cancel(${v.id})">Hentikan</button>`:''}</div>${v.status==='aktif'?`<div class="row" style="margin-top:6px"><input id="tp_${v.id}" type="number" placeholder="Tambah penonton" style="margin:0"><button class="btn s" style="flex:0 0 auto" onclick="topup(${v.id})">Tambah</button></div>`:''}</div>`).join('')||'<div class="mut">Belum ada.</div>'}</div>`);
+  const r = await api('mine');
+  out(`
+    <div class="card">
+      <h3 class="ic">${I.bolt} Pasang video saya</h3>
+      <p class="mut" style="margin:0 0 8px">Poin tersedia: <b style="color:var(--pri)">${me.poin}</b></p>
+      <label>Link YouTube</label>
+      <input id="b_url" placeholder="https://youtu.be/…">
+      <label>Durasi tonton per penonton</label>
+      <select id="b_d" onchange="hit()">
+        <option value="30">30 detik</option><option value="60">60 detik</option>
+        <option value="120">120 detik</option><option value="300">300 detik</option>
+      </select>
+      <label>Jumlah penonton</label>
+      <input id="b_m" type="number" value="${Math.max(1, Math.min(Math.floor(me.poin/30), 5))}" oninput="hit()">
+      <p id="b_e" class="mut"></p>
+      <button class="btn" onclick="doBoost()">Pasang video</button>
+      <details style="margin-top:12px">
+        <summary class="mut" style="cursor:pointer;font-weight:600">ℹ️ Aturan boost</summary>
+        <p class="mut" style="margin:8px 0 0">Pasang gratis · 1 dtk = 1 poin · modal dipindah dari poin Anda · modal habis → video berhenti · menghentikan video mengembalikan sisa modal · modal 24 jam ≤ poin earned · video idle 3 hari dihentikan · tidak bisa menonton video sendiri.</p>
+      </details>
+    </div>
+    <div class="card">
+      <h3 class="ic">🎬 Video saya</h3>
+      ${(r.videos || []).map(v => {
+        const stOk = v.status === 'aktif' && v.sisa >= v.detik;
+        const stTag = v.status !== 'aktif' ? `<span class="tag">${esc(v.status)}</span>`
+                    : v.sisa < v.detik      ? `<span class="tag bad">modal habis: isi poin</span>`
+                    :                         `<span class="tag ok">aktif</span>`;
+        return `
+        <div style="padding:12px 0;border-bottom:1px solid var(--line)">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:8px">
+            <div style="min-width:0">
+              <div style="font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(v.yt_id)}</div>
+              <div class="mut">${v.detik} dtk · ${v.dilihat}x · sisa ${Math.floor(v.sisa/v.detik)} penonton (${v.sisa} poin)</div>
+            </div>
+            ${stTag}
+          </div>
+          ${v.status === 'aktif' ? `
+            <div class="row" style="margin-top:10px">
+              <input id="tp_${v.id}" type="number" placeholder="Tambah penonton" style="margin:0">
+              <button class="btn s" style="flex:0 0 auto" onclick="topup(${v.id})">Tambah</button>
+              <button class="btn s r" style="flex:0 0 auto" onclick="cancel(${v.id})">Stop</button>
+            </div>` : ''}
+        </div>`;
+      }).join('') || `<div class="empty">${I.empty}<div>Belum ada video.<br>Pasang video pertama Anda di atas.</div></div>`}
+    </div>`);
   hit();
 }
-function hit(){const d=+$('#b_d').value,n=parseInt($('#b_m').value)||0,c=d*n;$('#b_e').innerHTML='Modal yang dipakai: <b>'+c+'</b> poin ('+n+' penonton x '+d+' poin).'+(c>me.poin?' <span style="color:#d45b15">Melebihi poin Anda.</span>':'')}
-async function doBoost(){
-  const r=await api('boost',{url:$('#b_url').value,detik:$('#b_d').value,views:$('#b_m').value});
-  if(r.error)return alertx(r.error);
-  setPoin(r.poin);alertx('Video terpasang!');boost();
+function hit() {
+  const d = +$('#b_d').value, n = parseInt($('#b_m').value) || 0, c = d * n;
+  $('#b_e').innerHTML = `Modal: <b>${c}</b> poin (${n} × ${d})${c > me.poin ? ' — <span style="color:var(--bad)">melebihi saldo</span>' : ''}`;
 }
-async function cancel(id){const r=await api('cancel',{video_id:id});if(r.error)return alertx(r.error);alertx('Dihentikan. '+r.refund+' poin dikembalikan.');boost()}
-async function topup(id){const r=await api('topup',{video_id:id,views:$('#tp_'+id).value});if(r.error)return alertx(r.error);alertx('Penonton ditambah');boost()}
-window.boost=boost;
+async function doBoost() {
+  const r = await api('boost', { url:$('#b_url').value, detik:$('#b_d').value, views:$('#b_m').value });
+  if (r.error) { haptic('err'); return alertx(r.error); }
+  setPoin(r.poin); haptic('ok'); alertx('Video terpasang!'); boost();
+}
+async function cancel(id) { const r = await api('cancel', { video_id:id }); if (r.error) return alertx(r.error); alertx('Dihentikan. ' + r.refund + ' poin dikembalikan.'); boost(); }
+async function topup(id)  { const r = await api('topup',  { video_id:id, views:$('#tp_'+id).value }); if (r.error) return alertx(r.error); alertx('Penonton ditambah'); boost(); }
+window.boost = boost;
 
-/* ---------- Saya ---------- */
-async function saya(){
+/* ---------- Tab: Saya ---------- */
+async function saya() {
   await sync();
-  const r=await api('mine'),link=`https://t.me/${me.bot}?startapp=ref_${me.tg_id}`;
-  out(`<div class="card"><h3>${esc(me.name)}</h3><div>Saldo: <b>${me.poin} poin</b></div><div class="mut">Undangan: ${me.refs} orang</div></div>
-  <div class="card"><h3>Ajak teman</h3><div class="mut" style="word-break:break-all">${esc(link)}</div><br><button class="btn" onclick="navigator.clipboard&&navigator.clipboard.writeText('${link}');alertx('Link disalin')">Salin link</button><div class="mut" style="margin-top:6px">Bonus poin saat teman menyelesaikan tontonan pertamanya.</div></div>
-  <div class="card"><h3>Riwayat poin</h3>${(r.ledger||[]).map(l=>`<div class="vid"><span>${esc(l.reason)}</span><b style="color:${l.delta>0?'#2e8b57':'#d45b15'}">${l.delta>0?'+':''}${l.delta}</b></div>`).join('')||'<div class="mut">Belum ada.</div>'}</div>`);
+  const r = await api('mine');
+  const link = `https://t.me/${me.bot}?startapp=ref_${me.tg_id}`;
+  out(`
+    <div class="card" style="text-align:center">
+      <div style="width:64px;height:64px;border-radius:50%;margin:0 auto 10px;background:linear-gradient(135deg,var(--pri),#8f7dff);display:grid;place-items:center;color:#fff">${I.user}</div>
+      <h3 style="margin:0">${esc(me.name)}</h3>
+      <div style="font-size:28px;font-weight:800;color:var(--pri);margin:6px 0">${me.poin} <span style="font-size:14px;color:var(--mut);font-weight:600">poin</span></div>
+      <div class="mut">${me.refs} undangan</div>
+    </div>
+    <div class="card">
+      <h3 class="ic">🔗 Ajak teman</h3>
+      <div class="mut" style="word-break:break-all;background:var(--card);padding:10px;border-radius:8px;font-family:ui-monospace,monospace;font-size:12px">${esc(link)}</div>
+      <button class="btn" style="margin-top:10px" onclick="copyLink()">Salin link</button>
+      <p class="mut" style="margin:8px 0 0">Bonus poin saat teman menyelesaikan tontonan pertamanya.</p>
+    </div>
+    <div class="card">
+      <h3 class="ic">📜 Riwayat poin</h3>
+      ${(r.ledger || []).map(l => `
+        <div class="vid">
+          <span>${esc(l.reason)}</span>
+          <b style="color:${l.delta > 0 ? 'var(--ok)' : 'var(--bad)'};font-variant-numeric:tabular-nums">${l.delta > 0 ? '+' : ''}${l.delta}</b>
+        </div>`).join('') || `<div class="empty">${I.empty}<div>Belum ada transaksi.</div></div>`}
+    </div>`);
+  window.__link = link;
+}
+async function copyLink() {  // FIX: async clipboard, escape aman
+  try { await navigator.clipboard.writeText(window.__link); alertx('Link disalin'); }
+  catch { alertx('Gagal menyalin. Salin manual.'); }
 }
 
-/* ---------- Admin: daftar member ---------- */
-async function admin(){
-  out(`<div class="card"><h3>Daftar Member</h3><div id="ast" class="mut"></div><input id="aq" placeholder="Cari nama / username / ID Telegram" value="${esc(am.q)}" oninput="am.q=this.value;am.pg=0;clearTimeout(window.__t);window.__t=setTimeout(loadM,300)"></div><div class="card" id="alist">Memuat...</div>`);
+/* ---------- Tab: Admin ---------- */
+async function admin() {
+  out(`
+    <div class="card">
+      <h3 class="ic">${I.gear} Daftar Member</h3>
+      <div id="ast" class="mut"></div>
+      <input id="aq" placeholder="Cari nama / username / ID Telegram" value="${esc(am.q)}"
+        oninput="am.q=this.value;am.pg=0;clearTimeout(window.__t);window.__t=setTimeout(loadM,300)">
+    </div>
+    <div class="card" id="alist">Memuat…</div>`);
   loadM();
 }
-async function loadM(){
-  const r=await api('admin/members?q='+encodeURIComponent(am.q)+'&page='+am.pg);
-  if(r.error){$('#alist').textContent=r.error;return}
-  const s=r.stats||{};
-  $('#ast').textContent=`Total ${s.total||0} · Diblokir ${s.blokir||0} · Baru 24 jam ${s.hari||0}`;
-  $('#alist').innerHTML=r.members.map(m=>`<div class="vid"><div><b>${esc(m.name)}</b> ${m.username?'@'+esc(m.username):''}<div class="mut">ID ${m.tg_id} · ${m.poin} poin · ${m.views} view · ${new Date(m.created_at*1000).toLocaleDateString('id-ID')} <span class="tag">${m.status}</span></div></div><div><button class="btn s" onclick="adjPoin(${m.id})">Poin</button> <button class="btn s ${m.status==='aktif'?'r':''}" onclick="setSt(${m.id},'${m.status==='aktif'?'blokir':'aktif'}')">${m.status==='aktif'?'Blokir':'Aktifkan'}</button></div></div>`).join('')||'<div class="mut">Tidak ada member.</div>'
-  +`<div class="row" style="margin-top:10px"><button class="btn s" ${am.pg<=0?'disabled':''} onclick="am.pg--;loadM()">‹</button><button class="btn s" ${r.members.length<15?'disabled':''} onclick="am.pg++;loadM()">›</button></div>`;
+async function loadM() {
+  const r = await api('admin/members?q=' + encodeURIComponent(am.q) + '&page=' + am.pg);
+  if (r.error) { $('#alist').textContent = r.error; return; }
+  const s = r.stats || {};
+  $('#ast').textContent = `Total ${s.total||0} · Diblokir ${s.blokir||0} · Baru 24 jam ${s.hari||0}`;
+  $('#alist').innerHTML = r.members.map(m => `
+    <div class="vid">
+      <div style="min-width:0">
+        <div style="font-weight:600">${esc(m.name)} ${m.username ? `<span class="mut">@${esc(m.username)}</span>` : ''}</div>
+        <div class="mut">ID ${m.tg_id} · ${m.poin} poin · ${m.views} view · ${new Date(m.created_at*1000).toLocaleDateString('id-ID')}
+          <span class="tag ${m.status==='aktif'?'ok':'bad'}">${esc(m.status)}</span></div>
+      </div>
+      <div style="display:flex;gap:6px;flex-shrink:0">
+        <button class="btn s" onclick="adjPoin(${m.id})">Poin</button>
+        <button class="btn s ${m.status==='aktif'?'r':'ghost'}" onclick="setSt(${m.id},'${m.status==='aktif'?'blokir':'aktif'}')">
+          ${m.status==='aktif'?'Blokir':'Aktifkan'}</button>
+      </div>
+    </div>`).join('') || `<div class="empty">${I.empty}<div>Tidak ada member.</div></div>`
+  + `<div class="row" style="margin-top:12px">
+       <button class="btn s ghost" ${am.pg<=0?'disabled':''} onclick="am.pg--;loadM()">‹ Sebelumnya</button>
+       <button class="btn s ghost" ${r.members.length<15?'disabled':''} onclick="am.pg++;loadM()">Berikutnya ›</button>
+     </div>`;
 }
-async function setSt(id,s){await api('admin/status',{id,status:s});loadM()}
-async function adjPoin(id){const d=prompt('Tambah/kurangi poin (contoh 100 atau -50):');if(!d)return;const r=await api('admin/poin',{id,delta:d});if(r.error)alertx(r.error);loadM()}
+async function setSt(id, s) { await api('admin/status', { id, status:s }); loadM(); }
+async function adjPoin(id) {
+  const d = prompt('Tambah/kurangi poin (contoh 100 atau -50):');
+  if (!d) return;
+  const r = await api('admin/poin', { id, delta:d });
+  if (r.error) alertx(r.error); loadM();
+}
+
 init();
 </script>
 </body>
