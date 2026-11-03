@@ -1,0 +1,51 @@
+CREATE TABLE IF NOT EXISTS users(
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  tg_id INTEGER UNIQUE NOT NULL,
+  name TEXT, username TEXT,
+  ip_hash TEXT,
+  poin INTEGER NOT NULL DEFAULT 0,
+  status TEXT NOT NULL DEFAULT 'aktif',
+  ref_by INTEGER,
+  created_at INTEGER
+);
+CREATE INDEX IF NOT EXISTS idx_users_ip ON users(ip_hash);
+
+CREATE TABLE IF NOT EXISTS videos(
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  owner_id INTEGER NOT NULL,
+  yt_id TEXT NOT NULL,
+  detik INTEGER NOT NULL,
+  target INTEGER NOT NULL,
+  sisa INTEGER NOT NULL,
+  status TEXT NOT NULL DEFAULT 'aktif',
+  created_at INTEGER
+);
+CREATE INDEX IF NOT EXISTS idx_videos_aktif ON videos(status, created_at);
+
+CREATE TABLE IF NOT EXISTS views(
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  user_id INTEGER NOT NULL,
+  video_id INTEGER NOT NULL,
+  yt_id TEXT NOT NULL,
+  t INTEGER,
+  UNIQUE(user_id, yt_id)
+);
+
+CREATE TABLE IF NOT EXISTS sessions(
+  id TEXT PRIMARY KEY,
+  user_id INTEGER NOT NULL,
+  video_id INTEGER NOT NULL,
+  started INTEGER NOT NULL,
+  last_hb INTEGER NOT NULL,
+  played INTEGER NOT NULL DEFAULT 0,
+  done INTEGER NOT NULL DEFAULT 0
+);
+
+CREATE TABLE IF NOT EXISTS ledger(
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  user_id INTEGER NOT NULL,
+  delta INTEGER NOT NULL,
+  reason TEXT,
+  t INTEGER
+);
+CREATE INDEX IF NOT EXISTS idx_ledger_user ON ledger(user_id, id);

@@ -1,0 +1,23 @@
+name = "tukarview"
+main = "src/worker.js"
+compatibility_date = "2025-01-01"
+
+[assets]
+directory = "./public"
+binding = "ASSETS"
+run_worker_first = ["/api/*"]
+
+[[d1_databases]]
+binding = "DB"
+database_name = "tukarview"
+database_id = "GANTI_DENGAN_ID_DATABASE"
+
+[vars]
+BOT_USERNAME = "GANTI_USERNAME_BOT_TANPA_@"
+ADMIN_IDS = "123456789"   # ID Telegram admin, pisahkan dengan koma
+IP_LIMIT = "1"            # maksimal akun per IP
+BONUS_DAFTAR = "60"       # poin awal (= 60 detik tontonan)
+BONUS_REFERRAL = "30"
+# Rahasia (jangan ditulis di sini), set lewat perintah:
+#   npx wrangler secret put BOT_TOKEN
+#   npx wrangler secret put IP_SALT
