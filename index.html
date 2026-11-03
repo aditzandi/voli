@@ -180,7 +180,7 @@ async function watch(){
 }
 
 /* ---------- Player + heartbeat ---------- */
-let player=null,tm=null,ps=-1;
+let player=null,tm=null,ps=-1,curSid=null;
 function loadYT(ok,bad){
   if(window.YT&&YT.Player)return ok();
   window.onYouTubeIframeAPIReady=ok;
@@ -190,8 +190,8 @@ function loadYT(ok,bad){
 async function watchVideo(id){
   const r=await api('start',{video_id:id});
   if(r.error)return alertx(r.error);
-  let local=0,c=0,busy=false;ps=-1;
-  $('#ov').innerHTML=`<div class="ov"><h2>Watch ${r.detik} seconds</h2><p class="sub">Keep the video playing. Time only counts while it is playing.</p><div id="yt"></div><div class="bar" style="height:8px;margin:14px 0 4px"><i id="pb"></i></div><div class="big" id="cd">${r.detik}</div><div class="mut center" id="st">Loading player…</div><br><button class="btn danger" onclick="closeW()">Cancel</button></div>`;
+  let local=0,c=0,busy=false;ps=-1;curSid=r.sid;
+  $('#ov').innerHTML=`<div class="ov"><h2>Watch ${r.detik} seconds</h2><p class="sub">Keep the video playing. Time only counts while it is playing.</p><div id="yt"></div><div class="bar" style="height:8px;margin:14px 0 4px"><i id="pb"></i></div><div class="big" id="cd">${r.detik}</div><div class="mut center" id="st">Loading player…</div><br><button class="btn danger" onclick="cancelWatch()">Cancel</button></div>`;
   loadYT(()=>{
     player=new YT.Player('yt',{videoId:r.yt,playerVars:{autoplay:1,rel:0,playsinline:1},events:{onStateChange:e=>ps=e.data,onReady:e=>{const d=e.target.getDuration();if(d>0&&d<r.detik){setS('This video is shorter than the required watch time.');clearInterval(tm)}}}});
     tm=setInterval(async()=>{
@@ -214,7 +214,8 @@ async function watchVideo(id){
   },()=>setS('YouTube player failed to load. This view was not counted.'));
 }
 const setS=t=>{const e=$('#st');if(e)e.textContent=t};
-function closeW(){clearInterval(tm);try{player&&player.destroy()}catch(e){}player=null;$('#ov').innerHTML=''}
+async function cancelWatch(){const s=curSid;closeW();if(s){await api('release',{sid:s});watch()}}
+function closeW(){curSid=null;clearInterval(tm);try{player&&player.destroy()}catch(e){}player=null;$('#ov').innerHTML=''}
 
 /* ---------- Get Views (post your video) ---------- */
 async function grow(){
@@ -243,7 +244,7 @@ async function grow(){
 
   <div class="card"><h3>Your active videos${vids.length?` (${vids.length})`:''}</h3>${vids.length?`<p class="sub">Pressing Stop returns the unused points and removes the video.</p>`:''}${vids.length?vids.map(v=>{
     const left=Math.floor(v.sisa/v.detik),pct=Math.max(0,Math.min(100,Math.round((v.target-v.sisa)/v.target*100))),off=v.sisa<v.detik;
-    return `<div class="mv"><div class="row" style="align-items:flex-start;gap:12px">${thumb(v.yt_id,v.detik)}<div class="vi"><div class="vt">YouTube video</div><div class="mut">${v.dilihat} views received<br>${v.detik}s per viewer · ${v.sisa} points left</div><div style="margin-top:6px">${off?'<span class="tag warn">Out of points</span>':`<span class="tag ok">Live · ${left} more view${left==1?'':'s'}</span>`}</div></div></div><div class="bar"><i style="width:${pct}%"></i></div><div class="row"><input id="tp_${v.id}" type="number" min="1" inputmode="numeric" placeholder="Points to add"><button class="btn sm" onclick="topup(${v.id})">Add points</button><button class="btn sm danger" onclick="cancel(${v.id})">Stop</button></div></div>`}).join(''):`<div class="empty"><div class="ic">📹</div>No active videos. Post your first video above.</div>`}</div>`);
+    return `<div class="mv"><div class="row" style="align-items:flex-start;gap:12px">${thumb(v.yt_id,v.detik)}<div class="vi"><div class="vt">YouTube video</div><div class="mut">${v.dilihat} views received<br>${v.detik}s per viewer · ${v.sisa+v.lock} points left${v.nonton?`<br>${v.nonton} watching right now`:''}</div><div style="margin-top:6px">${off?'<span class="tag warn">Out of points</span>':`<span class="tag ok">Live · ${left} more view${left==1?'':'s'}</span>`}</div></div></div><div class="bar"><i style="width:${pct}%"></i></div><div class="row"><input id="tp_${v.id}" type="number" min="1" inputmode="numeric" placeholder="Points to add"><button class="btn sm" onclick="topup(${v.id})">Add points</button><button class="btn sm danger" onclick="cancel(${v.id})">Stop</button></div></div>`}).join(''):`<div class="empty"><div class="ic">📹</div>No active videos. Post your first video above.</div>`}</div>`);
   hit();
 }
 function setD(x){$('#b_d').value=x;hit()}
