@@ -175,12 +175,12 @@ async function watch(){
   await sync();
   const r=await api('videos');
   const list=r.videos||[];
-  out(`<div class="card hero"><div class="lab">Your balance</div><div class="bal">${me.poin}<small>points</small></div><div class="eq">= ${fmtT(me.poin)} of video you can get watched</div><div class="rule">Watch a video to the end and earn 1 point for every second.</div></div>
-  <div class="card"><h3>Videos to watch${list.length?` (${list.length})`:''}</h3><p class="sub">Tap a video, keep it playing until the timer reaches 0, and the points are yours.</p>${list.length?list.map(v=>`<div class="vrow">${thumb(v.yt_id,v.detik)}<div class="vi"><div class="vt">YouTube video</div><div class="mut">Watch ${v.detik} seconds</div></div><button class="btn sm" onclick="watchVideo(${v.id})">+${v.detik}</button></div>`).join(''):`<div class="empty"><div class="ic">🎬</div>No videos to watch right now.<br><br>Invite friends and earn ${me.ref_percent}% of what they earn, or ask a friend to post a video.<br><br><button class="btn ghost sm" onclick="show('profile')">Invite friends</button> <button class="btn ghost sm" onclick="show('grow')">Get views</button></div>`}</div>`);
+  out(`<div class="card hero"><div class="lab">Your balance</div><div class="bal">${me.poin}<small>points</small></div><div class="eq">= ${fmtT(me.poin)} of video you can get watched</div><div class="rule">Watch videos and earn 1 point for every second you watch.</div></div>
+  <div class="card"><h3>Videos to watch${list.length?` (${list.length})`:''}</h3><p class="sub">Tap a video and keep it playing. You earn 1 point per second and can collect any time.</p>${list.length?list.map(v=>`<div class="vrow">${thumb(v.yt_id,v.detik)}<div class="vi"><div class="vt">YouTube video</div><div class="mut">Earn up to ${v.detik} points<br>1 point per second</div></div><button class="btn sm" onclick="watchVideo(${v.id})">+${v.detik}</button></div>`).join(''):`<div class="empty"><div class="ic">🎬</div>No videos to watch right now.<br><br>Invite friends and earn ${me.ref_percent}% of what they earn, or ask a friend to post a video.<br><br><button class="btn ghost sm" onclick="show('profile')">Invite friends</button> <button class="btn ghost sm" onclick="show('grow')">Get views</button></div>`}</div>`);
 }
 
 /* ---------- Player + heartbeat ---------- */
-let player=null,tm=null,ps=-1,curSid=null;
+let player=null,tm=null,ps=-1;
 function loadYT(ok,bad){
   if(window.YT&&YT.Player)return ok();
   window.onYouTubeIframeAPIReady=ok;
@@ -190,32 +190,35 @@ function loadYT(ok,bad){
 async function watchVideo(id){
   const r=await api('start',{video_id:id});
   if(r.error)return alertx(r.error);
-  let local=0,c=0,busy=false;ps=-1;curSid=r.sid;
-  $('#ov').innerHTML=`<div class="ov"><h2>Watch ${r.detik} seconds</h2><p class="sub">Keep the video playing. Time only counts while it is playing.</p><div id="yt"></div><div class="bar" style="height:8px;margin:14px 0 4px"><i id="pb"></i></div><div class="big" id="cd">${r.detik}</div><div class="mut center" id="st">Loading player…</div><br><button class="btn danger" onclick="cancelWatch()">Cancel</button></div>`;
+  let local=0,c=0,busy=false,pl=false,done=false;ps=-1;
+  const MIN=me.min_claim||5;
+  $('#ov').innerHTML=`<div class="ov"><h2>Watch &amp; earn</h2><p class="sub">You earn 1 point for every second you watch, up to ${r.detik} seconds. Tap the button any time to collect your points.</p><div id="yt"></div><div class="bar" style="height:8px;margin:14px 0 4px"><i id="pb"></i></div><div class="big" id="cd">0</div><div class="mut center">points earned (max ${r.detik})</div><div class="mut center" id="st" style="margin:6px 0 14px">Loading player…</div><button class="btn" id="cb" onclick="collectNow()">Close</button></div>`;
+  const finish=async()=>{
+    if(done)return;done=true;clearInterval(tm);
+    while(busy)await new Promise(x=>setTimeout(x,100));
+    await api('hb',{sid:r.sid,playing:pl});
+    const f=await api('finish',{sid:r.sid});
+    closeW();
+    if(f.error){alertx(f.error)}else{setPoin(f.poin);alertx('Done! +'+f.got+' points')}
+    watch();
+  };
+  window.collectNow=finish;
   loadYT(()=>{
-    player=new YT.Player('yt',{videoId:r.yt,playerVars:{autoplay:1,rel:0,playsinline:1},events:{onStateChange:e=>ps=e.data,onReady:e=>{const d=e.target.getDuration();if(d>0&&d<r.detik){setS('This video is shorter than the required watch time.');clearInterval(tm)}}}});
+    player=new YT.Player('yt',{videoId:r.yt,playerVars:{autoplay:1,rel:0,playsinline:1},events:{onStateChange:e=>ps=e.data}});
     tm=setInterval(async()=>{
-      if(busy)return;
-      const vis=document.visibilityState==='visible',pl=ps===1&&vis;
-      if(pl)local++;c++;
-      setS(pl?'Watching '+local+' / '+r.detik+' sec':(!vis?'App is in the background, counting is paused.':'Press play. Time only counts while the video is playing.'));
-      $('#cd').textContent=Math.max(r.detik-local,0);$('#pb').style.width=Math.min(100,local/r.detik*100)+'%';
-      if(c%5===0||local>=r.detik){
-        busy=true;await api('hb',{sid:r.sid,playing:pl});
-        if(local>=r.detik){
-          clearInterval(tm);const f=await api('finish',{sid:r.sid});
-          closeW();
-          if(f.error){alertx(f.error)}else{setPoin(f.poin);alertx('Done! +'+f.got+' points')}
-          return watch();
-        }
-        busy=false;
-      }
+      if(busy||done)return;
+      const vis=document.visibilityState==='visible';pl=ps===1&&vis;
+      if(pl)local=Math.min(local+1,r.detik);c++;
+      setS(pl?'Watching…':(!vis?'App is in the background, counting is paused.':'Press play. Time only counts while the video is playing.'));
+      $('#cd').textContent=local;$('#pb').style.width=Math.min(100,local/r.detik*100)+'%';
+      const cb=$('#cb');if(cb){cb.textContent=local>=MIN?'Collect '+local+' points':'Close (watch '+MIN+'s to earn)';}
+      if(c%5===0){busy=true;await api('hb',{sid:r.sid,playing:pl});busy=false}
+      if(local>=r.detik)finish();
     },1000);
   },()=>setS('YouTube player failed to load. This view was not counted.'));
 }
 const setS=t=>{const e=$('#st');if(e)e.textContent=t};
-async function cancelWatch(){const s=curSid;closeW();if(s){await api('release',{sid:s});watch()}}
-function closeW(){curSid=null;clearInterval(tm);try{player&&player.destroy()}catch(e){}player=null;$('#ov').innerHTML=''}
+function closeW(){clearInterval(tm);try{player&&player.destroy()}catch(e){}player=null;$('#ov').innerHTML=''}
 
 /* ---------- Get Views (post your video) ---------- */
 async function grow(){
@@ -226,15 +229,15 @@ async function grow(){
   out(`<div class="card"><h2>Get views for your video</h2><p class="sub">Other members watch your YouTube video and you pay them with points.</p>
   <ol class="how">
     <li><div><b>Paste your YouTube link</b><span>Any normal YouTube or Shorts link works.</span></div></li>
-    <li><div><b>Choose how many seconds each person watches</b><span>Each viewer earns exactly this many points. 1 second = 1 point.</span></div></li>
+    <li><div><b>Choose the maximum watch time per viewer</b><span>Viewers earn 1 point per second they really watch, up to this limit. If someone stops early, they earn less and you pay less.</span></div></li>
     <li><div><b>Choose how many points to spend</b><span>Your video stays live until these points are used up. You can add more or stop at any time.</span></div></li>
   </ol></div>
 
   <div class="card"><h3 style="margin-bottom:14px">New video</h3>
   <div class="field"><label>YouTube link</label><input id="b_url" inputmode="url" placeholder="https://youtu.be/..."></div>
-  <div class="field"><label>Watch time per viewer</label><div class="inwrap"><input id="b_d" type="number" min="${me.min_dur}" max="${me.max_dur}" inputmode="numeric" value="${defD}" oninput="hit()"><span>seconds</span></div>
+  <div class="field"><label>Maximum watch time per viewer</label><div class="inwrap"><input id="b_d" type="number" min="${me.min_dur}" max="${me.max_dur}" inputmode="numeric" value="${defD}" oninput="hit()"><span>seconds</span></div>
     <div class="pills">${[15,30,60,120].map(x=>`<button class="pill" onclick="setD(${x})">${x}s</button>`).join('')}</div>
-    <div class="hint">Between ${me.min_dur} and ${me.max_dur} seconds. Short time = more viewers for the same points.</div></div>
+    <div class="hint">Between ${me.min_dur} and ${me.max_dur} seconds. Shorter limit = more viewers for the same points.</div></div>
   <div class="field"><label>Points to spend</label><div class="inwrap"><input id="b_m" type="number" min="1" inputmode="numeric" value="${me.poin}" oninput="hit()"><span>points</span></div>
     <div class="pills"><button class="pill" onclick="setM(1)">All (${me.poin})</button><button class="pill" onclick="setM(.5)">Half</button></div>
     <div class="hint">You have ${me.poin} points. You cannot spend more than that.</div></div>
@@ -244,7 +247,7 @@ async function grow(){
 
   <div class="card"><h3>Your active videos${vids.length?` (${vids.length})`:''}</h3>${vids.length?`<p class="sub">Pressing Stop returns the unused points and removes the video.</p>`:''}${vids.length?vids.map(v=>{
     const left=Math.floor(v.sisa/v.detik),pct=Math.max(0,Math.min(100,Math.round((v.target-v.sisa)/v.target*100))),off=v.sisa<v.detik;
-    return `<div class="mv"><div class="row" style="align-items:flex-start;gap:12px">${thumb(v.yt_id,v.detik)}<div class="vi"><div class="vt">YouTube video</div><div class="mut">${v.dilihat} views received<br>${v.detik}s per viewer · ${v.sisa+v.lock} points left${v.nonton?`<br>${v.nonton} watching right now`:''}</div><div style="margin-top:6px">${off?'<span class="tag warn">Out of points</span>':`<span class="tag ok">Live · ${left} more view${left==1?'':'s'}</span>`}</div></div></div><div class="bar"><i style="width:${pct}%"></i></div><div class="row"><input id="tp_${v.id}" type="number" min="1" inputmode="numeric" placeholder="Points to add"><button class="btn sm" onclick="topup(${v.id})">Add points</button><button class="btn sm danger" onclick="cancel(${v.id})">Stop</button></div></div>`}).join(''):`<div class="empty"><div class="ic">📹</div>No active videos. Post your first video above.</div>`}</div>`);
+    return `<div class="mv"><div class="row" style="align-items:flex-start;gap:12px">${thumb(v.yt_id,v.detik)}<div class="vi"><div class="vt">YouTube video</div><div class="mut">${v.dilihat} views received<br>up to ${v.detik}s per viewer · ${v.sisa+v.lock} points left${v.nonton?`<br>${v.nonton} watching right now`:''}</div><div style="margin-top:6px">${off?'<span class="tag warn">Out of points</span>':`<span class="tag ok">Live · ${left} more view${left==1?'':'s'}</span>`}</div></div></div><div class="bar"><i style="width:${pct}%"></i></div><div class="row"><input id="tp_${v.id}" type="number" min="1" inputmode="numeric" placeholder="Points to add"><button class="btn sm" onclick="topup(${v.id})">Add points</button><button class="btn sm danger" onclick="cancel(${v.id})">Stop</button></div></div>`}).join(''):`<div class="empty"><div class="ic">📹</div>No active videos. Post your first video above.</div>`}</div>`);
   hit();
 }
 function setD(x){$('#b_d').value=x;hit()}
@@ -257,7 +260,7 @@ function hit(){
   else if(m<d)err=`Spend at least ${d} points (one viewer).`;
   else if(m>me.poin)err=`Not enough points. You have ${me.poin}.`;
   const v=d>0?Math.floor(m/d):0;
-  $('#b_e').innerHTML=`<div class="sr"><span>Each viewer watches</span><b>${d} sec</b></div><div class="sr"><span>Each viewer earns</span><b>${d} points</b></div><div class="sr"><span>Points left after posting</span><b>${Math.max(0,me.poin-m)}</b></div><div class="sr tot"><span>Expected views</span><b>about ${v}</b></div>`+(err?`<div class="warn">${err}</div>`:'');
+  $('#b_e').innerHTML=`<div class="sr"><span>Each viewer can watch up to</span><b>${d} sec</b></div><div class="sr"><span>Each viewer earns up to</span><b>${d} points</b></div><div class="sr"><span>Points left after posting</span><b>${Math.max(0,me.poin-m)}</b></div><div class="sr tot"><span>Views (if all watch fully)</span><b>about ${v}</b></div>`+(err?`<div class="warn">${err}</div>`:'');
   $('#b_go').disabled=!!err;
 }
 async function doPost(){
